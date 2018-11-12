@@ -1,0 +1,17 @@
+doctype html
+html
+    head
+        title= title
+
+        // Css
+        block css
+            link(rel='stylesheet', href='/static/stylesheets/style.css')
+            link(rel='stylesheet', href='/bower/bootstrap/dist/css/bootstrap.min.css')
+
+        // JS libs
+        block jslib
+            script(src='/bower/jquery/dist/jquery.min.js')
+            script(src='/bower/popper.js/dist/popper.min.js')
+            script(src='/bower/bootstrap/dist/js/bootstrap.min.js')
+    body
+        block content
