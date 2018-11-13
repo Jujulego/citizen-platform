@@ -1,0 +1,56 @@
+/**
+ * _navbar.scss
+ */
+
+.navbar-toggler {
+  display: flex;
+  height: 40px;
+  min-width: 40px;
+
+  flex-direction: column;
+
+  margin-left: .675rem;
+  padding: .7rem 0;
+  border: none;
+
+  span {
+    width: 1.4rem;
+    height: .2rem;
+
+    flex: 0 0 auto;
+    background-color: #7B7C7D;
+
+    margin: 0 auto;
+    border-radius: .075rem;
+
+    transition: transform 250ms ease, opacity 250ms ease;
+
+    &:nth-child(1) {
+      transform: translate(0px, .45rem) rotate(45deg);
+    }
+
+    &:nth-child(2) {
+      margin: .25rem auto;
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      transform: translate(0px, -.45rem) rotate(-45deg);
+    }
+
+    &:hover {
+      background-color: #4A4A4B;
+    }
+  }
+
+  // Tranformations
+  &.collapsed span {
+    &:nth-child(1),&:nth-child(3) {
+      transform: translate(0px, 0px) rotate(0deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 1;
+    }
+  }
+}
