@@ -31,6 +31,109 @@
   .navbar-toggler.collapsed span:nth-child(2) {
     opacity: 1; }
 
+.selector {
+  position: relative;
+  display: flex;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 5rem; }
+  .selector label {
+    flex: 1;
+    z-index: 1051;
+    margin: 0;
+    cursor: pointer;
+    text-align: center;
+    transition: color 0ms 125ms; }
+  .selector span {
+    position: absolute;
+    height: 100%;
+    z-index: 1050;
+    border-radius: 5rem;
+    background-color: var(--primary);
+    transition: left 250ms; }
+  .selector input {
+    display: none;
+    counter-increment: selector; }
+    .selector input :first-of-type {
+      counter-reset: selector; }
+    .selector input:checked + label {
+      color: white; }
+
+.selector-2 span {
+  width: 50%; }
+
+.selector-2 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-2 input:checked:nth-child(3) ~ span {
+  left: 50%; }
+
+.selector-3 span {
+  width: 33.33333%; }
+
+.selector-3 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-3 input:checked:nth-child(3) ~ span {
+  left: 33.33333%; }
+
+.selector-3 input:checked:nth-child(5) ~ span {
+  left: 66.66667%; }
+
+.selector-4 span {
+  width: 25%; }
+
+.selector-4 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-4 input:checked:nth-child(3) ~ span {
+  left: 25%; }
+
+.selector-4 input:checked:nth-child(5) ~ span {
+  left: 50%; }
+
+.selector-4 input:checked:nth-child(7) ~ span {
+  left: 75%; }
+
+.selector-5 span {
+  width: 20%; }
+
+.selector-5 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-5 input:checked:nth-child(3) ~ span {
+  left: 20%; }
+
+.selector-5 input:checked:nth-child(5) ~ span {
+  left: 40%; }
+
+.selector-5 input:checked:nth-child(7) ~ span {
+  left: 60%; }
+
+.selector-5 input:checked:nth-child(9) ~ span {
+  left: 80%; }
+
+.selector-6 span {
+  width: 16.66667%; }
+
+.selector-6 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-6 input:checked:nth-child(3) ~ span {
+  left: 16.66667%; }
+
+.selector-6 input:checked:nth-child(5) ~ span {
+  left: 33.33333%; }
+
+.selector-6 input:checked:nth-child(7) ~ span {
+  left: 50%; }
+
+.selector-6 input:checked:nth-child(9) ~ span {
+  left: 66.66667%; }
+
+.selector-6 input:checked:nth-child(11) ~ span {
+  left: 83.33333%; }
+
 #contenu {
   margin: 10rem; }
 
