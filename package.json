@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bower": "^1.8.4",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "^2.6.1",
@@ -15,8 +16,5 @@
     "node-sass-middleware": "0.11.0",
     "npm": "^6.4.1",
     "pug": "^2.0.3"
-  },
-  "devDependencies": {
-    "bower": "^1.8.4"
   }
 }

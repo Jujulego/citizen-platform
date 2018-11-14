@@ -3,9 +3,6 @@ extends base
 block content
     include parts/navbar
     include parts/connection_popup
-    include parts/cardProposed
-    
 
     div(id="contenu")
-        h1= title
-        p Welcome to #{title}
+        include parts/cardProposed
