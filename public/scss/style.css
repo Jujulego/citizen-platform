@@ -134,7 +134,55 @@
 .selector-6 input:checked:nth-child(11) ~ span {
   left: 83.33333%; }
 
-#contenu {
-  margin: 10rem; }
+.selector-7 span {
+  width: 14.28571%; }
+
+.selector-7 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-7 input:checked:nth-child(3) ~ span {
+  left: 14.28571%; }
+
+.selector-7 input:checked:nth-child(5) ~ span {
+  left: 28.57143%; }
+
+.selector-7 input:checked:nth-child(7) ~ span {
+  left: 42.85714%; }
+
+.selector-7 input:checked:nth-child(9) ~ span {
+  left: 57.14286%; }
+
+.selector-7 input:checked:nth-child(11) ~ span {
+  left: 71.42857%; }
+
+.selector-7 input:checked:nth-child(13) ~ span {
+  left: 85.71429%; }
+
+.selector-8 span {
+  width: 12.5%; }
+
+.selector-8 input:checked:nth-child(1) ~ span {
+  left: 0%; }
+
+.selector-8 input:checked:nth-child(3) ~ span {
+  left: 12.5%; }
+
+.selector-8 input:checked:nth-child(5) ~ span {
+  left: 25%; }
+
+.selector-8 input:checked:nth-child(7) ~ span {
+  left: 37.5%; }
+
+.selector-8 input:checked:nth-child(9) ~ span {
+  left: 50%; }
+
+.selector-8 input:checked:nth-child(11) ~ span {
+  left: 62.5%; }
+
+.selector-8 input:checked:nth-child(13) ~ span {
+  left: 75%; }
+
+.selector-8 input:checked:nth-child(15) ~ span {
+  left: 87.5%; }
 
 /*# sourceMappingURL=style.css.map */
