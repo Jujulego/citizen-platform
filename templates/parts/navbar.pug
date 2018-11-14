@@ -11,9 +11,9 @@ nav(class="navbar navbar-expand-lg navbar-light bg-light")
         ul(class="navbar-nav ml-auto")
             unless connected
                 li(class="nav-item")
-                    button(class="nav-link btn btn-link" type="button")
+                    button(class="nav-link btn btn-link" type="button" data-toggle="modal" data-target="#connectionPopup")
                         i(class="fas fa-sign-in-alt mr-2")
-                        span Connection
+                        span Connexion
             else
                 li(class="nav-item")
                     button(class="nav-link btn btn-link" type="button")
