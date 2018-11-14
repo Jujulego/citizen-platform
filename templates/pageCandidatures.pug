@@ -1,0 +1,20 @@
+extends base
+
+block content
+    include parts/navbar
+
+    div(id="contenu")
+      //- div(class="container" style="margin : 0; padding : 0;")
+      div(class="row" )
+        div(class="col-sm-2" )
+          div(class="card m-3")
+            div(class="card-body")
+              img(src="app/citizen-platform/public/monProfil.png" class="img-fluid" alt="MonProfil image" style="borderradius : 20;")
+              h5(class="card-title") Mon Profil
+        div(class="col" )
+          h5 Invitations Missions
+          include parts/cardMission
+          h5 Mes Candidatures      
+          include parts/cardCandidature
+          include parts/cardCandidature
+      
