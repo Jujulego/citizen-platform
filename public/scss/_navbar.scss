@@ -54,3 +54,8 @@
     }
   }
 }
+
+.content-wrapper {
+  height: calc(100vh - 3.625rem);
+  overflow: auto;
+}

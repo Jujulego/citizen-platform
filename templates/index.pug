@@ -1,12 +1,38 @@
 extends base
 
+append css
+    link(rel="stylesheet" href="/static/scss/accueil.css")
+    link(rel="stylesheet" href="/bower/leaflet/dist/leaflet.css")
+
+append jslib
+    script(src="/bower/leaflet/dist/leaflet.js")
+
+append js
+    script(src="/static/js/accueil.js")
+
 block content
-    include parts/navbar
-    include parts/connection_popup
+    header(class="row")
+        h1(id="page-top" class="text-center") Citizen Platform Services c'est super cool ! ;)
 
-    div(id="contenu")
-        header(id="pageTop")
-            h1(class="text-center") Citizen Platform Services c'est super cool ! ;)
+        form(id="search-bar")
+            select(class="custom-select placeholder")
+                option(value selected hidden) Type de mission
+                option Test
+                option Test
+                option Test
+                option Test
 
-        include parts/cardMission
-        a(href="candidatures/pageCandidatures") pageCandidatures
+            input(class="form-control" type="text" placeholder="Où")
+            input(class="form-control" type="text" placeholder="Quoi")
+
+            button(class="btn btn-primary") Rechercher
+
+    section(class="row")
+        article(class="col")
+            h2(class="ml-5") Résultats
+            include parts/cardMission
+
+        aside(class="col")
+            div(id="osm-map")
+
+    a(href="candidatures/pageCandidatures") pageCandidatures

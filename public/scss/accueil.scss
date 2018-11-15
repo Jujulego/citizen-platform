@@ -1,0 +1,36 @@
+header {
+  display: flex;
+  min-height: 100%;
+
+  flex-direction: column;
+
+  h1 {
+    flex: 1;
+    margin: 0;
+    padding-top: 10rem;
+
+    background: url("/static/images/paysage.jpg") no-repeat center;
+    background-size: cover;
+  }
+}
+
+#search-bar {
+  display: flex;
+
+  padding: 1rem;
+
+  background: #FF8F00;
+
+  * {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+#osm-map {
+  height: 100%;
+  width: 100%;
+
+  border: solid 1px #ced4da;
+  border-radius: .25rem;
+}

@@ -1,2 +1,16 @@
 @import "navbar";
 @import "selector";
+
+// Général
+section {
+  padding-top: 1rem;
+}
+
+// Formulaires ;)
+select.placeholder {
+  color: grey;
+
+  option {
+    color: #555;
+  }
+}

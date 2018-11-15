@@ -15,5 +15,13 @@ html
             script(src='/bower/jquery/dist/jquery.min.js')
             script(src='/bower/popper.js/dist/popper.min.js')
             script(src='/bower/bootstrap/dist/js/bootstrap.min.js')
+
     body
-        block content
+        include parts/navbar
+        include parts/connection_popup
+
+        div(class="content-wrapper container-fluid")
+            block content
+
+        block js
+            script(src="/static/js/placeholder.js")
