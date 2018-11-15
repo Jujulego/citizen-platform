@@ -8,8 +8,7 @@ const sassMiddleware = require('node-sass-middleware');
 
 // Routes
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const candidaturesRouter = require('./routes/candidatures');
+const usersRouter = require('./routes/user');
 
 // Init Express
 const app = express();
@@ -37,8 +36,7 @@ app.use('/bower',  express.static(path.join(__dirname, 'bower_components')));
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/candidatures', candidaturesRouter);
+app.use('/user', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
