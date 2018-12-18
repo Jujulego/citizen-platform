@@ -12,6 +12,7 @@ const sqlite3 = require("sqlite3").verbose();
 // Routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
+const assosRouter = require('./routes/asso');
 
 // Init Database
 const database = new sqlite3.Database("db.sqlite", sqlite3.OPEN_READWRITE,
@@ -56,6 +57,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter(database));
 app.use('/user', usersRouter(database));
+app.use('/asso', assosRouter(database));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
