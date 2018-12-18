@@ -1,6 +1,7 @@
 // Dépendances
 const createError = require('http-errors');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -22,7 +23,13 @@ app.set('views', path.join(__dirname, 'templates'));
 app.set('view engine', 'pug');
 
 // - middlewares
-app.use(cookieParser());
+app.use(cookieParser('u4uzco6j485vpjfdyyvr0n0l0mp5fewu9o24rrjl'));
+app.use(session({
+    secret: 'u4uzco6j485vpjfdyyvr0n0l0mp5fewu9o24rrjl',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
 app.use(sassMiddleware({
     src: path.join(__dirname, 'public'),
     dest: path.join(__dirname, 'public'),
