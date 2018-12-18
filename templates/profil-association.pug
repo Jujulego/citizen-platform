@@ -1,0 +1,46 @@
+extends base
+
+append css
+    link(rel="stylesheet" href="/static/scss/profil.css")
+
+block content
+    header(class="row")
+        div(class="col")
+            img(class="img-fluid" src="/static/images/profil.png")
+            h1(class="text-white") Mon Association
+
+    section(class="row")
+        aside(class="col-3")
+            div(class="card mb-3 card-infos")
+                div(class="card-header")
+                    p(class="mb-0") Contacts
+
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        span mail
+
+                    li(class="list-group-item")
+                        span adresse
+
+                    li(class="list-group-item")
+                        span tel
+
+                    li(class="list-group-item")
+                        span site Web
+                        
+                ul(class="list-group list-group-flush")
+                        li(class="list-group-item")
+                            span Siret
+                            
+
+        article(class="col")
+            div(class="card")
+                div(class="card-body")
+                    div(class="tab-content")
+                        div
+                            h2 Présentation
+                            p Blabla Présentation
+                        div
+                            h2 Evènements
+                            p Blabla Evènements
+                        
