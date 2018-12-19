@@ -15,12 +15,8 @@ Le site sera alors accessible à l'adresse http://localhost:3000.
 ## Dossiers
 * *bin & node_modules* : A ignorer, ils contiennent toutes les dépendances
 * *public* : contient les ressources (images, CSS, JS etc) côté **client**, les fichiers présents sont accessibles via l'url */static* (ex : le fichiers *public/js/accueil.js* sera accessible via l'url */static/js/accueil.js*)
-* *routes* : contient le code du **serveur**
+* *src* : contient le code du **serveur**
 * *templates* : contient les templates Pug
-
-## Fichiers
-* *app.js* : script initialisant le serveur
-* *package.json* : dépendances du serveur et du client
 
 ## Ressources
 ### Client :
