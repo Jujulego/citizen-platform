@@ -12,7 +12,7 @@ Pour ajouter une url dans un dossier existant :
 2. Ne pas oublier de redémmarer le serveur ;)
 
 Pour ajouter un *dossier* d'URLs, il faut respecter les étapes suivantes :
-1. Créer un fichier **.js** dans le dossier *routes*
+1. Créer un fichier **.js** dans le dossier *src/routes*
 2. Copier le modèle ci-dessous :
     ```javascript
     const express = require('express');
@@ -24,7 +24,7 @@ Pour ajouter un *dossier* d'URLs, il faut respecter les étapes suivantes :
        return router;
     };
     ```
-3. Dans **app.js** ajoutez (en adaptant les noms ;) ):
+3. Dans **src/app.js** ajoutez (en adaptant les noms ;) ):
     * En haut du fichier
         ```javascript
         const indexRouter = require('./routes/index');
