@@ -1,3 +1,5 @@
+//Gère tout ce qui concerne le serveur
+//TOUTES LES ROUTES : SEUL TRUC QUI NOUS INTERESSE ICI
 // Dépendances
 const Promise = require("bluebird");
 const cookieParser = require("cookie-parser");
@@ -10,9 +12,9 @@ const session = require("express-session");
 const sqlite = require("sqlite/legacy");
 
 // Routes
-const indexRouter = require('./routes');
-const usersRouter = require('./routes/user');
-const assosRouter = require('./routes/asso');
+const indexRouter = require('./routes/index'); //route pour la page d'accueil
+const usersRouter = require('./routes/user'); //route pour la page utilisateur
+const assosRouter = require('./routes/asso'); //route pour la page asso
 
 // Init Express
 const app = express();

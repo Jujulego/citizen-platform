@@ -1,6 +1,9 @@
 @import "navbar";
 @import "selector";
 
+//apparaît partout : ajouter par base.pug 
+//toutes les pages auront ça en haut (elles héritent toutes de base.pug)
+
 // Général
 section {
   padding-top: 1rem;

@@ -1,4 +1,7 @@
+//aspect de la page profil 
+
 header div {
+
   display: flex;
   height: 300px;
 
@@ -19,7 +22,7 @@ header div {
   }
 }
 
-.card-infos .list-group-item {
+.card-infos .list-group-item { //icône petit crayon à coté des infos (mail, adresse,tel...)
   display: flex;
 
   span {

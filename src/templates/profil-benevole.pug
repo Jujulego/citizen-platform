@@ -1,14 +1,18 @@
 extends base
 
 append css
+    //TOUT CE QUI CONCERNE LE PROFIL DU BENEVOLE route : user/
     link(rel="stylesheet" href="/static/scss/profil.css")
+    //lien avec le css
 
 block content
+    //bootstrap
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
 
     section(class="row")
+        //bootstrap
         aside(class="col-3")
             div(class="card mb-3 card-infos")
                 div(class="card-header")
@@ -39,6 +43,7 @@ block content
 
         article(class="col")
             div(class="card")
+                //bootstrap
                 div(class="card-header")
                     ul(class="nav nav-tabs card-header-tabs" role="tablist")
                         li(class="nav-item")

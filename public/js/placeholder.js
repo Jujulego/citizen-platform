@@ -24,5 +24,5 @@ $(document).ready(function() {
 
         return this;
     };
-    $("select.placeholder").placeholder();
+    $("select.placeholder").placeholder(); //s'applique sur tous les éléments select.placeholder
 });

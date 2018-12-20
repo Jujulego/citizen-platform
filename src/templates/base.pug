@@ -1,28 +1,40 @@
 doctype html
 //Page avec les librairies à importer sur 80% des pages
+//base de toutes les pages 
+//contient la navbar et la popup connexion
+
 html
     head
         title= title
 
         // Css
         block css
-            link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.min.css')
-            link(rel='stylesheet', href='/vendor/@fortawesome/fontawesome-free/css/all.min.css')
-
-            link(rel='stylesheet', href='/static/scss/main.css')
+            //bootstrap
+            link(rel='stylesheet', href='/vendor/bootstrap/dist/css/bootstrap.min.css') 
+            //fontawesome = icône
+            link(rel='stylesheet', href='/vendor/@fortawesome/fontawesome-free/css/all.min.css') 
+            //fichier css
+            link(rel='stylesheet', href='/static/scss/main.css') 
 
         // JS libs
         block jslib
-            script(src='/vendor/jquery/dist/jquery.min.js')
-            script(src='/vendor/popper.js/dist/popper.min.js')
-            script(src='/vendor/bootstrap/dist/js/bootstrap.min.js')
+            //lien avec le jquery
+            script(src='/vendor/jquery/dist/jquery.min.js') 
+            //tooltip (librairies pour les tooltips)
+            script(src='/vendor/popper.js/dist/popper.min.js') 
+            //bootsrap
+            script(src='/vendor/bootstrap/dist/js/bootstrap.min.js') 
 
-    body
-        include parts/navbar
-        include parts/connection-popup
+    body(lang="fr")
+        //barre de navigation tout en haut
+        include parts/navbar 
+        //popup connexion
+        include parts/connection-popup 
 
-        div(class="content-wrapper container-fluid")
+        //contenu de la page
+        div(class="content-wrapper container-fluid") 
             block content
 
         block js
-            script(src="/static/js/placeholder.js")
+            //lien avec le javascript client
+            script(src="/static/js/placeholder.js") 

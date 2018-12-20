@@ -1,9 +1,12 @@
 extends base
 
 append css
+    //lien avec le css
     link(rel="stylesheet" href="/static/scss/profil.css")
 
 block content
+    //TOUT CE QUI CONCERNE LA MISSION
+    //PAGE MISSION : MISSION (en dessous de résultat)
     header(class="row ") 
         div(class="col justify-content-end") 
             h1(class="text-white") Titre Mission
@@ -59,5 +62,6 @@ block content
                                     a(href="#")
                                         i(class="fas fa-search")  
                                         i  Rechercher
+                            //inclusion de card candidat (un morceau de code)
                             include parts/cardCandidat
                             include parts/cardCandidat

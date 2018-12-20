@@ -1,15 +1,18 @@
 extends base
 
 append css
+    //TOUT CE QUI CONCERNE LE PROFIL ASSO route : asso/profil
     link(rel="stylesheet" href="/static/scss/profil.css")
 
 block content
+    //bootstrap
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
             h1(class="text-white") Mon Association
 
     section(class="row")
+        //bootstrap
         aside(class="col-3")
             div(class="card mb-3 card-infos")
                 div(class="card-header")

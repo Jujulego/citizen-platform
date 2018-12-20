@@ -2,7 +2,7 @@
  * _navbar.scss
  */
 
-.navbar-toggler {
+.navbar-toggler { //quand la fenêtre est plus petite : ça affiche des petites barres (comme sur le téléphone)
   display: flex;
   height: 40px;
   min-width: 40px;
