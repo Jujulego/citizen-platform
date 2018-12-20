@@ -1,16 +1,18 @@
 extends base
-
+// Ajout d'un scss fait spécialement pour cette page (pas un bootstrap)
 append css
     link(rel="stylesheet" href="/static/scss/candidatures.css")
 
 block content
     section(class="row")
+        //Block avec une image du citoyen et son 'profil'
         aside(class="col-auto")
             div(id="profil" class="card m-3")
                 div(class="card-body")
                     img(src="/static/images/profil.png" class="img-fluid" alt="MonProfil image")
                     h5(class="card-title") Mon Profil
-
+                    
+        //Liste missions proposé et déja sélectionné (import de mission.pug & candidature.pug du dossier parts)
         article(class="col")
             h5 Invitations Missions
             include parts/mission

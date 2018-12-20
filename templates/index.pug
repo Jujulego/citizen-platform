@@ -1,5 +1,6 @@
 extends base
-
+//Première page: page d'accuiel général
+//import biblio
 append css
     link(rel="stylesheet" href="/static/scss/accueil.css")
     link(rel="stylesheet" href="/vendor/leaflet/dist/leaflet.css")
@@ -12,8 +13,9 @@ append js
 
 block content
     header(class="row")
+        //le titre de notre page avec l'image de fond
         h1(id="page-top" class="text-center") Citizen Platform Services c'est super cool ! ;)
-
+        //Le filtre de recherche pour les missions
         form(id="search-bar")
             select(class="custom-select placeholder")
                 option(value selected hidden) Type de mission
@@ -31,9 +33,9 @@ block content
         article(class="col")
             h2(class="ml-5") Résultats
             include parts/mission
-            
+            //on va l'enlever, c'est juste pdt qu'on ne peut pas faire la connexion en tant qu'association
             h2(class="ml-5") Lien profil Assos
             a(href="/asso") lien
-
+        //la carte sur la droite
         aside(class="col")
             div(id="osm-map")
