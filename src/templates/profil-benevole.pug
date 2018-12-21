@@ -6,6 +6,7 @@ append css
     //lien avec le css
 
 block content
+    include parts/disponibilite-popup 
     //bootstrap
     header(class="row")
         div(class="col")
@@ -62,7 +63,7 @@ block content
                             h4 Savoir-Faire   
                             p azerty                         
                         div(class="tab-pane fade" id="dispo" role="tabpanel") 
-                            a(href='#') 
+                            button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
                                 i(class="fas fa-plus-circle")  Ajouter Disponibilité
                             table(class="table table-bordered mt-4")
                                 thead
