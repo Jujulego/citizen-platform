@@ -18,8 +18,43 @@ module.exports = function(db) {
         });
     });
 
-    router.get('/connexion', function (req, res, next) {
-        res.cookie("connected", req.signedCookies.connected === "0" ? "1" : "0", {
+    router.post('/connexion', function (req, res, next) {
+        // Récupération des paramètres
+        const email = req.body.email;
+        const mdp = req.body.mdp;
+        let rq = "";
+
+        switch (req.body.type) {
+            case "b": // => Bénévole
+                rq = "select loginCitoyen from citoyen where loginCitoyen = ? AND mdpCitoyen = ?";
+                break;
+
+            case "a": // => Associations
+                rq = "select loginAsso from association where loginAsso = ? AND mdpAsso = ?";
+                break;
+        }
+
+        // Requête
+        db.get(rq, [email, mdp])
+            .then(function(user) {
+                if (user.loginCitoyen === email) {
+                    res.cookie("connected", "1", {
+                        httpOnly: true, //cookies juste pour notre site
+                        signed: true //être sûr que c'est bien tes cookies à toi (=signature)
+                    });
+                    res.redirect("/");
+                }
+
+                res.redirect("/");
+            })
+            .catch(function (reason) {
+                console.error(reason);
+                res.redirect("/?connerr=1&email=" + encodeURI(email));
+            });
+    });
+
+    router.get('/deconnexion', function (req, res, next) {
+        res.cookie("connected", "0", {
             httpOnly: true, //cookies juste pour notre site
             signed: true //être sûr que c'est bien tes cookies à toi (=signature)
         });

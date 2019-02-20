@@ -6,6 +6,7 @@ append css
     //lien avec le css
 
 block content
+    include parts/disponibilite-popup 
     //bootstrap
     header(class="row")
         div(class="col")
@@ -47,12 +48,76 @@ block content
                 div(class="card-header")
                     ul(class="nav nav-tabs card-header-tabs" role="tablist")
                         li(class="nav-item")
-                            a(class="nav-link active" data-toggle="tab" href="#competences") Compétences
+                            a(class="nav-link active" data-toggle="tab" href="#infoComplementaires") Informations Complémentaires
 
                         li(class="nav-item")
                             a(class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
 
                 div(class="card-body")
                     div(class="tab-content")
-                        div(class="tab-pane fade show active" id="competences" role="tabpanel") Compétences
-                        div(class="tab-pane fade" id="dispo" role="tabpanel") Disponibilités
+                        div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel") 
+                            h4 Documents
+                            p azerty
+                            h4 Domaines d'intervention
+                            p azert
+                            h4 Savoir-Faire   
+                            p azerty                         
+                        div(class="tab-pane fade" id="dispo" role="tabpanel") 
+                            button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
+                                i(class="fas fa-plus-circle")  Ajouter Disponibilité
+                            table(class="table table-bordered mt-4")
+                                thead
+                                    tr
+                                        th(scope="col") Lundi
+                                        th(scope="col") Mardi
+                                        th(scope="col") Mercredi
+                                        th(scope="col") Jeudi
+                                        th(scope="col") Vendredi
+                                        th(scope="col") Samedi
+                                        th(scope="col") Dimanche
+                                tbody
+                                    tr
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                    tr
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                    tr
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') ...

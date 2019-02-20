@@ -48,7 +48,6 @@ Promise.resolve()
     .then(() => sqlite.open("./db.sqlite", { Promise }))
     .then(db => db.migrate())
     .then(function(db) {
-
         // - routes
         app.use('/vendor',  express.static(path.join(__dirname, '../node_modules')));
         app.use('/static', express.static(path.join(__dirname, '../public')));
