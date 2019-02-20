@@ -1,7 +1,7 @@
 // Popup de connection
 div(id="connectionPopup" class="modal fade" tabindex="-1" role="dialog")
     div(class="modal-dialog modal-dialog-centered" role="document")
-        form(class="modal-content" action="/user/connexion")
+        form(class="modal-content" method="post" action="/user/connexion")
             div(class="modal-header")
                 h5(class="modal-title")
                     i(class="fas fa-sign-in-alt ml-1 mr-3")
@@ -12,27 +12,29 @@ div(id="connectionPopup" class="modal fade" tabindex="-1" role="dialog")
 
             div(class="modal-body")
                 div(class="form-group selector selector-2")
-                    input(id="radioBene" type="radio" name="type" checked)
+                    input(id="radioBene" type="radio" name="type" value="b" checked)
                     label(for="radioBene") Bénévole
 
-                    input(id="radioAsso" type="radio" name="type")
+                    input(id="radioAsso" type="radio" name="type" value="a")
                     label(for="radioAsso") Association
 
                     span
+
+                p(class="erreur text-center text-danger") Mauvais mot de passe ou mauvais email
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")
                         label(for="email" class="input-group-text")
                             i(class="fas fa-at")
 
-                    input(id="email" class="form-control" type="email" placeholder="Email")
+                    input(id="email" class="form-control" type="email" name="email" placeholder="Email")
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")
                         label(for="mdp" class="input-group-text")
                             i(class="fas fa-key")
 
-                    input(id="mdp" class="form-control" type="password" placeholder="Mot de passe")
+                    input(id="mdp" class="form-control" type="password" name="mdp" placeholder="Mot de passe")
 
             div(class="modal-footer")
                 button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
