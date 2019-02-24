@@ -23,21 +23,24 @@ module.exports = function(db) {
         const email = req.body.email;
         const mdp = req.body.mdp;
         let rq = "";
+        let champ = "";
 
         switch (req.body.type) {
             case "b": // => Bénévole
                 rq = "select loginCitoyen from citoyen where loginCitoyen = ? AND mdpCitoyen = ?";
+                champ = "loginCitoyen";
                 break;
 
             case "a": // => Associations
                 rq = "select loginAsso from association where loginAsso = ? AND mdpAsso = ?";
+                champ = "loginAsso";
                 break;
         }
 
         // Requête
         db.get(rq, [email, mdp])
             .then(function(user) {
-                if (user.loginCitoyen === email) {
+                if (user[champ] === email) {
                     res.cookie("connected", "1", {
                         httpOnly: true, //cookies juste pour notre site
                         signed: true //être sûr que c'est bien tes cookies à toi (=signature)
