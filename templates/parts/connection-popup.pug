@@ -1,0 +1,39 @@
+// Popup de connection
+div(id="connectionPopup" class="modal fade" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" action="/user/connexion")
+            div(class="modal-header")
+                h5(class="modal-title")
+                    i(class="fas fa-sign-in-alt ml-1 mr-3")
+                    span Connexion
+
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+
+            div(class="modal-body")
+                div(class="form-group selector selector-2")
+                    input(id="radioBene" type="radio" name="type" checked)
+                    label(for="radioBene") Bénévole
+
+                    input(id="radioAsso" type="radio" name="type")
+                    label(for="radioAsso") Association
+
+                    span
+
+                div(class="input-group form-group")
+                    div(class="input-group-prepend")
+                        label(for="email" class="input-group-text")
+                            i(class="fas fa-at")
+
+                    input(id="email" class="form-control" type="email" placeholder="Email")
+
+                div(class="input-group form-group")
+                    div(class="input-group-prepend")
+                        label(for="mdp" class="input-group-text")
+                            i(class="fas fa-key")
+
+                    input(id="mdp" class="form-control" type="password" placeholder="Mot de passe")
+
+            div(class="modal-footer")
+                button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
+                button(class="btn btn-primary" type="submit") Connexion

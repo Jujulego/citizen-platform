@@ -1,0 +1,39 @@
+extends base
+
+append css
+    link(rel="stylesheet" href="/static/scss/accueil.css")
+    link(rel="stylesheet" href="/vendor/leaflet/dist/leaflet.css")
+
+append jslib
+    script(src="/vendor/leaflet/dist/leaflet.js")
+
+append js
+    script(src="/static/js/accueil.js")
+
+block content
+    header(class="row")
+        h1(id="page-top" class="text-center") Citizen Platform Services c'est super cool ! ;)
+
+        form(id="search-bar")
+            select(class="custom-select placeholder")
+                option(value selected hidden) Type de mission
+                option Test
+                option Test
+                option Test
+                option Test
+
+            input(class="form-control" type="text" placeholder="Où")
+            input(class="form-control" type="text" placeholder="Quoi")
+
+            button(class="btn btn-primary") Rechercher
+
+    section(class="row")
+        article(class="col")
+            h2(class="ml-5") Résultats
+            include parts/mission
+            
+            h2(class="ml-5") Lien profil Assos
+            a(href="/asso") lien
+
+        aside(class="col")
+            div(id="osm-map")

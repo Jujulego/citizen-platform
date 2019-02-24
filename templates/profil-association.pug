@@ -1,20 +1,15 @@
 extends base
 
 append css
-    //TOUT CE QUI CONCERNE LE PROFIL ASSO route : asso/profil
     link(rel="stylesheet" href="/static/scss/profil.css")
-    
-
 
 block content
-    //bootstrap
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
             h1(class="text-white") Mon Association
 
     section(class="row")
-        //bootstrap
         aside(class="col-3")
             div(class="card mb-3 card-infos")
                 div(class="card-header")
@@ -22,20 +17,20 @@ block content
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        span= mail
+                        span mail
 
                     li(class="list-group-item")
-                        span= adresse
+                        span adresse
 
                     li(class="list-group-item")
-                        span= tel
+                        span tel
 
                     li(class="list-group-item")
-                        span= siteWeb
+                        span site Web
                         
                 ul(class="list-group list-group-flush")
                         li(class="list-group-item")
-                            span= siret
+                            span Siret
                             
 
         article(class="col")
@@ -44,8 +39,8 @@ block content
                     div(class="tab-content")
                         div
                             h2 Présentation
-                            p= presentation
+                            p Blabla Présentation
                         div
                             h2 Evènements
-                            p= evenement
+                            p Blabla Evènements
                         
