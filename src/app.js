@@ -1,5 +1,5 @@
 //Gère tout ce qui concerne le serveur
-//TOUTES LES ROUTES : SEUL TRUC QUI NOUS INTERESSE ICI
+// TOUTES LES ROUTES : SEUL TRUC QUI NOUS INTERESSE ICI
 // Dépendances
 const Promise = require("bluebird");
 const cookieParser = require("cookie-parser");

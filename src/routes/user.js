@@ -53,16 +53,15 @@ module.exports = function(db) {
                     switch (req.body.type) {
                         case "b": // => Bénévole
                             req.session.user = user;
+                            res.redirect("/");
                             break;
 
                         case "a": // => Associations
                             req.session.asso = user;
+                            res.redirect("/asso/profil");
                             break;
                     }
                 }
-
-                req.session.save();
-                res.redirect("/");
             })
             .catch(function (reason) {
                 console.error(reason);
