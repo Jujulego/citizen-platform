@@ -8,7 +8,13 @@ module.exports = function(db) {
     router.get('/', utils.login_guard(function(req, res, next) { //route
         res.render('profil-benevole', { //lien entre la route et le pug profil
             title: "Mon Profil",
-            connected: req.session.connected
+            connected: req.session.connected,
+
+            mail: req.session.user.mail,
+            tel: req.session.user.tel,
+            adresse: req.session.user.adresse,
+            situation: req.session.user.situation,
+            permis: req.session.user.permis,
         });
     }));
 
@@ -34,12 +40,12 @@ module.exports = function(db) {
 
         switch (req.body.type) {
             case "b": // => Bénévole
-                rq = "select loginCitoyen from citoyen where loginCitoyen = ? AND mdpCitoyen = ?";
+                rq = "select * from citoyen where loginCitoyen = ? AND mdpCitoyen = ?";
                 champ = "loginCitoyen";
                 break;
 
             case "a": // => Associations
-                rq = "select loginAsso from association where loginAsso = ? AND mdpAsso = ?";
+                rq = "select * from association where loginAsso = ? AND mdpAsso = ?";
                 champ = "loginAsso";
                 break;
         }
