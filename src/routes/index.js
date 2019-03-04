@@ -5,10 +5,19 @@ const router = express.Router();
 
 module.exports = function(db) {
     /* GET home page. */
-    router.get('/', function (req, res, next) { //route
-        res.render('index', { //utilise un pug (affichage avec un pug)
-            title: 'Express',
-        });
+    router.get('/', function (req, res, next) { //
+        db.all("select titre, lieu, description, min(dateMission) as dateMission\n" +
+            "  from mission\n" +
+            "    inner join dateMission on mission.idMission = dateMission.idMission and dateMission >= date('now')\n" +
+            "  group by titre, lieu, description\n" +
+            "  order by dateMission\n" +
+            "  limit 5")
+            .then(function(missions) {
+                res.render('index', { //utilise un pug (affichage avec un pug)
+                    title: 'Express',
+                    missions: missions
+                });
+            });
     });
 
     router.get('/test', function(req, res, next) { //route

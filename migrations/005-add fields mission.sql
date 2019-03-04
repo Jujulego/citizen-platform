@@ -1,0 +1,9 @@
+-- UP
+ALTER TABLE mission ADD COLUMN titre varchar(255) DEFAULT '';
+UPDATE mission SET titre = 'Mission ' || idMission;
+
+-- DOWN
+CREATE TABLE mission2 (idMission INT primary key, recursive boolean, nbPersAtteindre INT UNSIGNED, description varchar(666), lieu varchar(255), statut varchar(255), loginAsso varchar(100), foreign key(loginAsso) references association(loginAsso));
+INSERT INTO mission2 SELECT idMission, recursive, nbPersAtteindre, description, lieu, statut, loginAsso FROM mission;
+DROP TABLE mission;
+ALTER TABLE mission2 RENAME TO mission;

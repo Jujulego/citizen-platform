@@ -20,7 +20,8 @@ div(id="connectionPopup" class="modal fade" + (connectionPopup.err ? " show" : "
 
                     span
 
-                p(class="erreur text-center text-danger" + (connectionPopup.err ? "" : " d-none")) Mauvais mot de passe ou mauvais email
+                if connectionPopup.err
+                    p(class="erreur text-center text-danger") Mauvais mot de passe ou mauvais email
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")
