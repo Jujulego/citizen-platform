@@ -1,5 +1,5 @@
 // Popup de connection
-div(id="connectionPopup" class="modal fade" tabindex="-1" role="dialog")
+div(id="connectionPopup" class="modal fade" + (connectionPopup.err ? " show" : "") tabindex="-1" role="dialog")
     div(class="modal-dialog modal-dialog-centered" role="document")
         form(class="modal-content" method="post" action="/user/connexion")
             div(class="modal-header")
@@ -20,14 +20,14 @@ div(id="connectionPopup" class="modal fade" tabindex="-1" role="dialog")
 
                     span
 
-                p(class="erreur text-center text-danger") Mauvais mot de passe ou mauvais email
+                p(class="erreur text-center text-danger" + (connectionPopup.err ? "" : " d-none")) Mauvais mot de passe ou mauvais email
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")
                         label(for="email" class="input-group-text")
                             i(class="fas fa-at")
 
-                    input(id="email" class="form-control" type="text" name="email" placeholder="Email")
+                    input(id="email" class="form-control" type="text" name="email" placeholder="Email" value=connectionPopup.email)
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")

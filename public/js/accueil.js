@@ -17,12 +17,8 @@ $(document).ready(function() {
     // Connection echouée
     const connectionPopup = $("#connectionPopup");
 
-    if (getUrlParameter("connerr") === "1") {
+    if (connectionPopup.hasClass("show")) {
         connectionPopup.modal('show');
-        $("#email", connectionPopup).val(getUrlParameter("email"));
-    } else {
-        $(".erreur", connectionPopup).addClass("d-none");
-        $("#email", connectionPopup).val("");
     }
 
     connectionPopup.on("hide.bs.modal", function() {

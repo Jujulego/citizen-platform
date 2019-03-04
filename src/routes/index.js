@@ -6,14 +6,9 @@ const router = express.Router();
 module.exports = function(db) {
     /* GET home page. */
     router.get('/', function (req, res, next) { //route
-        db.get('SELECT * FROM test WHERE test = 9') //requête
-            .then(test => {
-                res.render('index', { //utilise un pug (affichage avec un pug)
-                    title: 'Express',
-                    test: test, //stockage du résultat dans une variable test
-                    connected: req.session.connected
-                });
-            });
+        res.render('index', { //utilise un pug (affichage avec un pug)
+            title: 'Express',
+        });
     });
 
     router.get('/test', function(req, res, next) { //route

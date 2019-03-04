@@ -7,16 +7,14 @@ module.exports = function(db) {
     // mon profil
     router.get('/', utils.login_guard(function(req, res, next) { //route
         res.render('profil-benevole', { //lien entre la route et le pug profil
-            title: "Mon Profil",
-            connected: req.session.connected
+            title: "Mon Profil"
         });
     }));
 
     // mes candidatures
     router.get('/candidatures', utils.login_guard(function(req, res, next) { //route
         res.render("candidatures", { //lien entre la route et le pug candidature
-            title: "Mes Candidatures",
-            connected: req.session.connected
+            title: "Mes Candidatures"
         });
     }));
 
@@ -65,7 +63,9 @@ module.exports = function(db) {
             })
             .catch(function (reason) {
                 console.error(reason);
-                res.redirect("/?connerr=1&email=" + encodeURI(email));
+
+                req.session.connectionPopup = email;
+                res.redirect("/");
             });
     });
 
