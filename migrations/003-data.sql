@@ -11,11 +11,15 @@ INSERT INTO `association` (`loginAsso`, `mdpAsso`, `nom`, `adresse`, `mail`, `te
 INSERT INTO `association` (`loginAsso`, `mdpAsso`, `nom`, `adresse`, `mail`, `tel`, `siteWeb`) VALUES ('009', 'JesuisMalaaaaaaadddeeeee', 'Solidarite Sida', '4 rue des sorcières', 'solidaritesida@hotmail.com', '0166699966', 'solidaritesida.org');
 
 -- Citoyen
+<<<<<<< HEAD
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0001', 'jaiInventeLEcole', 'Carolingiens', 'Charlemagne', 'charleslegrand@carolingiens.fr', '28 boulevard dAix', '0606060606', 'Empereur', '1');
+=======
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0001', 'jaiInventeLEcole', 'Carolingiens', 'Charlemagne', 'charleslegrand@carolingiens.fr', '28 boulevard d Aix', '0606060606', 'Empereur', '1');
+>>>>>>> e14a8e64d10d18b957c1778dd5f1fb6e749443d0
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0002', 'JeNeSuisPasPetit', 'Bonaparte', 'Napoleon', 'premierempire@jesuislemeilleur.fr', '1 boulevard des Italiens', '0611111111', 'Empereur', '1');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0003', 'noboby', 'someone', 'maybe', 'someone@gmail.fr', '2 Place de l\'eglise', '0100000000', 'Nothing', '0');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0004', 'ViveLaFinance', 'MACRON', 'Emmanuel', 'emmanuel.macron@hotmail.com', 'Palais de l\'Eysee', '01777777', 'Président de la république Francaise', '0');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0005', 'nobobyseeme', 'someone', 'maybe2', 'maybe.someone@gmail.com', '3 Place de l\'eglise', '01000001', 'Nothing', '0');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0003', 'noboby', 'someone', 'maybe', 'someone@gmail.fr', '2 Place de l eglise', '0100000000', 'Nothing', '0');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0004', 'ViveLaFinance', 'MACRON', 'Emmanuel', 'emmanuel.macron@hotmail.com', 'Palais de l Eysee', '01777777', 'Président de la république Francaise', '0');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0005', 'nobobyseeme', 'someone', 'maybe2', 'maybe.someone@gmail.com', '3 Place de l eglise', '01000001', 'Nothing', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0006', 'FautToutBloquer', 'Jaune', 'Gilbert', 'gilbert-jaune@yolo.fr', '8 rue de la Bastille', '01010101', 'Chaumeur', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0007', 'Normalman', 'ToutLeMonde', 'Jean-Michel', 'jean-michel.toutlemonde@outlook.com', '14 rue de classique', '0155748778', 'Fonctionnaire', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0008', 'BluePower', 'SuperNana', 'Bulle', 'bulle-supernana@yolo.com', '11 rue des fées', '0654456677', 'Collegienne', '0');
@@ -24,16 +28,16 @@ INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `a
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0011', 'Survivant', 'Potter', 'Harry', 'harry.potter@tutanota.com', '11 rue des fées', '0688669966', 'Auror', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0012', 'FuturHokage', 'Uzumaki-Namikaze', 'Naruto', 'numeroneninja@gmail.com', '4 boulevard de Konoha', '0233223322', 'Auror', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0013', 'dreamland', 'wonder', 'Alice', 'aliceinwonderland@wanadoo.com', '4 avenue des champs Elysee', '0133443322', 'Collegienne', '0');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0014', 'NomoreIdea', 'Dupond', 'Claude', 'claude.dupond@gmail.com', '89 rue de l\'Eglise', '0126622661', 'Auteur', '1');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0014', 'NomoreIdea', 'Dupond', 'Claude', 'claude.dupond@gmail.com', '89 rue de l Eglise', '0126622661', 'Auteur', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0015', 'Excessif=Insignifiant', 'Talleyrant', 'Charles-Maurice', 'charles-maurice.talleyrand@gmail.com', '7 Place de la Loi', '0127722771', 'Eveque-Diplomate', '1');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0016', 'Devote', 'd\'Aubigné-De Maintenon', 'Francoise', 'francoise.aubigne@gmail.com', 'Chateau de Versaille', '0128822881', 'Marquise', '0');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0016', 'Devote', 'd Aubigné-De Maintenon', 'Francoise', 'francoise.aubigne@gmail.com', 'Chateau de Versaille', '0128822881', 'Marquise', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0017', 'password', 'Chevallaire', 'Laurence', 'laurence.chevalaire@hotmail.com', '8 rue de la Concorde', '0129922991', 'Secrétaire', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0018', 'password', 'De France', 'Marianne', 'mariianne_defrance@gmail.com', '2 Avenue de la Bastille', '0153355331', 'Femme au foyer', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0019', 'password', 'Marquis', 'Alexandre', 'alexandre.marquis@gmail.com', 'Chemin des Reniers', '0128328381', 'Vendeur', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0020', 'password', 'Lopez', 'Alexandre', 'alexandre.Lopez@gmail.com', '5 rue de Venise', '0129329391', 'Boucher', '1');
 
 -- Compétence
-INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0001', 'Management', 'Gestion d\'une armée, d\'un pays, d\'un empire', '0002');
+INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0001', 'Management', 'Gestion d une armée, d un pays, d un empire', '0002');
 INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0002', 'Manifester', 'Se plaindre - Foutre la merde - Faire les jolies pancarte - Chanter des slogan pourri', '006');
 INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0003', 'Leader', 'Admisnistrer, légiferer...', '001');
 INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0004', 'Clonage', 'Kage Bushin no jutsu', '0012');
@@ -61,7 +65,7 @@ INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCi
 
 -- Document
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0001', 'Lettre de mativation', 'Je ne paux pas choisir', '0001');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0002', 'CV', 'Mode d\emploi d\'un prise de pouvoir', '0002');
+INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0002', 'CV', 'Mode d\emploi d un prise de pouvoir', '0002');
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0003', 'Lettre de motivation', 'Les 10 raisons pour lesquelles président était insuffisant', '0002');
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0004', 'CV', 'onelink', '0003');
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0005', 'CV', 'secondlink', '0004');
@@ -74,27 +78,27 @@ INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('
 
 -- Domaine d'intervention
 INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('01', 'Enseignement', '0001');
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('01', 'Enseignement', '0009');
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('01', 'Enseignement', '0005');
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('02', 'Manutention', '0006');
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('02', 'Manutention', '0007');
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('02', 'Manutention', '0011');
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('03', '', '0011');
+INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('02', 'Enseignement', '0009');
+INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('03', 'Enseignement', '0005');
+INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('04', 'Manutention', '0006');
+INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('05', 'Manutention', '0007');
+INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('06', 'Manutention', '0011');
+INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('07', '', '0011');
 
 -- Mission 
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0001', '1', '2', 'Soutien scolaire', 'Collège Voltaire', 'en cours', '005');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0002', '0', '1', 'Soutien scolaire', 'Lycée Renoir', 'en cours', '005');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0003', '1', '10', 'Ramassage d\'ordure', 'Quai de Scene', 'en cours', '002');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0004', '0', '1', 'J\'ai plus d\'idée', 'ECE Paris', 'en cours', '006');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0003', '1', '10', 'Ramassage d ordure', 'Quai de Scene', 'en cours', '002');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0004', '0', '1', 'J ai plus d idée', 'ECE Paris', 'en cours', '006');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0005', '1', '4', 'Collect de nourriture', 'Place au marché', 'en cours', '006');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0006', '0', '3', 'Collect de vetement', 'Place de lEglise', 'en attente', '001');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0007', '0', '3', 'Collect de nourriture', 'Place au marché', 'en attente', '001');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0008', '0', '4', 'Marraude feat UPA-ECE', 'Quai de Grenelle', 'en attente', '006');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0009', '0', '10', 'Distribution sandwitch', 'Maison de mémé Marie', 'en attente', '003');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0010', '0', '1', 'Installation d\'une salle sieste à l\'ECE', 'E3 à cote du local assos', 'en attente', '008');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0010', '0', '1', 'Installation d une salle sieste à l ECE', 'E3 à cote du local assos', 'en attente', '008');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0011', '0', '5', 'Modele pour calendrier', 'Caserne de pompier', 'en attente', '008');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0012', '0', '1', 'Trouver le One Piece', 'Raftel', 'en attente', '004');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0013', '0', '3', 'Collecte de nourriture', 'en attente', '001');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0013', '0', '3', 'Collecte de nourriture', 'Hyrule', 'en attente', '001');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0014', '1', '7', 'Fabriquer un retourneur de temps', 'Poudlard', 'en attente', '005');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0015', '1', '14', 'Soigner le cancer', 'American Hospital', 'en attente', '007');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0016', '0', '1', 'Faire un vaccin contre le sida', 'Hopital militaire de Paris', 'en attente', '009');
@@ -110,13 +114,13 @@ INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0026', '1', '2', 'Distribution Flyer', 'Place de la mairie', 'en attente', '009');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0027', '1', '4', 'QQchose', 'Nullepart', 'en attente', '001');
 INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0028', '1', '4', 'Dépollution', 'Quai de Seine', 'en attente', '008');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0029', '0', '3', 'Collecte de nourriture', 'en attente', '001');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0030', '0', '3', 'Distribution de nourriture', 'en attente', '001');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0031', '0', '3', 'Distribution de produit d\'hygiène', 'en attente', '009');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0032', '0', '2', 'Distribution de vetement', 'en attente', '004');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0033', '0', '1', 'Collecte de Fond', 'en attente', '003');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0034', '0', '1', 'Collecte de Fond', 'en attente', '001');
-INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0035', '0', '1', 'Collecte de Fond', 'en attente', '009');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0029', '0', '3', 'Collecte de nourriture', 'Hyrule', 'en attente', '001');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0030', '0', '3', 'Distribution de nourriture', 'Maison Laffite', 'en attente', '001');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0031', '0', '3', 'Distribution de produit d hygiène', 'Thriller Bark', 'en attente', '009');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0032', '0', '2', 'Distribution de vetement', 'Cirque du soleil', 'en attente', '004');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0033', '0', '1', 'Collecte de Fond', 'Coffre de Picsou', 'en attente', '003');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0034', '0', '1', 'Collecte de Fond', 'Coffre de Nami', 'en attente', '001');
+INSERT INTO `mission` (`idMission`, `recursive`, `nbPersAtteindre`, `description`, `lieu`, `statut`, `loginAsso`) VALUES ('0035', '0', '1', 'Collecte de Fond', 'Coffre de Yato', 'en attente', '009');
 
 -- Date Mission
 INSERT INTO `datemission` (`horraireDebut`, `horraireFin`, `dateMission`, `idMission`) VALUES ('15:30:00', '18:00:00', '2019-02-19', '0001');
