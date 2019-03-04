@@ -11,7 +11,7 @@ INSERT INTO `association` (`loginAsso`, `mdpAsso`, `nom`, `adresse`, `mail`, `te
 INSERT INTO `association` (`loginAsso`, `mdpAsso`, `nom`, `adresse`, `mail`, `tel`, `siteWeb`) VALUES ('009', 'JesuisMalaaaaaaadddeeeee', 'Solidarite Sida', '4 rue des sorcières', 'solidaritesida@hotmail.com', '0166699966', 'solidaritesida.org');
 
 -- Citoyen
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0001', 'jaiInventeLEcole', 'Carolingiens', 'Charlemagne', 'charleslegrand@carolingiens.fr', '28 boulevard d\'Aix', '0606060606', 'Empereur', '1');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0001', 'jaiInventeLEcole', 'Carolingiens', 'Charlemagne', 'charleslegrand@carolingiens.fr', '28 boulevard dAix', '0606060606', 'Empereur', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0002', 'JeNeSuisPasPetit', 'Bonaparte', 'Napoleon', 'premierempire@jesuislemeilleur.fr', '1 boulevard des Italiens', '0611111111', 'Empereur', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0003', 'noboby', 'someone', 'maybe', 'someone@gmail.fr', '2 Place de l\'eglise', '0100000000', 'Nothing', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `mail`, `adresse`, `tel`, `situation`, `permis`) VALUES ('0004', 'ViveLaFinance', 'MACRON', 'Emmanuel', 'emmanuel.macron@hotmail.com', 'Palais de l\'Eysee', '01777777', 'Président de la république Francaise', '0');
