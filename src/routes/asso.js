@@ -14,7 +14,16 @@ module.exports = function(db) {
     // Mon profil
     router.get('/profil', utils.login_guard(function(req, res, next) { //définit la route pour accéder à la page profil de l'association
         res.render('profil-association', { //quel template utilisé : ici profil asso
-            title: "Mon association"
+            title: "Mon association",
+
+            nom: req.session.asso.nom ,
+            mail: req.session.asso.mail,
+            tel: req.session.asso.tel,
+            adresse: req.session.asso.adresse,
+            siteWeb: req.session.asso.siteWeb,
+            siret: "A METTRE DANS BDD",
+            presentation: "A METTRE DANS BDD : long texte",
+            evenement: "A METTRE DANS BDD : sous forme de liste en mode : date + presentation peut etre"
         });
     }));
 

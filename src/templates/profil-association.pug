@@ -3,6 +3,8 @@ extends base
 append css
     //TOUT CE QUI CONCERNE LE PROFIL ASSO route : asso/profil
     link(rel="stylesheet" href="/static/scss/profil.css")
+    
+
 
 block content
     //bootstrap
@@ -20,20 +22,20 @@ block content
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        span mail
+                        span= mail
 
                     li(class="list-group-item")
-                        span adresse
+                        span= adresse
 
                     li(class="list-group-item")
-                        span tel
+                        span= tel
 
                     li(class="list-group-item")
-                        span site Web
+                        span= siteWeb
                         
                 ul(class="list-group list-group-flush")
                         li(class="list-group-item")
-                            span Siret
+                            span= siret
                             
 
         article(class="col")
@@ -42,8 +44,8 @@ block content
                     div(class="tab-content")
                         div
                             h2 Présentation
-                            p Blabla Présentation
+                            p= presentation
                         div
                             h2 Evènements
-                            p Blabla Evènements
+                            p= evenement
                         
