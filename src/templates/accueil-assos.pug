@@ -1,23 +1,23 @@
 extends base 
 
+append css
+    link(rel="stylesheet" href="/static/scss/accueilAsso.css")
+
 block content
     //hérite de base (la structure avec navbar et les trucs qu'on veut partout)
     //balise
     //Page d'accueil Associations après connexion
-    header(class="row")
-        
     section(class="row")
         //Bootstrap, Bloc de présentation à gauche de l'écran
-        div(class="col-md-3")
-            div(class="card m-3")
+        aside(class="col-auto")
+            div(id="profil" class="card m-3")
                 div(class="card-body")
-                    img(src="/static/images/resto.jpg" alt="logo resto" class="img-fluid rounded")
-                    h5(class="card-title text-center") Page Association
-                    hr 
-                    p(class="card-text") Description, contact 
+                    img(src="/static/images/resto.jpg" class="img-fluid rounded" alt="logo resto")
+                    h5(class="card-title")
+                        a(href="/asso/profil") Mon Association
          
         //Bootstrap, colonne de droite
-        div(class="col-md-8")
+        article(class="col")
             //Bootstrap pour encadrer le lien
             div(class="card m-3 p-3")
                 a(href="") + Ajouter mission

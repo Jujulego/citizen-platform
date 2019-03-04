@@ -21,9 +21,8 @@ module.exports = function(db) {
             tel: req.session.asso.tel,
             adresse: req.session.asso.adresse,
             siteWeb: req.session.asso.siteWeb,
-            siret: "A METTRE DANS BDD",
-            presentation: "A METTRE DANS BDD : long texte",
-            evenement: "A METTRE DANS BDD : sous forme de liste en mode : date + presentation peut etre"
+            siret: req.session.asso.siret,
+            presentation: req.session.asso.presentation
         });
     }));
 
