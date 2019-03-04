@@ -32,8 +32,7 @@ app.use(cookieParser('u4uzco6j485vpjfdyyvr0n0l0mp5fewu9o24rrjl'));
 app.use(session({
     secret: 'u4uzco6j485vpjfdyyvr0n0l0mp5fewu9o24rrjl',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
+    saveUninitialized: true
 }));
 app.use(sassMiddleware({
     src: path.join(__dirname, 'public'),
@@ -49,7 +48,7 @@ Promise.resolve()
     .then(db => db.migrate())
     .then(function(db) {
         // - routes
-        app.use('/vendor',  express.static(path.join(__dirname, '../node_modules')));
+        app.use('/vendor', express.static(path.join(__dirname, '../node_modules')));
         app.use('/static', express.static(path.join(__dirname, '../public')));
 
         app.use('/', indexRouter(db));

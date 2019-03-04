@@ -11,7 +11,7 @@ module.exports = function(db) {
                 res.render('index', { //utilise un pug (affichage avec un pug)
                     title: 'Express',
                     test: test, //stockage du résultat dans une variable test
-                    connected: parseInt(req.signedCookies.connected)
+                    connected: req.session.connected
                 });
             });
     });
