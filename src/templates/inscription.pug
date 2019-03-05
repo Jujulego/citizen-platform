@@ -1,0 +1,15 @@
+extends base
+
+append css
+    //Première page: page d'accuiel général
+    //import biblio
+    link(rel="stylesheet" href="/static/scss/inscription.css")
+    link(rel="stylesheet" href="/vendor/leaflet/dist/leaflet.css")
+
+block content
+    //div= test
+    header(class="row")
+        //titre
+        h1(id="page-top" class="text-center")= "Bienvenue sur la page d'inscription ! ;)"
+        input(class="form-control" type="text" placeholder="Nom")
+        input(class="form-control" type="text" placeholder="Prenom")
