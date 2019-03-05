@@ -1,4 +1,13 @@
 extends base
 
+append css
+    //Première page: page d'accuiel général
+    //import biblio
+    link(rel="stylesheet" href="/static/scss/accueil.css")
+    link(rel="stylesheet" href="/vendor/leaflet/dist/leaflet.css")
+
 block content
-	div= test
+    //div= test
+    header(class="row")
+        //titre
+        h1(id="page-top" class="text-center")= "Bienvenue sur la page d'inscription ! ;)"
