@@ -1,0 +1,16 @@
+header
+{
+    display: flex;
+    min-height: 100%;
+
+    flex-direction: column;
+  
+    h1 { //titre avec image
+      flex: 1;
+      margin: 0;
+      padding-top: 10rem;
+  
+      background: url("/static/images/paysage.jpg") no-repeat center;
+      background-size: cover;
+    }
+}

@@ -20,6 +20,17 @@ module.exports = function(db) {
             });
     });
 
+    router.route('/inscription')
+        .get(function(req, res, next) {
+            res.render("inscription", {
+                title: "Inscription",
+                test: "ewzdtcrgbn,kl;m",
+            });
+        })
+        .post(function(req, res, next) {
+            res.render("inscription");
+        });
+
     router.get('/test', function(req, res, next) { //route
         db.all('SELECT * FROM test') //requête
             .then(function(tests) {
