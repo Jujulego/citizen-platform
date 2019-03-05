@@ -1,5 +1,5 @@
 -- UP
-ALTER TABLE mission ADD COLUMN titre varchar(255) DEFAULT '';
+alter table mission add column titre varchar(255) default '';
 UPDATE mission SET titre = 'Mission ' || idMission;
 
 -- DOWN
