@@ -111,6 +111,9 @@ module.exports = function(db) {
 
     router.get('/deconnexion', utils.login_guard(function(req, res, next) {
         req.session.connected = false;
+        req.session.user = undefined;
+        req.session.asso = undefined;
+
         res.redirect("/");
     }));
 

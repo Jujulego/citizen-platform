@@ -45,7 +45,7 @@ app.use(sassMiddleware({
 // Init Database
 Promise.resolve()
     .then(() => sqlite.open("./db.sqlite", { Promise }))
-    .then(db => db.migrate())
+    .then(db => db.migrate({ force: 'last' }))
     .then(function(db) {
         // - middlewares
         app.use(function(req, res, next) {

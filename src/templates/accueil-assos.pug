@@ -1,16 +1,24 @@
 extends base 
 
 append css
+    // Datatable
+    link(rel="stylesheet" href="/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")
+
+    //lien avec le css
     link(rel="stylesheet" href="/static/scss/accueilAsso.css")
+
+append jslib
+    script(src="/vendor/datatables.net/js/jquery.dataTables.min.js")
+    script(src="/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js")
 
 block content
     //hérite de base (la structure avec navbar et les trucs qu'on veut partout)
     //balise
     //Page d'accueil Associations après connexion
-    section(class="row")
+    section(class="row mb-3")
         //Bootstrap, Bloc de présentation à gauche de l'écran
         aside(class="col-auto")
-            div(id="profil" class="card m-3")
+            div(id="profil" class="card")
                 div(class="card-body")
                     img(src="/static/images/resto.jpg" class="img-fluid rounded" alt="logo resto")
                     h5(class="card-title")
@@ -18,9 +26,30 @@ block content
          
         //Bootstrap, colonne de droite
         article(class="col")
-            //Bootstrap pour encadrer le lien
-            div(class="card m-3 p-3")
-                a(href="") + Ajouter mission
-            //Mettre le bloc déja fait dans le mission-proposee.pug du dossier parts
-            include parts/mission-proposee
-            include parts/mission-proposee
+            div(class="card")
+                div(class="card-header d-flex")
+                    div(class="flex-grow-1") Missions
+                    div(class="card-toolbar")
+                        a(class="btn btn-primary btn-sm text-white")
+                            i(class="fas fa-plus")
+
+                div(class="card-body")
+                    table(id="missions" class="table table-bordered table-hover mb-0" cellspacing="0")
+                        thead
+                            tr
+                                th(scope="col") Titre
+                                th(scope="col") Postulants
+                                th(scope="col") Consultations
+                                th(scope="col") Status
+
+                        tbody
+                            each mission in missions
+                                tr
+                                    td
+                                        a(href="/asso/mission/" + mission.idMission)= mission.titre
+                                    td= mission.postulants
+                                    td 0
+                                    td en attente
+
+append js
+    script(src="/static/js/accueil-assos.js")

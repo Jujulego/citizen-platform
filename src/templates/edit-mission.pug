@@ -1,0 +1,81 @@
+extends base
+
+append css
+    // Datatable
+    link(rel="stylesheet" href="/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")
+
+    //lien avec le css
+    link(rel="stylesheet" href="/static/scss/profil.css")
+
+append jslib
+    script(src="/vendor/datatables.net/js/jquery.dataTables.min.js")
+    script(src="/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js")
+
+block content
+    //TOUT CE QUI CONCERNE LA MISSION
+    //PAGE MISSION : MISSION (en dessous de résultat)
+    header(class="row ") 
+        div(class="col justify-content-end") 
+            h1(class="text-white")= mission.titre
+
+    section(class="row")
+        aside(class="col-3")
+            div(class="card card-infos mb-3")
+                div(class="card-header") Informations
+
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        span= mission.lieu
+
+                    li(class="list-group-item")
+                        span Disponibilités demandées
+
+                    li(class="list-group-item")
+                        span Missions régulière/ponctuelle
+
+            div(class="card mb-3")
+                div(class="card-header") Contact
+                    
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        a(href=`mailto:${session.asso.mail}`)= session.asso.mail
+
+        article(class="col")
+            div(class="card")
+                div(class="card-header")
+                    ul(class="nav nav-tabs card-header-tabs" role="tablist")
+                        li(class="nav-item")
+                            a(class="nav-link active" data-toggle="tab" href="#competences") Informations complémentaires
+
+                        li(class="nav-item")
+                            a(class="nav-link" data-toggle="tab" href="#dispo") Candidatures
+
+                div(class="card-body")
+                    div(class="tab-content")
+                        div(class="tab-pane fade show active" id="competences" role="tabpanel")
+                            h4 Description de la mission :
+                            p(class="ml-3")= mission.description
+
+                            h4 Compétences requises
+                            p(class="ml-3") Blabla
+
+                            h4 Domaine d'intervention
+                            p(class="ml-3") Blabla
+                        
+                        div(class="tab-pane fade" id="dispo" role="tabpanel")
+                            table(id="candidats" class="table table-bordered table-hover" cellspacing="0")
+                                thead
+                                    tr
+                                        th(scope="col") Nom
+                                        th(scope="col") Prénom
+                                        th(scope="col") Mail
+                                tbody
+                                    each canditat in candidats
+                                        tr
+                                            td= canditat.nom
+                                            td= canditat.prenom
+                                            td
+                                                a(href=`mailto:canditat.loginCitoyen`)= canditat.loginCitoyen
+
+append js
+    script(src="/static/js/edit-mission.js")
