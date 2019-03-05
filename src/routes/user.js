@@ -8,29 +8,27 @@ module.exports = function(db) {
     router.get('/', utils.login_guard(function(req, res, next) { //route
 
         //Informations pour le permis
-        if(req.session.user.permis == 1){
+        let permisB;
+        if (req.session.user.permis) {
             permisB = "Permis B";
-        }
-        else if (req.session.user.permis == 0) {
+        } else {
             permisB = "Pas de permis";
         }
 
-        //Informations pour les Documents
-        requeteDoc = "Select titre, lien from document where loginCitoyen = ? ";
+        // Informations pour les Documents
+        const requeteDoc = "select titre, lien from document where loginCitoyen = ? ";
         db.all(requeteDoc, req.session.user.loginCitoyen)
             .then(function(documents){
 
-                //Informations pour Dommaine d'Intervention
-                requeteDomInt = "Select nom from domaineIntervention where loginCitoyen = ? ";
+                // Informations pour Dommaine d'Intervention
+                const requeteDomInt = "select nom from domaineIntervention where loginCitoyen = ? ";
                 db.all(requeteDomInt, req.session.user.loginCitoyen)
                     .then(function(domaines){
 
-
-                        //Informations Savoir Faire/competance
-                        requeteSF = "Select nom, description from competance where loginCitoyen = ?";
+                        // Informations Savoir Faire/competance
+                        const requeteSF = "select nom, description from competance where loginCitoyen = ?";
                         db.all(requeteSF, req.session.user.loginCitoyen)
                             .then(function(competances){
-
 
                                 res.render('profil-benevole', { //lien entre la route et le pug profil
                                     title: "Mon Profil",
@@ -46,14 +44,9 @@ module.exports = function(db) {
                                     adresse: req.session.user.adresse,
                                     situation: req.session.user.situation,
                                     permis: permisB
-
-
-
+                                });
                             });
-
                     });
-
-                });
             });
     }));
 
