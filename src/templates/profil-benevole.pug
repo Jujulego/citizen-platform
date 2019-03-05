@@ -1,9 +1,15 @@
 extends base
 
 append css
+    link(rel="stylesheet" href="/vendor/pg-calendar/dist/css/pignose.calendar.min.css")
+    
     //TOUT CE QUI CONCERNE LE PROFIL DU BENEVOLE route : user/
     link(rel="stylesheet" href="/static/scss/profil.css")
     //lien avec le css
+
+append jslib
+    script(src="/vendor/moment/moment.js")
+    script(src="/vendor/pg-calendar/dist/js/pignose.calendar.js")
 
 block content
     include parts/disponibilite-popup 
@@ -16,21 +22,26 @@ block content
     section(class="row")
         //bootstrap
         aside(class="col-3")
-            div(class="card mb-3 card-infos")
+            div(class="card mb-3 card-infos")   
                 div(class="card-header")
                     p(class="mb-0") Informations personnelles
 
                 ul(class="list-group list-group-flush")
-                    li(class="list-group-item")= "Email : " + mail
+                    li(class="list-group-item")
+                        a(href="mailto:" + mail)= "Email : " + mail
                     //li(class="list-group-item")= "Email : " + session.user.loginCitoyen
 
-                    li(class="list-group-item")= "Adresse : " + adresse
+                    li(class="list-group-item")
+                        span= "Adresse : " + adresse
 
-                    li(class="list-group-item")= "Telephone : " + tel
+                    li(class="list-group-item")
+                        span= "Telephone : " + tel
 
-                    li(class="list-group-item")= "Situation : " + situation
+                    li(class="list-group-item")
+                        span= "Situation : " + situation
 
-                    li(class="list-group-item")= permis
+                    li(class="list-group-item")
+                        span= permis
                     //li(class="list-group-item")= session.user.permis ? "Permis B": "Nul !"
 
             div(class="card mb-3")
@@ -75,9 +86,11 @@ block content
                         div(class="tab-pane fade" id="dispo" role="tabpanel") 
                             button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
                                 i(class="fas fa-plus-circle")  Ajouter Disponibilité
+                                
                             table(class="table table-bordered mt-4")
                                 thead
                                     tr
+                                        th(scope="col") 
                                         th(scope="col") Lundi
                                         th(scope="col") Mardi
                                         th(scope="col") Mercredi
@@ -88,9 +101,12 @@ block content
                                 tbody
                                     tr
                                         td
-                                            a(href='#') Matin
+                                            span Matin
                                         td
-                                            a(href='#') Matin
+                                            a(href='#' title="Rendre Indisponible") Disponible
+                                                i(class="far fa-check-circle")
+                                        td
+                                            a(href='#') ...
                                         td
                                             a(href='#') Matin
                                         td
@@ -103,6 +119,8 @@ block content
                                             a(href='#') Matin
                                     tr
                                         td
+                                            span Après-midi
+                                        td
                                             a(href='#') Après-midi
                                         td
                                             a(href='#') Après-midi
@@ -117,6 +135,8 @@ block content
                                         td
                                             a(href='#') Après-midi
                                     tr
+                                        td
+                                            span Soirée
                                         td
                                             a(href='#') Soirée
                                         td
