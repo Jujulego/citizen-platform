@@ -6,15 +6,55 @@ const router = express.Router();
 module.exports = function(db) {
     // mon profil
     router.get('/', utils.login_guard(function(req, res, next) { //route
-        res.render('profil-benevole', { //lien entre la route et le pug profil
-            title: "Mon Profil",
 
-            mail: req.session.user.mail,
-            tel: req.session.user.tel,
-            adresse: req.session.user.adresse,
-            situation: req.session.user.situation,
-            permis: req.session.user.permis,
-        });
+        //Informations pour le permis
+        if(req.session.user.permis == 1){
+            permisB = "Permis B";
+        }
+        else if (req.session.user.permis == 0) {
+            permisB = "Pas de permis";
+        }
+
+        //Informations pour les Documents
+        requeteDoc = "Select titre, lien from document where loginCitoyen = ? ";
+        db.all(requeteDoc, req.session.user.loginCitoyen)
+            .then(function(documents){
+
+                //Informations pour Dommaine d'Intervention
+                requeteDomInt = "Select nom from domaineIntervention where loginCitoyen = ? ";
+                db.all(requeteDomInt, req.session.user.loginCitoyen)
+                    .then(function(domaines){
+
+
+                        //Informations Savoir Faire/competance
+                        requeteSF = "Select nom, description from competance where loginCitoyen = ?";
+                        db.all(requeteSF, req.session.user.loginCitoyen)
+                            .then(function(competances){
+
+
+                                res.render('profil-benevole', { //lien entre la route et le pug profil
+                                    title: "Mon Profil",
+
+                                    documents: documents,
+
+                                    domaineintervention:domaines,
+
+                                    competances: competances,
+
+                                    mail: req.session.user.loginCitoyen,
+                                    tel: req.session.user.tel,
+                                    adresse: req.session.user.adresse,
+                                    situation: req.session.user.situation,
+                                    permis: permisB
+
+
+
+                            });
+
+                    });
+
+                });
+            });
     }));
 
     // mes candidatures
@@ -28,6 +68,7 @@ module.exports = function(db) {
         // Déjà connecté ?
         if (req.session.connected) {
             res.redirect("/");
+            return
         }
 
         // Récupération des paramètres
@@ -62,7 +103,7 @@ module.exports = function(db) {
 
                         case "a": // => Associations
                             req.session.asso = user;
-                            res.redirect("/asso/profil");
+                            res.redirect("/asso");
                             break;
                     }
                 }

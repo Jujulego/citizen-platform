@@ -11,6 +11,7 @@ block content
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
+            p= session.user.nom + session.user.prenom
 
     section(class="row")
         //bootstrap
@@ -20,20 +21,17 @@ block content
                     p(class="mb-0") Informations personnelles
 
                 ul(class="list-group list-group-flush")
-                    li(class="list-group-item")
-                        span= mail
+                    li(class="list-group-item")= "Email : " + mail
+                    //li(class="list-group-item")= "Email : " + session.user.loginCitoyen
 
-                    li(class="list-group-item")
-                        span= adresse
+                    li(class="list-group-item")= "Adresse : " + adresse
 
-                    li(class="list-group-item")
-                        span= tel
+                    li(class="list-group-item")= "Telephone : " + tel
 
-                    li(class="list-group-item")
-                        span= situation
+                    li(class="list-group-item")= "Situation : " + situation
 
-                    li(class="list-group-item")
-                        span= permis
+                    li(class="list-group-item")= permis
+                    //li(class="list-group-item")= session.user.permis ? "Permis B": "Nul !"
 
             div(class="card mb-3")
                 div(class="card-header")
@@ -56,12 +54,24 @@ block content
                 div(class="card-body")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel") 
-                            h4 Documents
-                            p azerty
-                            h4 Domaines d'intervention
-                            p azert
-                            h4 Savoir-Faire   
-                            p azerty                         
+                            
+                            unless documents.length === 0
+                                h4 Documents
+                                each doc in documents
+                                    a(href=doc.lien)= doc.titre
+                            
+                            unless domaineintervention.length === 0
+                                h4 Domaines d'intervention
+                                each dom in domaineintervention
+                                    p= dom.nom
+                                    
+                            unless competances.length === 0
+                                h4 Savoir-Faire   
+                                each sf in competances
+                                    p= sf.nom + " : " + sf.description
+                                
+                                
+                                                      
                         div(class="tab-pane fade" id="dispo" role="tabpanel") 
                             button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
                                 i(class="fas fa-plus-circle")  Ajouter Disponibilité
@@ -78,46 +88,46 @@ block content
                                 tbody
                                     tr
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Matin
                                     tr
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Après-midi
                                     tr
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
                                         td
-                                            a(href='#') ...
+                                            a(href='#') Soirée
