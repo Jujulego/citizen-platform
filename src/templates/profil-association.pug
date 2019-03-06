@@ -11,7 +11,7 @@ block content
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
-            h1(class="text-white") Mon Association
+            h1(class="text-white")= session.asso.nom
 
     section(class="row")
         //bootstrap
@@ -19,25 +19,35 @@ block content
             div(class="card mb-3 card-infos")
                 div(class="card-header")
                     p(class="mb-0") Contacts
+                    a(href="#" class="btn btn-primary btn-sm right") Modifier Profil
 
                 ul(class="list-group list-group-flush")
-                    li(class="list-group-item")= "Email : " + mail
+                    li(class="list-group-item")
+                        span
+                            a(href="mailto:" + mail)= "Email : " + mail
 
-                    li(class="list-group-item")= "Adresse : " + adresse
+                    li(class="list-group-item")
+                        span= "Adresse : " + adresse
 
-                    li(class="list-group-item")= "Telephone : " + tel
+                    li(class="list-group-item")
+                        span= "Telephone : " + tel
 
-                    li(class="list-group-item")= "Site internet : " + siteWeb
+                    li(class="list-group-item")
+                        span
+                            a(href="http://www."+siteWeb)= "Site internet : " + siteWeb
                         
                 ul(class="list-group list-group-flush")
-                        li(class="list-group-item")= "Siret : " + siret
+                        li(class="list-group-item")
+                            span= "Siret : " + siret
                             
 
         article(class="col")
             div(class="card")
                 div(class="card-body")
                     div(class="tab-content")
-                        div
+                        div(class="row")
                             h2 Présentation
-                            p= presentation
+                            a(href="#")
+                                i(class="fas fa-plus")
+                        p= presentation
                         
