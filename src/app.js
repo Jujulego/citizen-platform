@@ -12,9 +12,9 @@ const session = require("express-session");
 const sqlite = require("sqlite/legacy");
 
 // Routes
-const indexRouter = require('./routes/index'); //route pour la page d'accueil
-const usersRouter = require('./routes/user'); //route pour la page utilisateur
-const assosRouter = require('./routes/asso'); //route pour la page asso
+import indexRouter from './routes/index'; // routes pour la page d'accueil
+import usersRouter from './routes/user';  // routes pour la page utilisateur
+import assosRouter from './routes/asso';  // routes pour la page asso
 
 // Init Express
 const app = express();

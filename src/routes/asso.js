@@ -1,11 +1,15 @@
-const express = require('express');
-const utils = require('../utils');
+// Constructeur
+import { Router } from 'express';
 
-const router = express.Router();
+import Mission from '../db/mission';
+import utils from '../utils';
 
-module.exports = function(db) {
+// Router
+export default function(db) {
+    const router = Router();
+
     // Mon accueil
-    router.get('/', utils.asso_guard(function(req, res, next) { //définit la route pour accéder à la page accueil de l'association
+    router.get('/', utils.asso_guard(function(req, res, next) { // définit la route pour accéder à la page accueil de l'association
         db.all("select m.idMission, titre, count(p.citoyen) as postulants\n" +
                 "  from mission as m\n" +
                 "    inner join creneau_mission as cm on m.idMission = cm.mission\n" +
@@ -38,15 +42,15 @@ module.exports = function(db) {
     }));
 
     router.get('/mission/:id', utils.asso_guard(function(req, res, next) {
-        db.get("select * from mission where idMission = ? and loginAsso = ?", [req.params.id, req.session.asso.loginAsso])
-            .then(function (mission) {
-                if (mission !== undefined) {
+        Mission.getWhereAsso(db, req.params.id, req.session.asso.loginAsso)
+            .then(function(mission) {
+                if (mission) {
                     db.all("select c.loginCitoyen, c.nom, c.prenom\n" +
-                            "  from citoyen as c\n" +
-                            "    inner join postulation as p on c.loginCitoyen = p.citoyen\n" +
-                            "    inner join creneau_mission as cm on p.creneau = cm.id" +
-                            "  where cm.mission = ?",
-                            mission.idMission)
+                        "  from citoyen as c\n" +
+                        "    inner join postulation as p on c.loginCitoyen = p.citoyen\n" +
+                        "    inner join creneau_mission as cm on p.creneau = cm.id" +
+                        "  where cm.mission = ?",
+                        mission.id)
                         .then(function(candidats) {
                             res.render("edit-mission", {
                                 title: mission.titre,

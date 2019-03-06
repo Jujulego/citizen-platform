@@ -1,18 +1,15 @@
-//EXEMPLE DE REQUÊTE
+// Importations
+import { Router } from 'express';
+import Mission from '../db/Mission';
 
-const express = require('express');
-const router = express.Router();
+// Router
+export default function(db) {
+    const router = Router();
 
-module.exports = function(db) {
     /* GET home page. */
-    router.get('/', function (req, res, next) { //
-        db.all("select titre, lieu, description, min(cm.debut) as dateMission\n" +
-                "  from mission as m\n" +
-                "    inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
-                "  group by titre, lieu, description\n" +
-                "  order by dateMission\n" +
-                "  limit 5")
-            .then(function(missions) {
+    router.get('/', function (req, res, next) {
+        Mission.nextMissions(db)
+            .then(function (missions) {
                 res.render('index', { //utilise un pug (affichage avec un pug)
                     title: 'Express',
                     missions: missions
