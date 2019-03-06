@@ -10,6 +10,58 @@ block content
     //div= test
     header(class="row")
         //titre
-        h1(id="page-top" class="text-center")= "Bienvenue sur la page d'inscription ! ;)"
-        input(class="form-control" type="text" placeholder="Nom")
-        input(class="form-control" type="text" placeholder="Prenom")
+        h1(id="page-top" class="text-center ")= "Inscription"
+        
+
+        form(id="search-bar")
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                input(class="form-control champgauche" type="text" placeholder="* Nom")
+                input(class="form-control champdroit" type="text" placeholder="* Prenom")
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                input(class="form-control seultout" type="text" placeholder="* Login")
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                input(class="form-control champgauche" type="text" placeholder="Mot de passe")
+                input(class="form-control champdroit" type="text" placeholder="* Confirmer le mot de passe")
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                select(class="custom-select placeholder seultout")
+                    option(value selected hidden) Statut
+                    option Etudiant
+                    option Chômage
+                    option Commercial
+                    option Ingénieur
+
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                input(class="form-control champgauche" type="text" placeholder="N° de téléphone")
+
+                label(class="permis") Permis
+                div(class = "formu d-flex flex-row justify-content-center align-items-center check")
+                    div(class="custom-control custom-radio mr-3")
+                        input(type="radio" class="custom-control-input" id="ex1" name="groupe")
+                        label(class="custom-control-label" for="ex1") Oui
+
+                    div(class="custom-control custom-radio")
+                        input(type="radio" class="custom-control-input" id="ex2" name="groupe")
+                        label(class="custom-control-label" for="ex2") Non
+            
+
+
+               
+                    
+                
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                input(class="form-control seultout2" type="text" placeholder="Adresse")
+
+            div(class="custom-control champdroit custom-radio formu d-flex flex-row justify-content-center align-items-center")
+                    input(type ="radio" class="custom-control-input" id="check2" name="exemple2" unchecked)
+                    label(class="custom-control-label" for="check2") En cochant cette case, j'accepte et je reconnais avoir pris connaissance des conditions d'utilisation
+
+            
+
+            div(class = "formu d-flex flex-row justify-content-center align-items-center")
+                button(class="btn btn-primary seultout2" type="submit") Inscription

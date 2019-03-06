@@ -9,8 +9,57 @@ header
       flex: 1;
       margin: 0;
       padding-top: 10rem;
+      color : white ;
   
       background: url("/static/images/paysage.jpg") no-repeat center;
       background-size: cover;
     }
+}
+
+.champgauche
+{
+  margin-left : 100px;
+  margin-top : 10px;
+  margin-bottom : 10px;
+  margin-right : 50px;
+  
+}
+.champdroit
+{
+  margin-left : 50px;
+  margin-top : 10px;
+  margin-bottom : 10px;
+  margin-right : 200px;
+  
+}
+
+.seultout
+{
+  margin-left : 100px;
+  margin-right: 730px;
+
+
+}
+
+.seultout2
+{
+  margin-top: 10px;
+  margin-left : 100px;
+  margin-right: 200px;
+  margin-bottom : 10px;
+
+}
+
+.permis 
+{
+  margin-left : 83px;
+  margin-top : 10px;
+  margin-bottom : 10px;
+  margin-right : 100px;
+
+}
+
+.check
+{
+  margin-right : 330px;
 }
