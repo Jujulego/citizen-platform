@@ -67,10 +67,13 @@ export default function(db) {
         }
     });
 
-    router.get('/deconnexion', utils.login_guard(function(req, res, next) {
+    router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
         // Déconnexion
-        if (req.asso) req.asso.disconnect(req);
-        if (req.user) req.user.disconnect(req);
+        const asso = await Association.getLoggedInUser(db, req);
+        if (asso) asso.disconnect(req);
+
+        const user = await Citoyen.getLoggedInUser(db, req);
+        if (user) user.disconnect(req);
 
         res.redirect("/");
     }));
