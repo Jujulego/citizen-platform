@@ -25,9 +25,11 @@ block content
             div(class="card mb-3 card-infos")   
                 div(class="card-header")
                     p(class="mb-0") Informations personnelles
+                    a(href="#" class="btn btn-primary btn-sm right") Modifier Profil
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
+                        span 
                         a(href=`mailto:${user.login}`)= `Email : ${user.login}`
 
                     li(class="list-group-item")
@@ -65,17 +67,26 @@ block content
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel") 
                             
                             unless documents.length === 0
-                                h4 Documents
+                                div(class="row")
+                                    h4 Documents
+                                    a(href="#")
+                                        i(class="fas fa-plus")
                                 each doc in documents
                                     a(href=doc.lien)= doc.titre
                             
                             unless domaineintervention.length === 0
-                                h4 Domaines d'intervention
+                                div(class="row")
+                                    h4 Domaines d'intervention
+                                    a(href="#")
+                                        i(class="fas fa-plus")
                                 each dom in domaineintervention
                                     p= dom.nom
                                     
                             unless competances.length === 0
-                                h4 Savoir-Faire   
+                                div(class="row")
+                                    h4 Savoir-Faire   
+                                    a(href="#") 
+                                        i(class="fas fa-plus")
                                 each sf in competances
                                     p= sf.nom + " : " + sf.description
                                                       
