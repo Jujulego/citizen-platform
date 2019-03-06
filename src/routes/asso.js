@@ -6,9 +6,10 @@ const router = express.Router();
 module.exports = function(db) {
     // Mon accueil
     router.get('/', utils.asso_guard(function(req, res, next) { //définit la route pour accéder à la page accueil de l'association
-        db.all("select m.idMission, titre, count(lmc.loginCitoyen) as postulants\n" +
+        db.all("select m.idMission, titre, count(p.citoyen) as postulants\n" +
                 "  from mission as m\n" +
-                "    left join linkMissionCitoyen lmc on m.idMission = lmc.idMission\n" +
+                "    inner join creneau_mission as cm on m.idMission = cm.mission\n" +
+                "    left join postulation as p on cm.id = p.creneau" +
                 "  where m.loginAsso = ?\n" +
                 "  group by m.idMission",
                 req.session.asso.loginAsso
@@ -42,8 +43,9 @@ module.exports = function(db) {
                 if (mission !== undefined) {
                     db.all("select c.loginCitoyen, c.nom, c.prenom\n" +
                             "  from citoyen as c\n" +
-                            "    inner join linkMissionCitoyen lmc on c.loginCitoyen = lmc.loginCitoyen\n" +
-                            "  where lmc.idMission = ?",
+                            "    inner join postulation as p on c.loginCitoyen = p.citoyen\n" +
+                            "    inner join creneau_mission as cm on p.creneau = cm.id" +
+                            "  where cm.mission = ?",
                             mission.idMission)
                         .then(function(candidats) {
                             res.render("edit-mission", {

@@ -45,7 +45,7 @@ app.use(sassMiddleware({
 // Init Database
 Promise.resolve()
     .then(() => sqlite.open("./db.sqlite", { Promise }))
-    .then(db => db.migrate({ force: 'last' }))
+    .then(db => db.migrate())
     .then(function(db) {
         // - middlewares
         app.use(function(req, res, next) {
@@ -86,6 +86,8 @@ Promise.resolve()
             res.status(err.status || 500);
             res.render('error');
         });
+
+        console.log("Listening at http://localhost:3000/")
     });
 
 module.exports = app;

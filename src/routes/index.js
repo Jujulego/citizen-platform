@@ -6,12 +6,12 @@ const router = express.Router();
 module.exports = function(db) {
     /* GET home page. */
     router.get('/', function (req, res, next) { //
-        db.all("select titre, lieu, description, min(dateMission) as dateMission\n" +
-            "  from mission\n" +
-            "    inner join dateMission on mission.idMission = dateMission.idMission and dateMission >= date('now')\n" +
-            "  group by titre, lieu, description\n" +
-            "  order by dateMission\n" +
-            "  limit 5")
+        db.all("select titre, lieu, description, min(cm.debut) as dateMission\n" +
+                "  from mission as m\n" +
+                "    inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
+                "  group by titre, lieu, description\n" +
+                "  order by dateMission\n" +
+                "  limit 5")
             .then(function(missions) {
                 res.render('index', { //utilise un pug (affichage avec un pug)
                     title: 'Express',
