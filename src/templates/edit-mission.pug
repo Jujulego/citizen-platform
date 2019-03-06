@@ -38,7 +38,7 @@ block content
                     
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        a(href=`mailto:${session.asso.mail}`)= session.asso.mail
+                        a(href=`mailto:${asso.mail}`)= asso.mail
 
         article(class="col")
             div(class="card")
@@ -72,10 +72,10 @@ block content
                                 tbody
                                     each canditat in candidats
                                         tr
-                                            td= canditat.nom
-                                            td= canditat.prenom
+                                            td= canditat.postulant.nom
+                                            td= canditat.postulant.prenom
                                             td
-                                                a(href=`mailto:canditat.loginCitoyen`)= canditat.loginCitoyen
+                                                a(href=`mailto:${canditat.postulant.login}`)= canditat.postulant.login
 
 append js
     script(src="/static/js/edit-Mission.js")

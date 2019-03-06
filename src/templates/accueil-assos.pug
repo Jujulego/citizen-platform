@@ -46,8 +46,8 @@ block content
                             each mission in missions
                                 tr
                                     td
-                                        a(href="/asso/mission/" + mission.idMission)= mission.titre
-                                    td= mission.postulants
+                                        a(href=`/asso/mission/${mission.id}`)= mission.titre
+                                    td 0
                                     td 0
                                     td en attente
 

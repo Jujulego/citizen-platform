@@ -42,7 +42,7 @@ class Postulation extends Model {
             mission = mission.id;
         }
 
-        const data = await db.all("select p.* from postulation p inner join creneau_mission cm on p.creneau = cm.id where mission = ?", mission);
+        const data = await db.all("select creneau, citoyen from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", mission);
         return data.map((d) => new Postulation(db, d));
     }
 

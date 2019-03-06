@@ -7,14 +7,14 @@ class Association extends Model {
     // Attributs
     #mdp;  // => privé
     nom; presentation;
-    adresse; mail; tel; siteWeb;
+    adresse; mail; tel; siteWeb; siret;
 
     // Propriétés
     #login;
     get login() { return this.#login }
 
     // Constructeur
-    constructor(db, { loginAsso, mdpAsso, nom, presentation, adresse, mail, tel, siteWeb}, fields = {}) {
+    constructor(db, { loginAsso, mdpAsso, nom, presentation, adresse, mail, tel, siteWeb, siret }, fields = {}) {
         super(db, fields);
 
         // Remplissage
@@ -26,6 +26,7 @@ class Association extends Model {
         this.mail  = mail;
         this.tel   = tel;
         this.siteWeb = siteWeb;
+        this.siret = siret;
     }
 
     // Méthodes statiques

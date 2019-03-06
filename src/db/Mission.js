@@ -111,7 +111,21 @@ class Mission extends Model {
     }
 
     async getPostulations() {
-        return await Postulation.getForMission(this.db, this);
+        return await Postulation.getForMission(this.db, this.id);
+    }
+
+    async getPostulants() {
+        const postulations = await this.getPostulations();
+
+        const result = [];
+        for (const p of postulations) {
+            result.push({
+                postulant: await p.getCitoyen(),
+                creneau:   await p.getCreneau()
+            });
+        }
+
+        return result;
     }
 }
 
