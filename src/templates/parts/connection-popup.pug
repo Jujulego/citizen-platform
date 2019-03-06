@@ -12,7 +12,7 @@ div(id="connectionPopup" class="modal fade" + (connectionPopup.err ? " show" : "
 
             div(class="modal-body")
                 div(class="form-group selector selector-2")
-                    input(id="radioBene" type="radio" name="type" value="b" checked)
+                    input(id="radioBene" type="radio" name="type" value="c" checked)
                     label(for="radioBene") Bénévole
 
                     input(id="radioAsso" type="radio" name="type" value="a")
@@ -25,10 +25,10 @@ div(id="connectionPopup" class="modal fade" + (connectionPopup.err ? " show" : "
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")
-                        label(for="email" class="input-group-text")
+                        label(for="login" class="input-group-text")
                             i(class="fas fa-at")
 
-                    input(id="email" class="form-control" type="text" name="email" placeholder="Email" value=connectionPopup.email)
+                    input(id="login" class="form-control" type="text" name="login" placeholder="Email" value=connectionPopup.email)
 
                 div(class="input-group form-group")
                     div(class="input-group-prepend")

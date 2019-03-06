@@ -1,13 +1,17 @@
-const express = require('express');
-const utils = require('../utils');
+// Importations
+import { Router } from 'express';
 
-const router = express.Router();
+import Association from "../db/Association";
+import Citoyen from "../db/Citoyen";
+import utils from '../utils';
 
-module.exports = function(db) {
+// Router
+export default function(db) {
+    const router = Router();
+
     // mon profil
     router.get('/', utils.login_guard(function(req, res, next) { //route
-
-        //Informations pour le permis
+        // Informations pour le permis
         let permisB;
         if (req.session.user.permis) {
             permisB = "Permis B";
@@ -61,55 +65,45 @@ module.exports = function(db) {
         // Déjà connecté ?
         if (req.session.connected) {
             res.redirect("/");
-            return
+            return;
         }
 
         // Récupération des paramètres
-        const email = req.body.email;
-        const mdp = req.body.mdp;
-        let rq = "";
-        let champ = "";
-
         switch (req.body.type) {
-            case "b": // => Bénévole
-                rq = "select * from citoyen where loginCitoyen = ? AND mdpCitoyen = ?";
-                champ = "loginCitoyen";
-                break;
-
-            case "a": // => Associations
-                rq = "select * from association where loginAsso = ? AND mdpAsso = ?";
-                champ = "loginAsso";
-                break;
-        }
-
-        // Requête
-        db.get(rq, [email, mdp])
-            .then(function(user) {
-                if (user[champ] === email) {
-                    req.session.connected = true;
-
-                    switch (req.body.type) {
-                        case "b": // => Bénévole
+            case "c": // => Citoyen
+                Citoyen.authenticate(db, req.body)
+                    .then(function(user) {
+                        if (user) {
+                            req.session.connected = true;
                             req.session.user = user;
                             res.redirect("/");
-                            break;
+                        } else {
+                            req.session.connectionPopup = req.body.login;
+                            res.redirect("/");
+                        }
+                    }).catch(next);
 
-                        case "a": // => Associations
-                            req.session.asso = user;
+                break;
+
+            case "a": // => Association
+                Association.authenticate(db, req.body)
+                    .then(function(asso) {
+                        if (asso) {
+                            req.session.connected = true;
+                            req.session.asso = asso;
                             res.redirect("/asso");
-                            break;
-                    }
-                }
-            })
-            .catch(function (reason) {
-                console.error(reason);
+                        } else {
+                            req.session.connectionPopup = req.body.login;
+                            res.redirect("/");
+                        }
+                    }).catch(next);
 
-                req.session.connectionPopup = email;
-                res.redirect("/");
-            });
+                break;
+        }
     });
 
     router.get('/deconnexion', utils.login_guard(function(req, res, next) {
+        // Déconnexion
         req.session.connected = false;
         req.session.user = undefined;
         req.session.asso = undefined;

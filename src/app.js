@@ -1,15 +1,15 @@
 //Gère tout ce qui concerne le serveur
 // TOUTES LES ROUTES : SEUL TRUC QUI NOUS INTERESSE ICI
 // Dépendances
-const Promise = require("bluebird");
-const cookieParser = require("cookie-parser");
-const createError = require("http-errors");
-const express = require("express");
-const morgan = require("morgan");
-const path = require("path");
-const sassMiddleware = require("node-sass-middleware");
-const session = require("express-session");
-const sqlite = require("sqlite/legacy");
+import Promise from "bluebird";
+import cookieParser from "cookie-parser";
+import createError from "http-errors";
+import express from "express";
+import morgan from "morgan";
+import path from "path";
+import sassMiddleware from "node-sass-middleware";
+import session from "express-session";
+import sqlite from "sqlite/legacy";
 
 // Routes
 import indexRouter from './routes/index'; // routes pour la page d'accueil

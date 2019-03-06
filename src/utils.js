@@ -1,5 +1,5 @@
 // Utilitaires
-module.exports = {
+export default {
     login_guard: function(f, redirect_url="/") {
         return function(req, res, next) {
             if (req.session.connected) {

@@ -39,6 +39,16 @@ class Association extends Model {
         }
     }
 
+    static async authenticate(db, { login, mdp }) {
+        const data = await db.get("select * from association where loginAsso = ? and mdpAsso = ?", [login, mdp]);
+
+        if (data) {
+            return new Association(db, data);
+        } else {
+            return null;
+        }
+    }
+
     // Méthodes
     async getMission(id) {
         return await Mission.getWhereAsso(this.db, id, this);

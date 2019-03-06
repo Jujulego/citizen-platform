@@ -40,7 +40,23 @@ class Citoyen extends Model {
     static async get(db, login) {
         // Récupération
         const data = await db.get("select * from citoyen where loginCitoyen = ?", login);
-        return new Citoyen(db, data);
+
+        if (data) {
+            return new Citoyen(db, data);
+        } else {
+            return null;
+        }
+    }
+
+    static async authenticate(db, { login, mdp }) {
+        // Récupération
+        const data = await db.get("select * from citoyen where loginCitoyen = ? and mdpCitoyen = ?", [login, mdp]);
+
+        if (data) {
+            return new Citoyen(db, data);
+        } else {
+            return null;
+        }
     }
 
     // Méthodes
