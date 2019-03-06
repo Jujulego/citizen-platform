@@ -10,8 +10,17 @@ div(class="modal fade" id="disponibilitePopup" tabindex="-1" role="dialog")
                     i(class="fas fa-times")
                         
             div(class="modal-body")
+                input(class="form-control champ" type="date")
                 
+                select(class="custom-select champ")
+                    option(value selected hidden) Partie de la journée
+                    option Matin
+                    option Après-midi
+                    option Soirée
+                    option Toute la journée
 
             div(class="modal-footer")
                 button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
                 button(class="btn btn-primary" type="submit") OK
+
+script(src="/static/js/dispo-popup.js")
