@@ -48,18 +48,43 @@ class Citoyen extends Model {
         }
     }
 
-    static async authenticate(db, { login, mdp }) {
+    static async authenticate(db, req, { login, mdp }) {
         // Récupération
         const data = await db.get("select * from citoyen where loginCitoyen = ? and mdpCitoyen = ?", [login, mdp]);
 
         if (data) {
-            return new Citoyen(db, data);
+            req.session.userLogin = login;
+            req.session.connected = true;
+            req.user = new Citoyen(db, data);
+
+            return req.user;
         } else {
             return null;
         }
     }
 
+    static async getLoggedInUser(db, req) {
+        // Déjà récupéré ?
+        if (req.user) return req.user;
+
+        // Récupération
+        if (req.session.connected && req.session.userLogin) {
+            const user = await Citoyen.get(db, req.session.userLogin);
+            if (user) req.user = user;
+
+            return user;
+        }
+
+        return null;
+    }
+
     // Méthodes
+    disconnect(req) {
+        req.session.connected = false;
+        req.session.userLogin = undefined;
+        req.user = undefined;
+    }
+
     async getCompetances() {
         return await Competance.getForCitoyen(this.db, this);
     }

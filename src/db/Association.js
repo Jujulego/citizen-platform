@@ -39,17 +39,42 @@ class Association extends Model {
         }
     }
 
-    static async authenticate(db, { login, mdp }) {
+    static async authenticate(db, req, { login, mdp }) {
         const data = await db.get("select * from association where loginAsso = ? and mdpAsso = ?", [login, mdp]);
 
         if (data) {
-            return new Association(db, data);
+            req.session.assoLogin = login;
+            req.session.connected = true;
+            req.asso = new Association(db, data);
+
+            return req.asso;
         } else {
             return null;
         }
     }
 
+    static async getLoggedInUser(db, req) {
+        // Déjà récupéré ?
+        if (req.asso) return req.asso;
+
+        // Récupération
+        if (req.session.connected && req.session.assoLogin) {
+            const asso = await Association.get(db, req.session.assoLogin);
+            if (asso) req.asso = asso;
+
+            return asso;
+        }
+
+        return null;
+    }
+
     // Méthodes
+    disconnect(req) {
+        req.session.connected = false;
+        req.session.assoLogin = undefined;
+        req.asso = undefined;
+    }
+
     async getMission(id) {
         return await Mission.getWhereAsso(this.db, id, this);
     }

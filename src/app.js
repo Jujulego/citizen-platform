@@ -47,9 +47,15 @@ Promise.resolve()
     .then(() => sqlite.open("./db.sqlite", { Promise }))
     .then(db => db.migrate())
     .then(function(db) {
+        // - ressources
+        app.use('/vendor', express.static(path.join(__dirname, '../node_modules')));
+        app.use('/static', express.static(path.join(__dirname, '../public')));
+
         // - middlewares
-        app.use(function(req, res, next) {
-            res.locals.session = req.session; // Permet d'accéder à la session depuis le pug
+        app.use(async function(req, res, next) {
+            // Permet d'accéder à la session depuis le pug
+            res.locals.session = req.session;
+
             next();
         });
 
@@ -60,13 +66,12 @@ Promise.resolve()
                 email: req.session.connectionPopup,
             };
 
+            req.session.connectionPopup = undefined;
+
             next();
         });
 
         // - routes
-        app.use('/vendor', express.static(path.join(__dirname, '../node_modules')));
-        app.use('/static', express.static(path.join(__dirname, '../public')));
-
         app.use('/', indexRouter(db));
         app.use('/user', usersRouter(db));
         app.use('/asso', assosRouter(db));

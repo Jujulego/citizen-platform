@@ -17,7 +17,7 @@ block content
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
-            p= session.user.nom + session.user.prenom
+            p(class="text-white")= `${user.nom} ${user.prenom}`
 
     section(class="row")
         //bootstrap
@@ -28,21 +28,19 @@ block content
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        a(href="mailto:" + mail)= "Email : " + mail
-                    //li(class="list-group-item")= "Email : " + session.user.loginCitoyen
+                        a(href=`mailto:${user.login}`)= `Email : ${user.login}`
 
                     li(class="list-group-item")
-                        span= "Adresse : " + adresse
+                        span= `Adresse : ${user.adresse}`
 
                     li(class="list-group-item")
-                        span= "Telephone : " + tel
+                        span= `Téléphone : ${user.tel}`
 
                     li(class="list-group-item")
-                        span= "Situation : " + situation
+                        span= `Situation : ${user.situation}`
 
                     li(class="list-group-item")
-                        span= permis
-                    //li(class="list-group-item")= session.user.permis ? "Permis B": "Nul !"
+                        span= user.permis ? "Permis B" : "Sans le permis"
 
             div(class="card mb-3")
                 div(class="card-header")
@@ -80,8 +78,6 @@ block content
                                 h4 Savoir-Faire   
                                 each sf in competances
                                     p= sf.nom + " : " + sf.description
-                                
-                                
                                                       
                         div(class="tab-pane fade" id="dispo" role="tabpanel") 
                             button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
