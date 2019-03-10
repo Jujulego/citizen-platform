@@ -1,18 +1,21 @@
+// @flow
 // Importations
+import type { Database } from "sqlite";
+
 import Model from "./Model"
 import Citoyen from "./Citoyen";
 
 // Classe
-class DomaineIntervention extends Model {
+export default class DomaineIntervention extends Model {
     // Attributs
-    nom;
+    nom: string;
 
     // Propriétés
-    #id;
-    get id() { return this.#id }
+    #id: number;
+    get id(): number { return this.#id }
 
     // Constructeur
-    constructor(db, { idDomaine, nom, loginCitoyen }, fields = {}) {
+    constructor(db: Database, { idDomaine, nom, loginCitoyen }: { idDomaine: number, nom: string, loginCitoyen: string }, fields: any = {}) {
         super(db, fields);
 
         // Méthodes
@@ -22,13 +25,13 @@ class DomaineIntervention extends Model {
     }
 
     // Méthodes statiques
-    static async get(db, id) {
+    static async get(db: Database, id: number): Promise<?DomaineIntervention> {
         // Récupération
         const data = await db.get("select * from domaineIntervention where idDomaine = ?", id);
         return new DomaineIntervention(db, data);
     }
 
-    static async getForCitoyen(db, citoyen) {
+    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<DomaineIntervention>> {
         // Récupération
         if (citoyen instanceof Citoyen) {
             citoyen = citoyen.login;
@@ -39,19 +42,17 @@ class DomaineIntervention extends Model {
     }
 
     // Méthodes
-    #loginCitoyen; #citoyen = null;
-    async getCitoyen() {
+    #loginCitoyen: string; #citoyen: ?Citoyen = null;
+    async getCitoyen(): Promise<Citoyen> {
         // Récupération du citoyen
-        if (!this.#loginCitoyen) {
-            return null;
-        } else if (!this.#citoyen) {
+        if (!this.#citoyen) {
             this.#citoyen = await Citoyen.get(this.db, this.#loginCitoyen);
         }
 
         return this.#citoyen;
     }
 
-    setCitoyen(citoyen) {
+    setCitoyen(citoyen: Citoyen | string) {
         if (typeof citoyen === "string") {
             if (citoyen !== this.#loginCitoyen) {
                 this.#loginCitoyen = citoyen;
@@ -65,5 +66,3 @@ class DomaineIntervention extends Model {
         }
     }
 }
-
-export default DomaineIntervention;

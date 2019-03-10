@@ -1,12 +1,15 @@
+// @flow
 // Méthodes
-import Creneau from './Creneau'
-import Mission from './Mission'
+import type { Database } from "sqlite";
+
+import Creneau from './Creneau';
+import Mission from './Mission';
 import Postulation from "./Postulation";
 
 // Classe
-class CreneauMission extends Creneau {
+export default class CreneauMission extends Creneau {
     // Constructeur
-    constructor(db, { id, debut, fin, repetitions, ecart, mission }, fields = {}) {
+    constructor(db: Database, { id, debut, fin, repetitions, ecart, mission }:  { id: number, debut: string, fin: string, repetitions: number, ecart: string, mission: number }, fields: any = {}) {
         super(db, { id, debut, fin, repetitions, ecart }, fields);
 
         // Remplissage
@@ -14,13 +17,18 @@ class CreneauMission extends Creneau {
     }
 
     // Méthodes statiques
-    static async get(db, id) {
+    static async get(db: Database, id: number): Promise<?CreneauMission> {
         // Recupération
         const data = await db.get("select * from creneau_mission where id = ?", id);
-        return new CreneauMission(db, data);
+
+        if (data) {
+            return new CreneauMission(db, data);
+        } else {
+            return null;
+        }
     }
 
-    static async getForMission(db, mission) {
+    static async getForMission(db: Database, mission: Mission | number): Promise<Array<CreneauMission>> {
         // Récupération
         if (mission instanceof Mission) {
             mission = mission.id;
@@ -31,19 +39,17 @@ class CreneauMission extends Creneau {
     }
 
     // Méthodes
-    #idMission; #mission;
-    async getMission() {
+    #idMission: number; #mission: ?Mission = null;
+    async getMission(): Promise<Mission> {
         // Récupération de l'association
-        if (!this.#idMission) {
-            return null;
-        } else if (!this.#mission) {
+        if (!this.#mission) {
             this.#mission = await Mission.get(this.db, this.#idMission);
         }
 
         return this.#mission;
     }
 
-    setMission(mission) {
+    setMission(mission: Mission | number) {
         if (typeof mission === "number") {
             if (mission !== this.#idMission) {
                 this.#idMission = mission;
@@ -57,9 +63,7 @@ class CreneauMission extends Creneau {
         }
     }
 
-    async getPostulations() {
+    async getPostulations(): Promise<Array<Postulation>> {
         return await Postulation.getForCreneau(this.db, this);
     }
 }
-
-export default CreneauMission;

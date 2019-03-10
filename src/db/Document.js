@@ -1,19 +1,22 @@
+// @flow
 // Importations
+import type { Database } from "sqlite";
+
 import Citoyen from "./Citoyen";
 import Model from "./Model";
 
 // Classe
-class Document extends Model {
+export default class Document extends Model {
     // Attributs
-    titre;
-    lien;
+    titre: string;
+    lien: string;
 
     // Propriétés
-    #id;
-    get id() { return this.#id; }
+    #id: number;
+    get id(): number { return this.#id; }
 
     // Constructeur
-    constructor(db, { idDocument, titre, lien, loginCitoyen }, fields = {}) {
+    constructor(db: Database, { idDocument, titre, lien, loginCitoyen }: { idDocument: number, titre: string, lien: string, loginCitoyen: string }, fields: any = {}) {
         super(db, fields);
 
         // Remplissage
@@ -24,13 +27,18 @@ class Document extends Model {
     }
 
     // Méthodes statiques
-    static async get(db, id) {
+    static async get(db: Database, id: number): Promise<?Document> {
         // Récupération
         const data = await db.get("select * from document where idDocument = ?", id);
-        return new Document(db, data);
+
+        if (data) {
+            return new Document(db, data);
+        } else {
+            return null;
+        }
     }
 
-    static async getForCitoyen(db, citoyen) {
+    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<Document>> {
         // Recupération
         if (citoyen instanceof Citoyen) {
             citoyen = citoyen.login;
@@ -41,19 +49,17 @@ class Document extends Model {
     }
 
     // Méthodes
-    #loginCitoyen; #citoyen = null;
-    async getCitoyen() {
+    #loginCitoyen: string; #citoyen: ?Citoyen = null;
+    async getCitoyen(): Promise<Citoyen> {
         // Récupération du citoyen
-        if (!this.#loginCitoyen) {
-            return null;
-        } else if (!this.#citoyen) {
+        if (!this.#citoyen) {
             this.#citoyen = await Citoyen.get(this.db, this.#loginCitoyen);
         }
 
         return this.#citoyen;
     }
 
-    setCitoyen(citoyen) {
+    setCitoyen(citoyen: Citoyen | string) {
         if (typeof citoyen === "string") {
             if (citoyen !== this.#loginCitoyen) {
                 this.#loginCitoyen = citoyen;
@@ -67,5 +73,3 @@ class Document extends Model {
         }
     }
 }
-
-export default Document;

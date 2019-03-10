@@ -1,11 +1,13 @@
+// @flow
 // Méthodes
+import type { Database } from "sqlite";
 import Creneau from './Creneau'
 import Citoyen from './Citoyen'
 
 // Classe
-class CreneauCitoyen extends Creneau {
+export default class CreneauCitoyen extends Creneau {
     // Constructeur
-    constructor(db, { id, debut, fin, repetitions, ecart, citoyen }, fields = {}) {
+    constructor(db: Database, { id, debut, fin, repetitions, ecart, citoyen }: { id: number, debut: string, fin: string, repetitions: number, ecart: string, citoyen: string }, fields: any = {}) {
         super(db, { id, debut, fin, repetitions, ecart }, fields);
 
         // Remplissage
@@ -13,14 +15,18 @@ class CreneauCitoyen extends Creneau {
     }
 
     // Méthodes statiques
-    static async get(db, id) {
+    static async get(db: Database, id: number): Promise<?CreneauCitoyen> {
         // Recupération
         const data = await db.get("select * from creneau_citoyen where id = ?", id);
 
-        return new CreneauCitoyen(db, data);
+        if (data) {
+            return new CreneauCitoyen(db, data);
+        } else {
+            return null;
+        }
     }
 
-    static async getForCitoyen(db, citoyen) {
+    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<CreneauCitoyen>> {
         // Récupération
         if (citoyen instanceof Citoyen) {
             citoyen = citoyen.login;
@@ -31,19 +37,17 @@ class CreneauCitoyen extends Creneau {
     }
 
     // Méthodes
-    #loginCitoyen; #citoyen = null;
-    async getCitoyen() {
+    #loginCitoyen: string; #citoyen: ?Citoyen = null;
+    async getCitoyen(): Promise<Citoyen> {
         // Récupération du citoyen
-        if (!this.#loginCitoyen) {
-            return null;
-        } else if (!this.#citoyen) {
+        if (!this.#citoyen) {
             this.#citoyen = await Citoyen.get(this.db, this.#loginCitoyen);
         }
 
         return this.#citoyen;
     }
 
-    setCitoyen(citoyen) {
+    setCitoyen(citoyen: Citoyen | string) {
         if (typeof citoyen === "string") {
             if (citoyen !== this.#loginCitoyen) {
                 this.#loginCitoyen = citoyen;
@@ -57,5 +61,3 @@ class CreneauCitoyen extends Creneau {
         }
     }
 }
-
-export default CreneauCitoyen;

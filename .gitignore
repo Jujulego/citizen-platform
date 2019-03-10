@@ -40,6 +40,9 @@ package-lock.json
 # TypeScript v1 declaration files
 typings/
 
+# Flow-typed
+flow-typed
+
 # Optional npm cache directory
 .npm
 

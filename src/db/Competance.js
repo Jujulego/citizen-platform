@@ -1,19 +1,22 @@
+// @flow
 // Importations
-import Model from "./Model"
-import Citoyen from "./Citoyen"
+import type { Database } from "sqlite";
+
+import Model from "./Model";
+import Citoyen from "./Citoyen";
 
 // Classe
-class Competance extends Model {
+export default class Competance extends Model {
     // Attributs
-    nom;
-    description;
+    nom: string;
+    description: string;
 
     // Propriétés
-    #id;
-    get id() { return this.#id; }
+    #id: number;
+    get id(): number { return this.#id; }
 
     // Constructeur
-    constructor(db, { idCompetance, nom, description, loginCitoyen }, fields = {}) {
+    constructor(db: Database, { idCompetance, nom, description, loginCitoyen }: { idCompetance: number, nom: string, description: string, loginCitoyen: string }, fields: any = {}) {
         super(db, fields);
 
         // Remplissage
@@ -24,7 +27,7 @@ class Competance extends Model {
     }
 
     // Méthodes statiques
-    static async get(db, id) {
+    static async get(db: Database, id: number): Promise<?Competance> {
         // Récupération
         const data = await db.get("select * from competance where idCompetance = ?", id);
 
@@ -35,7 +38,7 @@ class Competance extends Model {
         }
     }
 
-    static async getForCitoyen(db, citoyen) {
+    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<Competance>> {
         // Récupération
         if (citoyen instanceof Citoyen) {
             citoyen = citoyen.login;
@@ -46,19 +49,17 @@ class Competance extends Model {
     }
 
     // Méthodes
-    #loginCitoyen; #citoyen = null;
-    async getCitoyen() {
+    #loginCitoyen: string; #citoyen: ?Citoyen = null;
+    async getCitoyen(): Promise<Citoyen> {
         // Récupération du citoyen
-        if (!this.#loginCitoyen) {
-            return null;
-        } else if (!this.#citoyen) {
+        if (!this.#citoyen) {
             this.#citoyen = await Citoyen.get(this.db, this.#loginCitoyen);
         }
 
         return this.#citoyen;
     }
 
-    setCitoyen(citoyen) {
+    setCitoyen(citoyen: Citoyen | string) {
         if (typeof citoyen === "string") {
             if (citoyen !== this.#loginCitoyen) {
                 this.#loginCitoyen = citoyen;
@@ -72,5 +73,3 @@ class Competance extends Model {
         }
     }
 }
-
-export default Competance;

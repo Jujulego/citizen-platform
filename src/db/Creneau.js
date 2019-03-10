@@ -1,20 +1,22 @@
+// @flow
 // Importations
-import Model from './model'
+import type { Database } from "sqlite";
+import Model from './Model';
 
 // Classe
-class Creneau extends Model {
+export default class Creneau extends Model {
     // Attributs
-    debut;
-    fin;
-    repetitions; // 0 => infini
-    ecart;       // entre 2 répétitions
+    debut: string;
+    fin: string;
+    repetitions: number; // 0 => infini
+    ecart: string;       // entre 2 répétitions
 
     // Propriétés
-    #id;
-    get id() { return this.#id; }
+    #id: number;
+    get id(): number { return this.#id; }
 
     // Constructeur
-    constructor(db, { id, debut, fin, repetitions, ecart }, fields = {}) {
+    constructor(db: Database, { id, debut, fin, repetitions, ecart }: { id: number, debut: string, fin: string, repetitions: number, ecart: string }, fields: any = {}) {
         super(db, fields);
 
         // Remplissage
@@ -25,5 +27,3 @@ class Creneau extends Model {
         this.ecart = ecart;
     }
 }
-
-export default Creneau;

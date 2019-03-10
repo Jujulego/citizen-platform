@@ -1,14 +1,16 @@
+// @flow
+// Importations
+import type { Database } from "sqlite";
+
 // Classe
-class Model {
+export default class Model {
     // Champ
-    db;
-    fields;
+    db: Database;
+    fields: any;
 
     // Constructeur
-    constructor(db, fields = {}) {
+    constructor(db: Database, fields: any = {}) {
         this.db = db;
         this.fields = fields;
     }
 }
-
-export default Model;

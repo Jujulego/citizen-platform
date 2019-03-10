@@ -1,13 +1,16 @@
+// @flow
 // Importations
+import type { Database } from "sqlite";
+
 import Model from "./Model";
 import Citoyen from "./Citoyen";
 import CreneauMission from "./CreneauMission";
 import Mission from "./Mission";
 
 // Classe
-class Postulation extends Model {
+export default class Postulation extends Model {
     // Constructeur
-    constructor(db, { creneau, citoyen }, fields = {}) {
+    constructor(db: Database, { creneau, citoyen }: { creneau: number, citoyen: string }, fields: any = {}) {
         super(db, fields);
 
         // Remplissage
@@ -16,7 +19,7 @@ class Postulation extends Model {
     }
 
     // Méthodes statiques
-    static async getForCreneau(db, creneau) {
+    static async getForCreneau(db: Database, creneau: CreneauMission | number): Promise<Array<Postulation>> {
         // Récupération
         if (creneau instanceof CreneauMission) {
             creneau = creneau.id;
@@ -26,7 +29,7 @@ class Postulation extends Model {
         return data.map((d) => new Postulation(db, d));
     }
 
-    static async getForCitoyen(db, citoyen) {
+    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<Postulation>> {
         // Récupération
         if (citoyen instanceof Citoyen) {
             citoyen = citoyen.login;
@@ -36,7 +39,7 @@ class Postulation extends Model {
         return data.map((d) => new Postulation(db, d));
     }
 
-    static async getForMission(db, mission) {
+    static async getForMission(db: Database, mission: Mission | number): Promise<Array<Postulation>> {
         // Récupération
         if (mission instanceof Mission) {
             mission = mission.id;
@@ -47,19 +50,17 @@ class Postulation extends Model {
     }
 
     // Méthodes
-    #idCreneau; #creneau = null;
-    async getCreneau() {
+    #idCreneau: number; #creneau: ?CreneauMission = null;
+    async getCreneau(): Promise<CreneauMission> {
         // Récupération du citoyen
-        if (!this.#idCreneau) {
-            return null;
-        } else if (!this.#creneau) {
+        if (!this.#creneau) {
             this.#creneau = await CreneauMission.get(this.db, this.#idCreneau);
         }
 
         return this.#creneau;
     }
 
-    setCreneau(creneau) {
+    setCreneau(creneau: CreneauMission | number) {
         if (typeof creneau === "number") {
             if (creneau !== this.#idCreneau) {
                 this.#idCreneau = creneau;
@@ -73,19 +74,17 @@ class Postulation extends Model {
         }
     }
 
-    #loginCitoyen; #citoyen = null;
-    async getCitoyen() {
+    #loginCitoyen: string; #citoyen: ?Citoyen = null;
+    async getCitoyen(): Promise<Citoyen> {
         // Récupération du citoyen
-        if (!this.#loginCitoyen) {
-            return null;
-        } else if (!this.#citoyen) {
+        if (!this.#citoyen) {
             this.#citoyen = await Citoyen.get(this.db, this.#loginCitoyen);
         }
 
         return this.#citoyen;
     }
 
-    setCitoyen(citoyen) {
+    setCitoyen(citoyen: Citoyen | string) {
         if (typeof citoyen === "string") {
             if (citoyen !== this.#loginCitoyen) {
                 this.#loginCitoyen = citoyen;
@@ -99,5 +98,3 @@ class Postulation extends Model {
         }
     }
 }
-
-export default Postulation;
