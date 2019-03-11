@@ -1,9 +1,9 @@
 // Importations
-import { Router } from 'express';
+import { Router } from "express";
 
 import Association from "../db/Association";
 import Citoyen from "../db/Citoyen";
-import utils from '../utils';
+import utils from "../utils";
 
 // Router
 export default function(db) {
@@ -69,11 +69,8 @@ export default function(db) {
 
     router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
         // Déconnexion
-        const asso = await Association.getLoggedInUser(db, req);
-        if (asso) asso.disconnect(req);
-
-        const user = await Citoyen.getLoggedInUser(db, req);
-        if (user) user.disconnect(req);
+        Association.disconnect(req);
+        Citoyen.disconnect(req);
 
         res.redirect("/");
     }));

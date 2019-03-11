@@ -18,7 +18,7 @@ describe("Association", function() {
     });
 
     test("authenticate", async function() {
-        const req = { session: {}, locals: {} };
+        const req: any = { session: {}, asso: null };
         const cred = { login: "001", mdp: "cmmdp" };
 
         // Connexion
@@ -29,26 +29,26 @@ describe("Association", function() {
 
         expect(asso.login).toBe(cred.login);
 
-        expect(req.locals.asso).toEqual(asso);
+        expect(req.asso).toEqual(asso);
         expect(req.session.assoLogin).toBe(cred.login);
         expect(req.session.connected).toBe(true);
 
         // Récup asso connectée
         // - depuis la db
-        req.locals.asso = undefined;
+        req.asso = undefined;
         const asso2 = await Association.getLoggedInUser(database, req);
 
         expect(asso2).toEqual(asso);
-        expect(req.locals.asso).toEqual(asso);
+        expect(req.asso).toEqual(asso);
 
         // - depuis la req
         const asso3 = await Association.getLoggedInUser(database, req);
         expect(asso3).toEqual(asso);
 
         // Déconnexion
-        asso.disconnect(req);
+        Association.disconnect(req);
 
-        expect(req.locals.asso).toBeUndefined();
+        expect(req.asso).toBeUndefined();
         expect(req.session.assoLogin).toBeUndefined();
         expect(req.session.connected).toBeFalsy();
     });

@@ -18,7 +18,7 @@ describe("Citoyen", function() {
     });
 
     test("authenticate", async function() {
-        const req = { session: {}, locals: {} };
+        const req: any = { session: {}, user: null };
         const cred = { login: "charleslegrand@carolingiens.fr", mdp: "jaiInventeLEcole" };
 
         // Connexion
@@ -30,24 +30,24 @@ describe("Citoyen", function() {
         expect(cit.login).toBe(cred.login);
         expect(req.session.userLogin).toBe(cred.login);
         expect(req.session.connected).toBe(true);
-        expect(req.locals.user).toEqual(cit);
+        expect(req.user).toEqual(cit);
 
         // Récup citoyen connectée
         // - depuis la db
-        req.locals.user = undefined;
+        req.user = undefined;
         const cit2 = await Citoyen.getLoggedInUser(database, req);
 
         expect(cit2).toEqual(cit);
-        expect(req.locals.user).toEqual(cit);
+        expect(req.user).toEqual(cit);
 
         // - depuis la req
         const cit3 = await Citoyen.getLoggedInUser(database, req);
         expect(cit3).toEqual(cit);
 
         // Déconnexion
-        cit.disconnect(req);
+        Citoyen.disconnect(req);
 
-        expect(req.locals.user).toBeUndefined();
+        expect(req.user).toBeUndefined();
         expect(req.session.userLogin).toBeUndefined();
         expect(req.session.connected).toBeFalsy();
     });

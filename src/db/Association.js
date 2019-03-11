@@ -55,9 +55,9 @@ export default class Association extends Model {
         if (data) {
             req.session.assoLogin = login;
             req.session.connected = true;
-            req.locals.asso = new Association(db, data);
+            req.asso = new Association(db, data);
 
-            return req.locals.asso;
+            return req.asso;
         } else {
             return null;
         }
@@ -65,12 +65,12 @@ export default class Association extends Model {
 
     static async getLoggedInUser(db: Database, req: $Request): Promise<?Association> {
         // Déjà récupéré ?
-        if (req.locals.asso) return req.locals.asso;
+        if (req.asso) return req.asso;
 
         // Récupération
         if (req.session.connected && req.session.assoLogin) {
             const asso = await Association.get(db, req.session.assoLogin);
-            if (asso) req.locals.asso = asso;
+            if (asso) req.asso = asso;
 
             return asso;
         }
@@ -78,13 +78,13 @@ export default class Association extends Model {
         return null;
     }
 
-    // Méthodes
-    disconnect(req: $Request) {
+    static disconnect(req: $Request) {
         req.session.connected = false;
         req.session.assoLogin = undefined;
-        req.locals.asso = undefined;
+        req.asso = undefined;
     }
 
+    // Méthodes
     async getMission(id: number): Promise<?Mission> {
         return await Mission.getWhereAsso(this.db, id, this);
     }

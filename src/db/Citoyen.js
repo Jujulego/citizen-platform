@@ -59,9 +59,9 @@ export default class Citoyen extends Model {
         if (data) {
             req.session.userLogin = login;
             req.session.connected = true;
-            req.locals.user = new Citoyen(db, data);
+            req.user = new Citoyen(db, data);
 
-            return req.locals.user;
+            return req.user;
         } else {
             return null;
         }
@@ -69,12 +69,12 @@ export default class Citoyen extends Model {
 
     static async getLoggedInUser(db: Database, req: $Request): Promise<?Citoyen> {
         // Déjà récupéré ?
-        if (req.locals.user) return req.locals.user;
+        if (req.user) return req.user;
 
         // Récupération
         if (req.session.connected && req.session.userLogin) {
             const user = await Citoyen.get(db, req.session.userLogin);
-            if (user) req.locals.user = user;
+            if (user) req.user = user;
 
             return user;
         }
@@ -82,13 +82,13 @@ export default class Citoyen extends Model {
         return null;
     }
 
-    // Méthodes
-    disconnect(req: $Request) {
+    static disconnect(req: $Request) {
         req.session.connected = false;
         req.session.userLogin = undefined;
-        req.locals.user = undefined;
+        req.user = undefined;
     }
 
+    // Méthodes
     async getCompetances(): Promise<Array<Competance>> {
         return await Competance.getForCitoyen(this.db, this);
     }
