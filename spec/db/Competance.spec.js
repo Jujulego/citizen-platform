@@ -10,10 +10,17 @@ describe("Competance", function() {
         const comp = await Competance.get(database, 1);
 
         expect(comp).not.toBeNull();
+        if (comp == null) return;
 
-        if (comp != null) {
-            expect(comp instanceof Competance).toBe(true);
-            expect(comp.nom).toBe("Management");
+        expect(comp instanceof Competance).toBe(true);
+        expect(comp.nom).toBe("Management");
+
+        // fk
+        const cit = await comp.citoyen.get();
+        expect(cit).not.toBeNull();
+
+        if (cit != null) {
+            expect(cit.login).toBe("premierempire@jesuislemeilleur.fr");
         }
     });
 });

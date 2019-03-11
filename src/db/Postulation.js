@@ -6,16 +6,21 @@ import Model from "./Model";
 import Citoyen from "./Citoyen";
 import CreneauMission from "./CreneauMission";
 import Mission from "./Mission";
+import ForeignKey from "./ForeignKey";
 
 // Classe
 export default class Postulation extends Model {
+    // Attributs
+    citoyen: ForeignKey<Citoyen>;
+    creneau: ForeignKey<CreneauMission>;
+
     // Constructeur
-    constructor(db: Database, { creneau, citoyen }: { creneau: number, citoyen: string }, fields: any = {}) {
+    constructor(db: Database, data: { creneau: number, citoyen: string }, fields: any = {}) {
         super(db, fields);
 
         // Remplissage
-        this.#idCreneau = creneau;
-        this.#loginCitoyen = citoyen;
+        this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.get(db, pk));
+        this.creneau = new ForeignKey<CreneauMission>(data.creneau, (pk) => CreneauMission.get(db, pk));
     }
 
     // Méthodes statiques
@@ -47,54 +52,5 @@ export default class Postulation extends Model {
 
         const data = await db.all("select creneau, citoyen from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", mission);
         return data.map((d) => new Postulation(db, d));
-    }
-
-    // Méthodes
-    #idCreneau: number; #creneau: ?CreneauMission = null;
-    async getCreneau(): Promise<CreneauMission> {
-        // Récupération du citoyen
-        if (!this.#creneau) {
-            this.#creneau = await CreneauMission.get(this.db, this.#idCreneau);
-        }
-
-        return this.#creneau;
-    }
-
-    setCreneau(creneau: CreneauMission | number) {
-        if (typeof creneau === "number") {
-            if (creneau !== this.#idCreneau) {
-                this.#idCreneau = creneau;
-                this.#creneau = null;
-            }
-        } else if (creneau instanceof CreneauMission) {
-            if (creneau.id === this.#idCreneau) {
-                this.#idCreneau = creneau.id;
-                this.#creneau = creneau;
-            }
-        }
-    }
-
-    #loginCitoyen: string; #citoyen: ?Citoyen = null;
-    async getCitoyen(): Promise<Citoyen> {
-        // Récupération du citoyen
-        if (!this.#citoyen) {
-            this.#citoyen = await Citoyen.get(this.db, this.#loginCitoyen);
-        }
-
-        return this.#citoyen;
-    }
-
-    setCitoyen(citoyen: Citoyen | string) {
-        if (typeof citoyen === "string") {
-            if (citoyen !== this.#loginCitoyen) {
-                this.#loginCitoyen = citoyen;
-                this.#citoyen = null;
-            }
-        } else if (citoyen instanceof Citoyen) {
-            if (citoyen.login === this.#loginCitoyen) {
-                this.#loginCitoyen = citoyen.login;
-                this.#citoyen = citoyen;
-            }
-        }
     }
 }
