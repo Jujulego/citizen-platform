@@ -7,7 +7,7 @@ import Model from './Model';
 import Mission from "./Mission";
 
 // Classe
-export default class Association extends Model {
+export default class Association extends Model<Association> {
     // Attributs
     #mdp: string;  // => privé
     nom: string;
@@ -39,25 +39,25 @@ export default class Association extends Model {
     }
 
     // Méthodes statiques
-    static async get(db: Database, login: string): Promise<?Association> {
-        const data = await db.get("select * from association where loginAsso = ?", login);
-
-        if (data) {
-            return new Association(db, data);
-        } else {
-            return null;
-        }
+    static async getByLogin(db: Database, login: string): Promise<?Association> {
+        return await Association.get(db,
+            "select * from association where loginAsso = ?", [login],
+            (data) => new Association(db, data)
+        );
     }
 
     static async authenticate(db: Database, req: $Request, { login, mdp }: { login: string, mdp: string }): Promise<?Association> {
-        const data = await db.get("select * from association where loginAsso = ? and mdpAsso = ?", [login, mdp]);
+        const asso = await Association.get(db,
+            "select * from association where loginAsso = ? and mdpAsso = ?", [login, mdp],
+            (data) => new Association(db, data)
+        );
 
-        if (data) {
+        if (asso) {
             req.session.assoLogin = login;
             req.session.connected = true;
-            req.asso = new Association(db, data);
+            req.asso = asso;
 
-            return req.asso;
+            return asso;
         } else {
             return null;
         }
@@ -69,7 +69,7 @@ export default class Association extends Model {
 
         // Récupération
         if (req.session.connected && req.session.assoLogin) {
-            const asso = await Association.get(db, req.session.assoLogin);
+            const asso = await Association.getByLogin(db, req.session.assoLogin);
             if (asso) req.asso = asso;
 
             return asso;
@@ -86,10 +86,10 @@ export default class Association extends Model {
 
     // Méthodes
     async getMission(id: number): Promise<?Mission> {
-        return await Mission.getWhereAsso(this.db, id, this);
+        return await Mission.getByIdAndAsso(this.db, id, this);
     }
 
     async getMissions(): Promise<Array<Mission>> {
-        return await Mission.getForAsso(this.db, this);
+        return await Mission.allByAsso(this.db, this);
     }
 }

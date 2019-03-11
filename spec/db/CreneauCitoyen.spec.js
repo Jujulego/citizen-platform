@@ -7,7 +7,7 @@ import { database } from "../database";
 describe("CreneauCitoyen", function() {
     // Tests
     test("get", async function() {
-        const cre = await CreneauCitoyen.get(database, 1);
+        const cre = await CreneauCitoyen.getById(database, 1);
 
         expect(cre).not.toBeNull();
 

@@ -7,7 +7,7 @@ import { database } from "../database";
 describe("Mission", function() {
     // Tests
     test("get", async function() {
-        const mission = await Mission.get(database, 1);
+        const mission = await Mission.getById(database, 1);
 
         expect(mission).not.toBeNull();
 

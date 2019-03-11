@@ -7,7 +7,7 @@ import { database } from "../database";
 describe("DomaineIntervention", function() {
     // Tests
     test("get", async function() {
-        const dom = await DomaineIntervention.get(database, 1);
+        const dom = await DomaineIntervention.getById(database, 1);
 
         expect(dom).not.toBeNull();
 

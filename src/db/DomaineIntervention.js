@@ -7,7 +7,7 @@ import Citoyen from "./Citoyen";
 import ForeignKey from "./ForeignKey";
 
 // Classe
-export default class DomaineIntervention extends Model {
+export default class DomaineIntervention extends Model<DomaineIntervention> {
     // Attributs
     nom: string;
     citoyen: ForeignKey<Citoyen>;
@@ -23,23 +23,21 @@ export default class DomaineIntervention extends Model {
         // Méthodes
         this.#id = data.idDomaine;
         this.nom = data.nom;
-        this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.get(db, pk));
+        this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.getByLogin(db, pk));
     }
 
     // Méthodes statiques
-    static async get(db: Database, id: number): Promise<?DomaineIntervention> {
-        // Récupération
-        const data = await db.get("select * from domaineIntervention where idDomaine = ?", id);
-        return new DomaineIntervention(db, data);
+    static async getById(db: Database, id: number): Promise<?DomaineIntervention> {
+        return await DomaineIntervention.get(db,
+            "select * from domaineIntervention where idDomaine = ?", [id],
+            (data) => new DomaineIntervention(db, data)
+        );
     }
 
-    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<DomaineIntervention>> {
-        // Récupération
-        if (citoyen instanceof Citoyen) {
-            citoyen = citoyen.login;
-        }
-
-        const data = await db.all("select * from domaineIntervention where loginCitoyen = ?", citoyen);
-        return data.map((d) => new DomaineIntervention(db, d));
+    static async allByCitoyen(db: Database, citoyen: Citoyen): Promise<Array<DomaineIntervention>> {
+        return await DomaineIntervention.all(db,
+            "select * from domaineIntervention where loginCitoyen = ?", [citoyen.login],
+            (data) => new DomaineIntervention(db, data)
+        );
     }
 }

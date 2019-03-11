@@ -12,6 +12,8 @@ export default function(db) {
     // mon profil
     router.get('/', utils.user_guard(async function(req, res, next) { //route
         const user = await Citoyen.getLoggedInUser(db, req);
+        console.log(user);
+        console.log(await user.getCompetances());
 
         res.render('profil-benevole', { //lien entre la route et le pug profil
             title: "Mon Profil",

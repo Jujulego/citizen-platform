@@ -4,7 +4,7 @@ import type { Database } from "sqlite";
 import Model from './Model';
 
 // Classe
-export default class Creneau extends Model {
+export default class Creneau<T: Creneau<*>> extends Model<T> {
     // Attributs
     debut: string;
     fin: string;

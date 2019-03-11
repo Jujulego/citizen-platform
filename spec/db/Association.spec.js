@@ -7,7 +7,7 @@ import { database } from "../database"
 describe("Association", function() {
     // Tests
     test("get", async function() {
-        const asso = await Association.get(database, "001");
+        const asso = await Association.getByLogin(database, "001");
 
         expect(asso).not.toBeNull();
 

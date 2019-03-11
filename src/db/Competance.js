@@ -7,7 +7,7 @@ import Citoyen from "./Citoyen";
 import ForeignKey from "./ForeignKey";
 
 // Classe
-export default class Competance extends Model {
+export default class Competance extends Model<Competance> {
     // Attributs
     nom: string;
     description: string;
@@ -25,28 +25,21 @@ export default class Competance extends Model {
         this.#id = data.idCompetance;
         this.nom = data.nom;
         this.description = data.description;
-        this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.get(db, pk));
+        this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.getByLogin(db, pk));
     }
 
     // Méthodes statiques
-    static async get(db: Database, id: number): Promise<?Competance> {
-        // Récupération
-        const data = await db.get("select * from competance where idCompetance = ?", id);
-
-        if (data) {
-            return new Competance(db, data);
-        } else {
-            return null;
-        }
+    static async getById(db: Database, id: number): Promise<?Competance> {
+        return await Competance.get(db,
+            "select * from competance where idCompetance = ?", [id],
+            (data) => new Competance(db, data)
+        );
     }
 
-    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<Competance>> {
-        // Récupération
-        if (citoyen instanceof Citoyen) {
-            citoyen = citoyen.login;
-        }
-
-        const data = await db.all("select * from competance where loginCitoyen = ?", citoyen);
-        return data.map((d) => new Competance(db, d));
+    static async getForCitoyen(db: Database, citoyen: Citoyen): Promise<Array<Competance>> {
+        return await Competance.all(db,
+            "select * from competance where loginCitoyen = ?", [citoyen.login],
+            (data) => new Competance(db, data)
+        );
     }
 }

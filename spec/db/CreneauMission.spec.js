@@ -7,7 +7,7 @@ import { database } from "../database";
 describe("CreneauMission", function() {
     // Tests
     test("get", async function() {
-        const cre = await CreneauMission.get(database, 1);
+        const cre = await CreneauMission.getById(database, 1);
 
         expect(cre).not.toBeNull();
 

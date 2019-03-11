@@ -9,7 +9,7 @@ import Mission from "./Mission";
 import ForeignKey from "./ForeignKey";
 
 // Classe
-export default class Postulation extends Model {
+export default class Postulation extends Model<Postulation> {
     // Attributs
     citoyen: ForeignKey<Citoyen>;
     creneau: ForeignKey<CreneauMission>;
@@ -19,38 +19,29 @@ export default class Postulation extends Model {
         super(db, fields);
 
         // Remplissage
-        this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.get(db, pk));
-        this.creneau = new ForeignKey<CreneauMission>(data.creneau, (pk) => CreneauMission.get(db, pk));
+        this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.getByLogin(db, pk));
+        this.creneau = new ForeignKey<CreneauMission>(data.creneau, (pk) => CreneauMission.getById(db, pk));
     }
 
     // Méthodes statiques
-    static async getForCreneau(db: Database, creneau: CreneauMission | number): Promise<Array<Postulation>> {
-        // Récupération
-        if (creneau instanceof CreneauMission) {
-            creneau = creneau.id;
-        }
-
-        const data = await db.all("select * from postulation where creneau = ?", creneau);
-        return data.map((d) => new Postulation(db, d));
+    static async allByCreneauMission(db: Database, creneau: CreneauMission): Promise<Array<Postulation>> {
+        return await Postulation.all(db,
+            "select * from postulation where creneau = ?", [creneau.id],
+            (data) => new Postulation(db, data)
+        );
     }
 
-    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<Postulation>> {
-        // Récupération
-        if (citoyen instanceof Citoyen) {
-            citoyen = citoyen.login;
-        }
-
-        const data = await db.all("select * from postulation where citoyen = ?", citoyen);
-        return data.map((d) => new Postulation(db, d));
+    static async allByCitoyen(db: Database, citoyen: Citoyen): Promise<Array<Postulation>> {
+        return await Postulation.all(db,
+            "select * from postulation where citoyen = ?", [citoyen.login],
+            (data) => new Postulation(db, data)
+        );
     }
 
-    static async getForMission(db: Database, mission: Mission | number): Promise<Array<Postulation>> {
-        // Récupération
-        if (mission instanceof Mission) {
-            mission = mission.id;
-        }
-
-        const data = await db.all("select creneau, citoyen from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", mission);
-        return data.map((d) => new Postulation(db, d));
+    static async allByMission(db: Database, mission: Mission): Promise<Array<Postulation>> {
+        return await Postulation.all(db,
+            "select creneau, citoyen from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", [mission.id],
+            (data) => new Postulation(db, data)
+        );
     }
 }

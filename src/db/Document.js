@@ -7,7 +7,7 @@ import Citoyen from "./Citoyen";
 import ForeignKey from "./ForeignKey";
 
 // Classe
-export default class Document extends Model {
+export default class Document extends Model<Document> {
     // Attributs
     titre: string;
     lien: string;
@@ -25,28 +25,21 @@ export default class Document extends Model {
         this.#id   = data.idDocument;
         this.titre = data.titre;
         this.lien  = data.lien;
-        this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.get(db, pk));
+        this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.getByLogin(db, pk));
     }
 
     // Méthodes statiques
-    static async get(db: Database, id: number): Promise<?Document> {
-        // Récupération
-        const data = await db.get("select * from document where idDocument = ?", id);
-
-        if (data) {
-            return new Document(db, data);
-        } else {
-            return null;
-        }
+    static async getById(db: Database, id: number): Promise<?Document> {
+        return await Document.get(db,
+            "select * from document where idDocument = ?", [id],
+            (data) => new Document(db, data)
+        );
     }
 
-    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<Document>> {
-        // Recupération
-        if (citoyen instanceof Citoyen) {
-            citoyen = citoyen.login;
-        }
-
-        const data = await db.all("select * from document where loginCitoyen = ?", citoyen);
-        return data.map((d) => new Document(db, d));
+    static async allByCitoyen(db: Database, citoyen: Citoyen): Promise<Array<Document>> {
+        return await Document.all(db,
+            "select * from document where loginCitoyen = ?", [citoyen.login],
+            (data) => new Document(db, data)
+        );
     }
 }

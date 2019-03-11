@@ -7,7 +7,7 @@ import { database } from "../database";
 describe("Document", function() {
     // Tests
     test("get", async function() {
-        const doc = await Document.get(database, 1);
+        const doc = await Document.getById(database, 1);
 
         expect(doc).not.toBeNull();
 

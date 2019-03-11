@@ -7,7 +7,7 @@ import { database } from "../database";
 describe("Competance", function() {
     // Tests
     test("get", async function() {
-        const comp = await Competance.get(database, 1);
+        const comp = await Competance.getById(database, 1);
 
         expect(comp).not.toBeNull();
         if (comp == null) return;

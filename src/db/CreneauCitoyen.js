@@ -7,7 +7,7 @@ import Citoyen from "./Citoyen";
 import ForeignKey from "./ForeignKey";
 
 // Classe
-export default class CreneauCitoyen extends Creneau {
+export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
     // Attributs
     citoyen: ForeignKey<Citoyen>;
 
@@ -16,28 +16,21 @@ export default class CreneauCitoyen extends Creneau {
         super(db, data, fields);
 
         // Remplissage
-        this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.get(db, pk));
+        this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.getByLogin(db, pk));
     }
 
     // Méthodes statiques
-    static async get(db: Database, id: number): Promise<?CreneauCitoyen> {
-        // Recupération
-        const data = await db.get("select * from creneau_citoyen where id = ?", id);
-
-        if (data) {
-            return new CreneauCitoyen(db, data);
-        } else {
-            return null;
-        }
+    static async getById(db: Database, id: number): Promise<?CreneauCitoyen> {
+        return await CreneauCitoyen.get(db,
+            "select * from creneau_citoyen where id = ?", [id],
+            (data) => new CreneauCitoyen(db, data)
+        );
     }
 
-    static async getForCitoyen(db: Database, citoyen: Citoyen | string): Promise<Array<CreneauCitoyen>> {
-        // Récupération
-        if (citoyen instanceof Citoyen) {
-            citoyen = citoyen.login;
-        }
-
-        const data = await db.all("select * from creneau_citoyen where citoyen = ? order by debut", citoyen);
-        return data.map((d) => new CreneauCitoyen(db, d));
+    static async allByCitoyen(db: Database, citoyen: Citoyen): Promise<Array<CreneauCitoyen>> {
+        return await CreneauCitoyen.all(db,
+            "select * from creneau_citoyen where citoyen = ? order by debut", [citoyen.login],
+            (data) => new CreneauCitoyen(db, data)
+        );
     }
 }

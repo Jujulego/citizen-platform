@@ -8,7 +8,7 @@ import Postulation from "./Postulation";
 import ForeignKey from "./ForeignKey";
 
 // Classe
-export default class CreneauMission extends Creneau {
+export default class CreneauMission extends Creneau<CreneauMission> {
     // Attributs
     mission: ForeignKey<Mission>;
 
@@ -17,33 +17,26 @@ export default class CreneauMission extends Creneau {
         super(db, data, fields);
 
         // Remplissage
-        this.mission = new ForeignKey<Mission>(data.mission, (pk) => Mission.get(db, pk));
+        this.mission = new ForeignKey<Mission>(data.mission, (pk) => Mission.getById(db, pk));
     }
 
     // Méthodes statiques
-    static async get(db: Database, id: number): Promise<?CreneauMission> {
-        // Recupération
-        const data = await db.get("select * from creneau_mission where id = ?", id);
-
-        if (data) {
-            return new CreneauMission(db, data);
-        } else {
-            return null;
-        }
+    static async getById(db: Database, id: number): Promise<?CreneauMission> {
+        return await CreneauMission.get(db,
+            "select * from creneau_mission where id = ?", [id],
+            (data) => new CreneauMission(db, data)
+        );
     }
 
-    static async getForMission(db: Database, mission: Mission | number): Promise<Array<CreneauMission>> {
-        // Récupération
-        if (mission instanceof Mission) {
-            mission = mission.id;
-        }
-
-        const data = await db.all("select * from creneau_mission where mission = ? order by debut", mission);
-        return data.map((d) => new CreneauMission(db, d));
+    static async allByMission(db: Database, mission: Mission): Promise<Array<CreneauMission>> {
+        return await CreneauMission.all(db,
+            "select * from creneau_mission where mission = ? order by debut", [mission.id],
+            (data) => new CreneauMission(db, data)
+        );
     }
 
     // Méthodes
     async getPostulations(): Promise<Array<Postulation>> {
-        return await Postulation.getForCreneau(this.db, this);
+        return await Postulation.allByCreneauMission(this.db, this);
     }
 }
