@@ -24,7 +24,7 @@ export default class Mission extends Model<Mission> {
 
     // Constructeur
     constructor(db: Database, data: { idMission: number, titre: string, lieu: string, description: string, loginAsso: string, nbPersAtteindre: number }, fields: any = {}) {
-        super(db, fields);
+        super(db, data.idMission, fields);
 
         // Remplissage
         this.#id   = data.idMission;
@@ -43,16 +43,16 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-    static async allByAsso(db: Database, asso: Association): Promise<Array<Mission>> {
-        return await Mission.all(db,
-            "select * from mission where loginAsso = ?", [asso.login],
+    static async getByIdAndAsso(db: Database, id: number, asso: Association): Promise<?Mission> {
+        return await Mission.get(db,
+            "select * from mission where idMission = ? and loginAsso = ?", [id, asso.login],
             (data) => new Mission(db, data)
         );
     }
 
-    static async getByIdAndAsso(db: Database, id: number, asso: Association): Promise<?Mission> {
-        return await Mission.get(db,
-            "select * from mission where idMission = ? and loginAsso = ?", [id, asso.login],
+    static async allByAsso(db: Database, asso: Association): Promise<Array<Mission>> {
+        return await Mission.all(db,
+            "select * from mission where loginAsso = ?", [asso.login],
             (data) => new Mission(db, data)
         );
     }

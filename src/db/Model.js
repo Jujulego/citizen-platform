@@ -9,13 +9,13 @@ export default class Model<T: Model<*>> {
     fields: any;
 
     // Propriétés
-    #pk: any;
-    get pk() {
+    #pk: ?string | number;
+    get pk(): ?string | number {
         return this.#pk;
     }
 
     // Constructeur
-    constructor(db: Database, pk: any, fields: any = {}) {
+    constructor(db: Database, pk: ?string | number, fields: { [string]: any } = {}) {
         this.db = db;
         this.fields = fields;
         this.#pk = pk;

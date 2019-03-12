@@ -18,7 +18,7 @@ export default class DomaineIntervention extends Model<DomaineIntervention> {
 
     // Constructeur
     constructor(db: Database, data: { idDomaine: number, nom: string, loginCitoyen: string }, fields: any = {}) {
-        super(db, fields);
+        super(db, data.idDomaine, fields);
 
         // Méthodes
         this.#id = data.idDomaine;

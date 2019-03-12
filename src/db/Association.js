@@ -23,19 +23,19 @@ export default class Association extends Model<Association> {
     get login(): string { return this.#login }
 
     // Constructeur
-    constructor(db: Database, { loginAsso, mdpAsso, nom, presentation, adresse, mail, tel, siteWeb, siret }: { loginAsso: string, mdpAsso: string, nom: string, presentation: string, adresse: string, mail: string, tel: string, siteWeb: string, siret: string }, fields: any = {}) {
-        super(db, fields);
+    constructor(db: Database, data: { loginAsso: string, mdpAsso: string, nom: string, presentation: string, adresse: string, mail: string, tel: string, siteWeb: string, siret: string }, fields: any = {}) {
+        super(db, data.loginAsso, fields);
 
         // Remplissage
-        this.#login = loginAsso;
-        this.#mdp  = mdpAsso;
-        this.nom   = nom;
-        this.presentation = presentation;
-        this.adresse = adresse;
-        this.mail  = mail;
-        this.tel   = tel;
-        this.siteWeb = siteWeb;
-        this.siret = siret;
+        this.#login = data.loginAsso;
+        this.#mdp   = data.mdpAsso;
+        this.nom    = data.nom;
+        this.presentation = data.presentation;
+        this.adresse = data.adresse;
+        this.mail   = data.mail;
+        this.tel    = data.tel;
+        this.siteWeb = data.siteWeb;
+        this.siret  = data.siret;
     }
 
     // Méthodes statiques

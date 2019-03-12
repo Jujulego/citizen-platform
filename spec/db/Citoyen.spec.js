@@ -51,4 +51,38 @@ describe("Citoyen", function() {
         expect(req.session.userLogin).toBeUndefined();
         expect(req.session.connected).toBeFalsy();
     });
+
+    test("create/update/delete", async function() {
+        // Create
+        const cit = await Citoyen.create(database, {
+            loginCitoyen: "test@gmail.com",
+            mdpCitoyen: "test",
+            nom: "Test",
+            prenom: "Test",
+            adresse: "Test",
+            situation: "Test",
+            tel: "Test",
+            permis: false,
+        });
+
+        const cit2 = await Citoyen.getByLogin(database, "test@gmail.com");
+        expect(cit2).not.toBeNull();
+
+        // Update
+        cit.nom = "Super Test";
+        await cit.save();
+
+        const cit3 = await Citoyen.getByLogin(database, "test@gmail.com");
+        expect(cit3).not.toBeNull();
+
+        if (cit3 != null) {
+            expect(cit3.nom).toBe("Super Test");
+        }
+
+        // Delete
+        await cit.delete();
+
+        const cit4 = await Citoyen.getByLogin(database, "test@gmail.com");
+        expect(cit4).toBeNull();
+    });
 });

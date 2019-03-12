@@ -19,7 +19,7 @@ export default class Document extends Model<Document> {
 
     // Constructeur
     constructor(db: Database, data: { idDocument: number, titre: string, lien: string, loginCitoyen: string }, fields: any = {}) {
-        super(db, fields);
+        super(db, data.idDocument, fields);
 
         // Remplissage
         this.#id   = data.idDocument;

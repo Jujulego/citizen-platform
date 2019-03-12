@@ -19,7 +19,7 @@ export default class Competance extends Model<Competance> {
 
     // Constructeur
     constructor(db: Database, data: { idCompetance: number, nom: string, description: string, loginCitoyen: string }, fields: any = {}) {
-        super(db, fields);
+        super(db, data.idCompetance, fields);
 
         // Remplissage
         this.#id = data.idCompetance;

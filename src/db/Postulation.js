@@ -16,7 +16,7 @@ export default class Postulation extends Model<Postulation> {
 
     // Constructeur
     constructor(db: Database, data: { creneau: number, citoyen: string }, fields: any = {}) {
-        super(db, fields);
+        super(db, null, fields);
 
         // Remplissage
         this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.getByLogin(db, pk));

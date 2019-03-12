@@ -16,14 +16,14 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
     get id(): number { return this.#id; }
 
     // Constructeur
-    constructor(db: Database, { id, debut, fin, repetitions, ecart }: { id: number, debut: string, fin: string, repetitions: number, ecart: string }, fields: any = {}) {
-        super(db, fields);
+    constructor(db: Database, data: { id: number, debut: string, fin: string, repetitions: number, ecart: string }, fields: any = {}) {
+        super(db, data.id, fields);
 
         // Remplissage
-        this.#id = id;
-        this.debut = debut;
-        this.fin = fin;
-        this.repetitions = repetitions;
-        this.ecart = ecart;
+        this.#id   = data.id;
+        this.debut = data.debut;
+        this.fin   = data.fin;
+        this.repetitions = data.repetitions;
+        this.ecart = data.ecart;
     }
 }
