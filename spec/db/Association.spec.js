@@ -1,7 +1,7 @@
 // @flow
 // Importations
-import Association from "../../src/db/Association";
 import { database } from "../database"
+import Association from "../../src/db/Association";
 
 // Tests
 describe("Association", function() {
@@ -51,5 +51,41 @@ describe("Association", function() {
         expect(req.asso).toBeUndefined();
         expect(req.session.assoLogin).toBeUndefined();
         expect(req.session.connected).toBeFalsy();
+    });
+
+    test("create/update/delete", async function() {
+        // Create
+        const asso = await Association.create(database, {
+            loginAsso: "test@gmail.com",
+            mdpAsso: "test",
+            nom: "Test",
+            presentation: "Blablablablablablablablabla",
+            adresse: "Test",
+            situation: "Test",
+            mail: "test@gmail.com",
+            tel: "Test",
+            siteWeb: "test.com",
+            siret: "01234567890123"
+        });
+
+        const asso2 = await Association.getByLogin(database, "test@gmail.com");
+        expect(asso2).not.toBeNull();
+
+        // Update
+        asso.nom = "Super Test";
+        await asso.save();
+
+        const asso3 = await Association.getByLogin(database, "test@gmail.com");
+        expect(asso3).not.toBeNull();
+
+        if (asso3 != null) {
+            expect(asso3.nom).toBe("Super Test");
+        }
+
+        // Delete
+        await asso.delete();
+
+        const asso4 = await Association.getByLogin(database, "test@gmail.com");
+        expect(asso4).toBeNull();
     });
 });

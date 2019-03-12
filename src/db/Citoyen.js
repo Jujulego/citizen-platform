@@ -42,7 +42,8 @@ export default class Citoyen extends Model<Citoyen> {
 
     // Méthodes statiques
     static async create(db: Database, data: { loginCitoyen: string, mdpCitoyen: string, nom: string, prenom: string, adresse: string, tel: string, situation: string, permis: boolean }): Promise<Citoyen> {
-        await db.run("insert into citoyen values (?, ?, ?, ?, ?, ?, ?, ?)",
+        await db.run(
+            "insert into citoyen values (?, ?, ?, ?, ?, ?, ?, ?)",
             [data.loginCitoyen, data.mdpCitoyen, data.nom, data.prenom, data.adresse, data.tel, data.situation, data.permis]
         );
 
@@ -98,13 +99,16 @@ export default class Citoyen extends Model<Citoyen> {
 
     // Méthodes
     async save(): Promise<void> {
-        await this.db.run("update citoyen set nom=?, prenom=?, adresse=?, tel=?, situation=?, permis=? where loginCitoyen=?",
+        await this.db.run(
+            "update citoyen set nom=?, prenom=?, adresse=?, tel=?, situation=?, permis=? where loginCitoyen=?",
             [this.nom, this.prenom, this.adresse, this.tel, this.situation, this.permis, this.login]
-        )
+        );
     }
 
     async delete(): Promise<void> {
-        await this.db.run("delete from citoyen where loginCitoyen=?", [this.login])
+        await this.db.run(
+            "delete from citoyen where loginCitoyen=?", [this.login]
+        );
     }
 
     async getCompetances(): Promise<Array<Competance>> {

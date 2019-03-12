@@ -39,6 +39,15 @@ export default class Association extends Model<Association> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { loginAsso: string, mdpAsso: string, nom: string, presentation: string, adresse: string, mail: string, tel: string, siteWeb: string, siret: string }): Promise<Association> {
+        await db.run(
+            "insert into association values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [data.loginAsso, data.mdpAsso, data.nom, data.adresse, data.mail, data.tel, data.siteWeb, data.presentation, data.siret]
+        );
+
+        return new Association(db, data);
+    }
+
     static async getByLogin(db: Database, login: string): Promise<?Association> {
         return await Association.get(db,
             "select * from association where loginAsso = ?", [login],
@@ -85,6 +94,19 @@ export default class Association extends Model<Association> {
     }
 
     // Méthodes
+    async save(): Promise<void> {
+        await this.db.run(
+            "update association set nom=?, presentation=?, adresse=?, mail=?, tel=?, siteWeb=?, siret=? where loginAsso=?",
+            [this.nom, this.presentation, this.adresse, this.mail, this.tel, this.siteWeb, this.siret, this.login]
+        );
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from association where loginAsso=?", [this.login]
+        );
+    }
+
     async getMission(id: number): Promise<?Mission> {
         return await Mission.getByIdAndAsso(this.db, id, this);
     }
