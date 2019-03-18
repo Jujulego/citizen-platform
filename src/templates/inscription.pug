@@ -13,58 +13,62 @@ block content
         h1(id="page-top" class="text-center ")= "Inscription"
 
     section(class="container-fluid")
-        form(class="m-3")
+        form(class="m-3" method="post")
             div(class="row mb-3")
                 div(class="col-6")
-                    input(class="form-control" type="text" placeholder="* Nom")
+                    input(class="form-control" name="nom" type="text" placeholder="Nom*" value=values.nom required)
 
                 div(class="col-6")
-                    input(class="form-control" type="text" placeholder="* Prenom")
-
-            div(class="row mb-3")
-                div(class="col-6")
-                    input(class="form-control" type="email" placeholder="* Login")
+                    input(class="form-control" name="prenom" type="text" placeholder="Prenom*" value=values.prenom required)
 
             div(class="row mb-3")
                 div(class="col-6")
-                    input(class="form-control" type="password" placeholder="Mot de passe")
+                    input(class=("form-control" + (loginExists ? " is-invalid" : ""))
+                          name="login" type="email" placeholder="Login*" value=values.login required)
 
-                div(class="col-6")
-                    input(class="form-control" type="password" placeholder="* Confirmer le mot de passe")
+                    if loginExists
+                        div(class="invalid-feedback") Cet email est déjà pris
 
             div(class="row mb-3")
                 div(class="col-6")
-                    select(class="custom-select placeholder")
+                    input(class="form-control" name="mdp" type="password" placeholder="Mot de passe*" required)
+
+                div(class="col-6")
+                    input(class="form-control" type="password" placeholder="Confirmer le mot de passe*" required)
+
+            div(class="row mb-3")
+                div(class="col-6")
+                    select(class="custom-select placeholder" name="situation")
                         option(value selected hidden) Statut
-                        option Etudiant
-                        option Chômage
-                        option Commercial
-                        option Ingénieur
+                        option(value="1") Etudiant
+                        option(value="2") Chômage
+                        option(value="3") Commercial
+                        option(value="4") Ingénieur
 
             div(class="row mb-3")
                 div(class="col-6")
-                    input(class="form-control" type="text" placeholder="N° de téléphone")
+                    input(class="form-control" name="tel" type="text" placeholder="N° de téléphone" value=values.tel)
 
                 div(class="col-6 py-1")
                     label(class="mr-3 mb-0") Permis
                     div(class="form-check form-check-inline")
                         div(class="custom-control custom-radio")
-                            input(type="radio" class="custom-control-input" id="ex1" name="permis")
+                            input(type="radio" class="custom-control-input" id="ex1" name="permis" value="true")
                             label(class="custom-control-label" for="ex1") Oui
 
                     div(class="form-check form-check-inline")
                         div(class="custom-control custom-radio")
-                            input(type="radio" class="custom-control-input" id="ex2" name="permis" checked)
+                            input(type="radio" class="custom-control-input" id="ex2" name="permis" value="false" checked)
                             label(class="custom-control-label" for="ex2") Non
 
             div(class="row mb-3")
                 div(class="col")
-                    input(class="form-control" type="text" placeholder="Adresse")
+                    input(class="form-control" name="adresse" type="text" placeholder="Adresse" value=values.adresse)
 
             div(class="row mb-3")
                 div(class="col-auto mx-auto")
                     div(class="custom-control custom-checkbox")
-                        input(type="checkbox" class="custom-control-input" id="check2" required)
+                        input(id="check2" class="custom-control-input" type="checkbox" required)
                         label(class="custom-control-label" for="check2") En cochant cette case, j'accepte et je reconnais avoir pris connaissance des conditions d'utilisation
 
             div(class="row mb-3")

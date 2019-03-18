@@ -66,10 +66,7 @@ export default class Citoyen extends Model<Citoyen> {
         );
 
         if (user) {
-            req.session.userLogin = login;
-            req.session.connected = true;
-            req.user = user;
-
+            user.authenticate(req);
             return user;
         } else {
             return null;
@@ -98,6 +95,12 @@ export default class Citoyen extends Model<Citoyen> {
     }
 
     // Méthodes
+    authenticate(req: $Request) {
+        req.session.userLogin = this.login;
+        req.session.connected = true;
+        req.user = this;
+    }
+
     async save(): Promise<void> {
         await this.db.run(
             "update citoyen set nom=?, prenom=?, adresse=?, tel=?, situation=?, permis=? where loginCitoyen=?",
