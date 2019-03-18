@@ -21,6 +21,19 @@ export default class CreneauMission extends Creneau<CreneauMission> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { debut: string, fin: string, repetitions: number, ecart: string, mission: Mission }): Promise<CreneauMission> {
+        const res = await db.run(
+            "insert into creneau_mission values (null, ?, ?, ?, ?, ?)",
+            [data.debut, data.fin, data.repetitions, data.ecart, data.mission.id]
+        );
+
+        return new CreneauMission(db, {
+            id: res.stmt.lastID,
+            debut: data.debut, fin: data.fin, repetitions: data.repetitions, ecart: data.ecart,
+            mission: data.mission.id
+        });
+    }
+
     static async getById(db: Database, id: number): Promise<?CreneauMission> {
         return await CreneauMission.get(db,
             "select * from creneau_mission where id = ?", [id],
@@ -36,6 +49,19 @@ export default class CreneauMission extends Creneau<CreneauMission> {
     }
 
     // Méthodes
+    async save(): Promise<void> {
+        await this.db.run(
+            "update creneau_mission set debut=?, fin=?, repetitions=?, ecart=?, mission=? where id=?",
+            [this.debut, this.fin, this.repetitions, this.ecart, this.mission.pk, this.id]
+        )
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from creneau_mission where id=?", [this.id]
+        )
+    }
+
     async getPostulations(): Promise<Array<Postulation>> {
         return await Postulation.allByCreneauMission(this.db, this);
     }
