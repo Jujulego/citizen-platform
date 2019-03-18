@@ -1,0 +1,41 @@
+// Popup de Modif Citoyen
+div(class="modal fade" id="modifCitoyen" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" method="post" action="/user/modifCitoyen")
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span   Modifier son Profil
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+            
+            div(class="modal-body") 
+                div(class="form-group")
+                    label(for="inputNom") Nom :
+                    input(id="inputNom" name="nom" class="form-control" type="text" value=user.nom)
+                div(class="form-group")
+                    label(for="inputPrenom") Prénom :
+                    input(id="inputPrenom" name="prenom" class="form-control" type="text" value=user.prenom)
+                div(class="form-group")
+                    label(for="inputAdresse") Address :
+                    input(id="inputAdresse" name="adresse" class="form-control" type="text" value=user.adresse)
+                div(class="form-group")
+                    label(for="inputTel") Tel : 
+                    input(id="inputTel" name="tel" class="form-control" type="text" value=user.tel)
+                div(class="form-group")
+                    label(for="inputSituation") Situation :
+                    select(id="inputSituation" name="situation" class="custom-select placeholder")
+                        option(value selected hidden)= user.situation
+                        option(value="1") Etudiant
+                        option(value="2") Chômage
+                        option(value="3") Commercial
+                        option(value="4") Ingénieur
+                div(class="form-check")
+                    if user.permis
+                        input(class="form-check-input" checked type="checkbox" id="inputPermis" name="permis")
+                    else
+                        input(class="form-check-input" unchecked type="checkbox" id="inputPermis" name="permis")
+                    label(class="form-check-label" for="inputPermis") Permis B
+                        
+                
+            div(class="modal-footer")
+                button(class="btn btn-primary" type="submit") OK
