@@ -15,11 +15,11 @@ block content
                     
         //Liste missions proposées et déja sélectionnées (import de mission.pug & candidature.pug du dossier parts)
         article(class="col")
-            h5 Invitations Missions
+            //h5 Invitations Missions
             //morceau de mission
-            include parts/mission
+            //include parts/mission
 
             h5 Mes Candidatures
             //morceau de candidatures
-            include parts/candidature
-            include parts/candidature
+            each mission in missions
+                include parts/candidature

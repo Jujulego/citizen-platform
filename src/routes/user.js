@@ -26,9 +26,24 @@ export default function(db) {
     }));
 
     // mes candidatures
-    router.get('/candidatures', utils.login_guard(function(req, res, next) { //route
+    router.get('/candidatures', utils.login_guard(async function(req, res, next) { //route
+        const user = await Citoyen.getLoggedInUser(db, req);
+        const postulations = await user.getPostulations();
+        const missions = [];
+
+        for (let p of postulations) {
+            const c = await p.creneau.get();
+            missions.push({
+                creneau: c,
+                mission: await c.mission.get()
+            });
+        }
+
+        console.log(missions);
+
         res.render("candidatures", { //lien entre la route et le pug candidature
-            title: "Mes Candidatures"
+            title: "Mes Candidatures",
+            missions: missions
         });
     }));
 
