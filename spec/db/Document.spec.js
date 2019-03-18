@@ -14,7 +14,7 @@ describe("Document", function() {
 
         if (doc != null) {
             expect(doc instanceof Document).toBe(true);
-            expect(doc.titre).toBe("Lettre de mativation");
+            expect(doc.titre).toBe("Lettre de motivation");
         }
     });
 
