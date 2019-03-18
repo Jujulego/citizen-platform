@@ -1,76 +1,96 @@
 extends base
 
-append css
-    //Première page: page d'accuiel général
-    //import biblio
-    link(rel="stylesheet" href="/static/scss/inscription.css")
-    link(rel="stylesheet" href="/vendor/leaflet/dist/leaflet.css")
-
 block content
     //div= test
     header(class="row")
         //titre
-        h1(id="page-top" class="text-center ")= "Inscription"
+        h1(class="col text-center my-3")= "Inscription"
 
-    section(class="container-fluid")
-        form(class="m-3" method="post")
-            div(class="row mb-3")
-                div(class="col-6")
-                    input(class="form-control" name="nom" type="text" placeholder="Nom*" value=values.nom required)
+    section(class="row")
+        form(id="inscription-form" class="container-fluid needs-validation" method="post" novalidate)
+            div(class="row")
+                div(class="col-xl")
+                    fieldset(class="card mb-3")
+                        label(class="card-header") Identifiants
 
-                div(class="col-6")
-                    input(class="form-control" name="prenom" type="text" placeholder="Prenom*" value=values.prenom required)
+                        div(class="card-body")
+                            div(class="form-row")
+                                div(class="col-md-6 mb-3")
+                                    label(for="email-field") Email*
+                                    input(id="email-field" class=("form-control" + (loginExists ? " is-invalid" : ""))
+                                          name="login" type="email" placeholder="Email*" value=values.login required)
 
-            div(class="row mb-3")
-                div(class="col-6")
-                    input(class=("form-control" + (loginExists ? " is-invalid" : ""))
-                          name="login" type="email" placeholder="Login*" value=values.login required)
+                                    div(id="email-exists" class=("invalid-feedback" + (loginExists ? "" : " d-none"))) Cet email est déjà pris
+                                    div(id="no-email" class=("invalid-feedback" + (loginExists ? " d-none" : ""))) Renseignez un email
 
-                    if loginExists
-                        div(class="invalid-feedback") Cet email est déjà pris
+                            div(class="form-row")
+                                div(class="col-md mb-3 mb-md-0")
+                                    label(for="mdp-field") Mot de passe*
+                                    input(id="mdp-field" class="form-control"
+                                          name="mdp" type="password" placeholder="Mot de passe*" required)
 
-            div(class="row mb-3")
-                div(class="col-6")
-                    input(class="form-control" name="mdp" type="password" placeholder="Mot de passe*" required)
+                                div(class="col-md")
+                                    label(for="confirm-mdp-field") Confirmation*
+                                    input(id="confirm-mdp-field" class="form-control"
+                                          type="password" placeholder="Confirmez le mot de passe*" required novalidate)
 
-                div(class="col-6")
-                    input(class="form-control" type="password" placeholder="Confirmer le mot de passe*" required)
+                                    div(class="valid-feedback") Les mots de passes correspondent
+                                    div(class="invalid-feedback") Les mots de passes ne correspondent pas
 
-            div(class="row mb-3")
-                div(class="col-6")
-                    select(class="custom-select placeholder" name="situation")
-                        option(value selected hidden) Statut
-                        option(value="1") Etudiant
-                        option(value="2") Chômage
-                        option(value="3") Commercial
-                        option(value="4") Ingénieur
+                div(class="col-xl")
+                    fieldset(class="card mb-3")
+                        label(class="card-header") Informations complémentaires
 
-            div(class="row mb-3")
-                div(class="col-6")
-                    input(class="form-control" name="tel" type="text" placeholder="N° de téléphone" value=values.tel)
+                        div(class="card-body")
+                            div(class="form-row")
+                                div(class="col-md mb-3")
+                                    label(for="nom-field") Nom*
+                                    input(id="nom-field" class="form-control"
+                                          name="nom" type="text" placeholder="Nom*" value=values.nom required)
 
-                div(class="col-6 py-1")
-                    label(class="mr-3 mb-0") Permis
-                    div(class="form-check form-check-inline")
-                        div(class="custom-control custom-radio")
-                            input(type="radio" class="custom-control-input" id="ex1" name="permis" value="true")
-                            label(class="custom-control-label" for="ex1") Oui
+                                div(class="col-md mb-3")
+                                    label(for="prenom-field") Prénom*
+                                    input(id="prenom-field" class="form-control"
+                                          name="prenom" type="text" placeholder="Prenom*" value=values.prenom required)
 
-                    div(class="form-check form-check-inline")
-                        div(class="custom-control custom-radio")
-                            input(type="radio" class="custom-control-input" id="ex2" name="permis" value="false" checked)
-                            label(class="custom-control-label" for="ex2") Non
+                            div(class="form-row")
+                                div(class="col-md mb-3")
+                                    label(for="adresse-field") Adresse
+                                    input(id="adresse-field" class="form-control"
+                                    name="adresse" type="text" placeholder="Adresse" value=values.adresse)
 
-            div(class="row mb-3")
-                div(class="col")
-                    input(class="form-control" name="adresse" type="text" placeholder="Adresse" value=values.adresse)
+                            div(class="form-row")
+                                div(class="col-md mb-3")
+                                    label(for="tel-field") Téléphone
+                                    input(id="tel-field" class="form-control"
+                                          name="tel" type="text" placeholder="N° de téléphone" value=values.tel)
+
+                                div(class="col-md mb-3")
+                                    label(for="situation-field") Situation
+                                    select(id="situation-field" class="custom-select placeholder" name="situation")
+                                        option(value selected=(values.situation === undefined) hidden) Statut
+                                        option(value="1" selected=(values.situation === "1")) Etudiant
+                                        option(value="2" selected=(values.situation === "2")) Chômage
+                                        option(value="3" selected=(values.situation === "3")) Commercial
+                                        option(value="4" selected=(values.situation === "4")) Ingénieur
+
+                            div(class="form-group mb-0")
+                                div(class="custom-control custom-checkbox")
+                                    input(id="permis-field" class="custom-control-input"
+                                          name="permis" type="checkbox" checked=(permis==="true"))
+
+                                    label(for="permis-field" class="custom-control-label") Permis
+
+            div(class="row")
+                div(class="col ml-3")
+                    div(class="form-group")
+                        div(class="custom-control custom-checkbox")
+                            input(id="conditions-check" class="custom-control-input" type="checkbox" required)
+                            label(class="custom-control-label" for="conditions-check") En cochant cette case, j'accepte et je reconnais avoir pris connaissance des conditions d'utilisation
 
             div(class="row mb-3")
                 div(class="col-auto mx-auto")
-                    div(class="custom-control custom-checkbox")
-                        input(id="check2" class="custom-control-input" type="checkbox" required)
-                        label(class="custom-control-label" for="check2") En cochant cette case, j'accepte et je reconnais avoir pris connaissance des conditions d'utilisation
+                    button(class="btn btn-primary px-5" type="submit") Inscription
 
-            div(class="row mb-3")
-                div(class="col-auto mx-auto")
-                    button(class="btn btn-primary" type="submit") Inscription
+append js
+    script(src="/static/js/inscription.js")
