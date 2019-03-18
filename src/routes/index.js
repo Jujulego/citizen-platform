@@ -1,6 +1,7 @@
 // Importations
 import { Router } from 'express';
 import Mission from '../db/Mission';
+import Citoyen from "../db/Citoyen";
 
 // Router
 export default function(db) {
@@ -21,11 +22,49 @@ export default function(db) {
         .get(function(req, res, next) {
             res.render("inscription", {
                 title: "Inscription",
-                test: "ewzdtcrgbn,kl;m",
+                values: {}
             });
         })
-        .post(function(req, res, next) {
-            res.render("inscription");
+        .post(async function(req, res, next) {
+            // Valeurs
+            const { nom, prenom, login, mdp, situation, tel, permis, adresse } = req.body;
+
+            // Validation
+            if (!nom || !prenom || !login || !mdp) {
+                res.render("inscription", {
+                    title: "Inscription",
+                    values: { nom, prenom, login, situation, tel, permis, adresse }
+                });
+            } else {
+                try {
+                    let cit = await Citoyen.getByLogin(db, login);
+                    if (cit == null) {
+                        cit = await Citoyen.create(db, {
+                            nom: nom,
+                            prenom: prenom,
+                            loginCitoyen: login,
+                            mdpCitoyen: mdp,
+                            situation: situation,
+                            tel: tel,
+                            permis: (permis === "true"),
+                            adresse: adresse
+                        });
+
+                        cit.authenticate(req);
+                        res.redirect("/user/");
+
+                    } else {
+                        res.render("inscription", {
+                            title: "Inscription",
+                            loginExists: true,
+                            values: { nom, prenom, login, mdp, situation, tel, permis, adresse }
+                        });
+                    }
+                } catch(err) {
+                    console.error(err);
+                    next(err);
+                }
+            }
         });
 
     router.get('/test', function(req, res, next) { //route
