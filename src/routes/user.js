@@ -47,6 +47,57 @@ export default function(db) {
         });
     }));
 
+
+    //modifications Informations citoyen
+    router.post('/modifCitoyen',utils.login_guard(async function(req, res, next) {
+        // Récups nouv infos
+        const { nom, prenom, adresse, tel, situation, permis } = req.body;
+
+        // Modif user
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        let needSave = false;
+
+
+        if (nom !== user.nom) {
+            user.nom = nom;
+            needSave = true;
+        }
+
+        if(prenom !== user.prenom){
+            user.prenom = prenom;
+            needSave = true;
+        }
+
+        if(adresse !== user.adresse){
+            user.adresse = adresse;
+            needSave = true;
+        }
+
+        if(tel !== user.tel){
+            user.tel = tel;
+            needSave = true;
+        }
+
+        if(situation !== user.situation){
+            user.situation = situation;
+            needSave = true;
+        }
+
+        if(permis !== user.permis){
+            user.permis = permis;
+            needSave = true;
+        }
+
+        if (needSave) {
+            user.save()
+                .then(function() {
+                    res.redirect("/user");
+                });
+        }
+    }));
+
+
     router.post('/connexion', function(req, res, next) {
         // Déjà connecté ?
         if (req.session.connected) {

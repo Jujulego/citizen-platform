@@ -13,6 +13,7 @@ append jslib
 
 block content
     include parts/disponibilite-popup 
+    include parts/modifCitoyen
     //bootstrap
     header(class="row")
         div(class="col")
@@ -22,10 +23,15 @@ block content
     section(class="row")
         //bootstrap
         aside(class="col-3")
-            div(class="card mb-3 card-infos")   
+            div(class="card mb-3")   
                 div(class="card-header")
-                    p(class="mb-0") Informations personnelles
-                    a(href="#" class="btn btn-primary btn-sm right") Modifier Profil
+                    div(class="row")
+                        div(class="col")
+                            p(class="mb-0") Informations personnelles
+                            
+                        div(class="card-toolbar col-auto")
+                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen") 
+                                i(class="fas fa-user-edit")
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
@@ -65,28 +71,25 @@ block content
                 div(class="card-body")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel") 
-                            
+                        
+                            a(href="#" class="btn btn-primary btn-sm right") 
+                                i(class="fas fa-plus")
+                        
                             unless documents.length === 0
                                 div(class="row")
                                     h4 Documents
-                                    a(href="#")
-                                        i(class="fas fa-plus")
                                 each doc in documents
                                     a(href=doc.lien)= doc.titre
                             
                             unless domaineintervention.length === 0
                                 div(class="row")
                                     h4 Domaines d'intervention
-                                    a(href="#")
-                                        i(class="fas fa-plus")
                                 each dom in domaineintervention
                                     p= dom.nom
                                     
                             unless competances.length === 0
                                 div(class="row")
                                     h4 Savoir-Faire   
-                                    a(href="#") 
-                                        i(class="fas fa-plus")
                                 each sf in competances
                                     p= sf.nom + " : " + sf.description
                                                       
