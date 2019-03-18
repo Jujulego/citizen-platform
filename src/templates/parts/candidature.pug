@@ -1,12 +1,19 @@
 
+//Card d'une Mission - vision Citoyen - Où il a déjà postulé : morceau candidature que l'on retrouve dans profil citoyen
 div(class="card m-3")
-    //Card d'une Mission - vision Citoyen - Où il a déjà postulé : morceau candidature que l'on retrouve dans profil citoyen
+    div(class="card-header")
+        div(class="row")
+            div(class="col")
+                h5(class="card-title mb-0")= `${mission.mission.titre}, ${mission.mission.lieu}`
+        
     div(class="card-body")
-        h5(class="card-title")
-            span Title Mission, Location
-        h6(class="card-subtitle mb-2 text-muted") Date pour la Mission
-        div(class="card-text")
-            p Description de la mission : Eius populus ab incunabulis primis ad usque pueritiae tempus extremum, quod annis circumcluditur fere trecentis, circummurana pertulit bella, deinde aetatem ingressus adultam post multiplices bellorum aerumnas Alpes transcendit et fretum, in iuvenem erectus et virum ex omni plaga quam orbis ambit inmensus, reportavit laureas et triumphos, iamque vergens in senium et nomine solo aliquotiens vincens ad tranquilliora vitae discessit.
-    div(class="card-footer")
+        p(class="card-text")= mission.mission.description
+            
+    block footer
+        div(class="card-footer text-right px-3 py-1")
+            small(class="font-italic")=  mission.creneau.debut
+    
+    
+    //div(class="card-footer")
         i Date candidature
         strong(class="float-right") Statut
