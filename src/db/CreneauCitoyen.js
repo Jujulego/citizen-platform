@@ -20,6 +20,18 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { debut: string, fin: string, repetitions: number, ecart: string, citoyen: Citoyen }): Promise<CreneauCitoyen> {
+        const res = await db.run(
+            "insert into creneau_citoyen values (null, ?, ?, ?, ?, ?)",
+            [data.debut, data.fin, data.repetitions, data.ecart, data.citoyen.login]
+        );
+
+        return new CreneauCitoyen(db, {
+            id: res.stmt.lastID,
+            debut: data.debut, fin: data.fin, repetitions: data.repetitions, ecart: data.ecart,
+            citoyen: data.citoyen.login
+        });
+    }
 
     static async getById(db: Database, id: number): Promise<?CreneauCitoyen> {
         return await CreneauCitoyen.get(db,
@@ -33,5 +45,19 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
             "select * from creneau_citoyen where citoyen = ? order by debut", [citoyen.login],
             (data) => new CreneauCitoyen(db, data)
         );
+    }
+
+    // Méthodes
+    async save(): Promise<void> {
+        await this.db.run(
+            "update creneau_citoyen set debut=?, fin=?, repetitions=?, ecart=?, citoyen=? where id=?",
+            [this.debut, this.fin, this.repetitions, this.ecart, this.citoyen.pk, this.id]
+        )
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from creneau_citoyen where id=?", [this.id]
+        )
     }
 }
