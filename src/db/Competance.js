@@ -29,6 +29,19 @@ export default class Competance extends Model<Competance> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { nom: string, description: string, citoyen: Citoyen }): Promise<Competance> {
+        const res = await db.run(
+            "insert into competance values (null, ?, ?, ?)",
+            [data.nom, data.description, data.citoyen.pk]
+        );
+
+        return new Competance(db, {
+            idCompetance: res.stmt.lastID,
+            nom: data.nom, description: data.description,
+            loginCitoyen: data.citoyen.login,
+        });
+    }
+
     static async getById(db: Database, id: number): Promise<?Competance> {
         return await Competance.get(db,
             "select * from competance where idCompetance = ?", [id],
@@ -40,6 +53,20 @@ export default class Competance extends Model<Competance> {
         return await Competance.all(db,
             "select * from competance where loginCitoyen = ?", [citoyen.login],
             (data) => new Competance(db, data)
+        );
+    }
+
+    // Méthodes
+    async save(): Promise<void> {
+        await this.db.run(
+            "update competance set nom=?, description=?, loginCitoyen=? where idCompetance=?",
+            [this.nom, this.description, this.citoyen.pk, this.id]
+        );
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from competance where idCompetance=?", [this.id]
         );
     }
 }

@@ -20,6 +20,8 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { id: number, debut: string, fin: string, repetitions: number, ecart: string, citoyen: Citoyen }):
+
     static async getById(db: Database, id: number): Promise<?CreneauCitoyen> {
         return await CreneauCitoyen.get(db,
             "select * from creneau_citoyen where id = ?", [id],

@@ -29,6 +29,19 @@ export default class Document extends Model<Document> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { titre: string, lien: string, citoyen: Citoyen }): Promise<Document> {
+        const res = await db.run(
+            "insert into document values (null, ?, ?, ?)",
+            [data.titre, data.lien, data.citoyen.pk]
+        );
+
+        return new Document(db, {
+            idDocument: res.stmt.lastID,
+            titre: data.titre, lien: data.lien,
+            loginCitoyen: data.citoyen.login,
+        });
+    }
+
     static async getById(db: Database, id: number): Promise<?Document> {
         return await Document.get(db,
             "select * from document where idDocument = ?", [id],
@@ -40,6 +53,20 @@ export default class Document extends Model<Document> {
         return await Document.all(db,
             "select * from document where loginCitoyen = ?", [citoyen.login],
             (data) => new Document(db, data)
+        );
+    }
+
+    // Méthode
+    async save(): Promise<void> {
+        await this.db.run(
+            "update document set titre=?, lien=?, loginCitoyen=? where idDocument=?",
+            [this.titre, this.lien, this.citoyen.pk, this.id]
+        );
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from document where idDocument=?", [this.id]
         );
     }
 }

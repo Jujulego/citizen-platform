@@ -27,6 +27,19 @@ export default class DomaineIntervention extends Model<DomaineIntervention> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { nom: string, citoyen: Citoyen }): Promise<DomaineIntervention> {
+        const res = await db.run(
+            "insert into domaineIntervention values (null, ?, ?)",
+            [data.nom, data.citoyen.login]
+        );
+
+        return new DomaineIntervention(db, {
+            idDomaine: res.stmt.lastID,
+            nom: data.nom,
+            loginCitoyen: data.citoyen.login
+        });
+    }
+
     static async getById(db: Database, id: number): Promise<?DomaineIntervention> {
         return await DomaineIntervention.get(db,
             "select * from domaineIntervention where idDomaine = ?", [id],
@@ -39,5 +52,19 @@ export default class DomaineIntervention extends Model<DomaineIntervention> {
             "select * from domaineIntervention where loginCitoyen = ?", [citoyen.login],
             (data) => new DomaineIntervention(db, data)
         );
+    }
+
+    // Méthodes
+    async save(): Promise<void> {
+        await this.db.run(
+            "update domaineIntervention set nom=?, loginCitoyen=? where idDomaine=?",
+            [this.nom, this.citoyen.pk, this.id]
+        );
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from domaineIntervention where idDomaine=?", [this.id]
+        )
     }
 }

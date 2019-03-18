@@ -60,7 +60,7 @@ INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCi
 INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCitoyen`) VALUES ('0', 'après-midi', '2019-03-30', 'claude.dupond@gmail.com');
 
 -- Document
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0001', 'Lettre de mativation', 'Je ne paux pas choisir', 'charleslegrand@carolingiens.fr');
+INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0001', 'Lettre de motivation', 'Je ne paux pas choisir', 'charleslegrand@carolingiens.fr');
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0002', 'CV', 'Mode d\emploi dun prise de pouvoir', 'premierempire@jesuislemeilleur.fr');
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0003', 'Lettre de motivation', 'Les 10 raisons pour lesquelles président était insuffisant', 'premierempire@jesuislemeilleur.fr');
 INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0004', 'CV', 'onelink', 'someone@gmail.fr');

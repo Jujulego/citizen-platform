@@ -1,6 +1,6 @@
 -- UP
 create table mission2 (
-  idMission int primary key,
+  idMission integer primary key autoincrement,
   nbPersAtteindre int unsigned,
   description text,
   lieu varchar(255),

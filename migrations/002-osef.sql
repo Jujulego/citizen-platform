@@ -11,32 +11,6 @@ create table citoyen (
   permis       boolean
 );
 
-create table document (
-  idDocument   int primary key,
-  titre        varchar(255),
-  lien         varchar(255),
-  loginCitoyen varchar(100),
-
-  foreign key (loginCitoyen) references citoyen(loginCitoyen)
-);
-
-create table domaineIntervention(
-  idDomaine    int primary key,
-  nom          varchar(255),
-  loginCitoyen varchar(100),
-
-  foreign key (loginCitoyen) references citoyen(loginCitoyen)
-);
-
-create table competance(
-  idCompetance int primary key,
-  nom          varchar(255),
-  description  varchar(255),
-  loginCitoyen varchar(100),
-
-  foreign key (loginCitoyen) references citoyen(loginCitoyen)
-);
-
 create table association(
   loginAsso varchar(100) primary key,
   mdpAsso   varchar(50),
@@ -50,8 +24,34 @@ create table association(
   -- siret        varchar(16) default '12345678901234'
 );
 
+create table document (
+  idDocument   integer primary key autoincrement,
+  titre        varchar(255),
+  lien         varchar(255),
+  loginCitoyen varchar(100),
+
+  foreign key (loginCitoyen) references citoyen(loginCitoyen)
+);
+
+create table domaineIntervention(
+  idDomaine    integer primary key autoincrement,
+  nom          varchar(255),
+  loginCitoyen varchar(100),
+
+  foreign key (loginCitoyen) references citoyen(loginCitoyen)
+);
+
+create table competance(
+  idCompetance integer primary key autoincrement,
+  nom          varchar(255),
+  description  varchar(255),
+  loginCitoyen varchar(100),
+
+  foreign key (loginCitoyen) references citoyen(loginCitoyen)
+);
+
 create table mission(
-  idMission       int primary key,
+  idMission       integer primary key autoincrement,
   recursive       boolean,      -- Supprimé (006-creneau)
   nbPersAtteindre int unsigned,
   description     varchar(666), -- => text (006-creneau)
@@ -65,7 +65,7 @@ create table mission(
 );
 
 create table linkMissionCitoyen(
-  idMission    int,
+  idMission    integer,
   loginCitoyen varchar(100),
 
   foreign key (loginCitoyen) references citoyen(loginCitoyen),
@@ -75,9 +75,9 @@ create table linkMissionCitoyen(
 );
 
 create table disponibiliteCitoyen(
-  recursif boolean,
-  tranche varchar(50),
-  dateDispo date,
+  recursif     boolean,
+  tranche      varchar(50),
+  dateDispo    date,
   loginCitoyen varchar(100),
 
   foreign key (loginCitoyen) references citoyen(loginCitoyen),
@@ -87,9 +87,9 @@ create table disponibiliteCitoyen(
 
 create table dateMission(
   horraireDebut time,
-  horraireFin time,
-  dateMission date,
-  idMission INT,
+  horraireFin   time,
+  dateMission   date,
+  idMission     int,
 
   foreign key (idMission) references mission(idMission),
   primary key (idMission, dateMission)

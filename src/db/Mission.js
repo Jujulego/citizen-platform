@@ -36,6 +36,19 @@ export default class Mission extends Model<Mission> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: { titre: string, lieu: string, description: string, asso: Association, nbPersAtteindre: number }): Promise<Mission> {
+        const res = await db.run(
+            "insert into mission values (null, ?, ?, ?, ?, ?)",
+            [data.nbPersAtteindre, data.description, data.lieu, data.asso.login, data.titre]
+        );
+
+        return new Mission(db, {
+            idMission: res.stmt.lastID,
+            titre: data.titre, lieu: data.lieu, description: data.description, nbPersAtteindre: data.nbPersAtteindre,
+            loginAsso: data.asso.login
+        });
+    }
+
     static async getById(db: Database, id: number): Promise<?Mission> {
         return await Mission.get(db,
             "select * from mission where idMission = ?", [id],
@@ -70,6 +83,19 @@ export default class Mission extends Model<Mission> {
     }
 
     // Méthodes
+    async save(): Promise<void> {
+        await this.db.run(
+            "update mission set titre=?, description=?, nbPersAtteindre=?, lieu=?, loginAsso=? where idMission=?",
+            [this.titre, this.description, this.nbPersAtteindre, this.lieu, this.association.pk, this.id]
+        )
+    }
+
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from mission where idMission=?", [this.id]
+        )
+    }
+
     async getCreneaux(): Promise<Array<CreneauMission>> {
         return await CreneauMission.allByMission(this.db, this);
     }
