@@ -24,11 +24,15 @@ div(class="modal fade" id="modifCitoyen" tabindex="-1" role="dialog")
                 div(class="form-group")
                     label(for="inputSituation") Situation :
                     select(id="inputSituation" name="situation" class="custom-select placeholder")
-                        option(value selected hidden)= user.situation
-                        option(value="1") Etudiant
-                        option(value="2") Chômage
-                        option(value="3") Commercial
-                        option(value="4") Ingénieur
+                        option(value="1" selected=(user.situation === "1")) Salarié    
+                        option(value="2" selected=(user.situation === "2")) Etudiant
+                        option(value="3" selected=(user.situation === "3")) Chomage
+                        option(value="4" selected=(user.situation === "4")) Libéral
+                        option(value="5" selected=(user.situation === "5")) Fonctionnaire
+                        option(value="6" selected=(user.situation === "6")) Volontariat
+                        option(value="7" selected=(user.situation === "7")) Indépendant
+                        option(value="8" selected=(user.situation === "8")) Autre
+                        
                 div(class="form-check")
                     if user.permis
                         input(class="form-check-input" checked type="checkbox" id="inputPermis" name="permis")
