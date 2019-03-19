@@ -2,61 +2,81 @@ $(document).ready(function() {
     // Champs
     const form = $("#inscription-form");
 
-    const emailField  = $("#email-field");
+    const emailField   = $("#email-field");
+    const mdpField     = $("#mdp-field");
+    const confirmField = $("#confirm-mdp-field");
+    const requiredFields = $("input[required]", form).not(confirmField);
+
     const emailExists = $("#email-exists");
     const noEmail     = $("#no-email");
     const startMail   = emailField.hasClass("is-invalid") ? emailField.val() : null;
 
-    const mdpField     = $("#mdp-field");
-    const confirmField = $("#confirm-mdp-field");
-
     // Fonctions
-    function checkConfirm() {
-        confirmField.attr("pattern", mdpField.val());
-    }
+    function checkEmail() {
+        const mail = emailField.val();
 
-    function emailValidateMsg() {
-
-        if (startMail === emailField.val()) {
-            form.removeClass("was-validated");
+        if (mail === startMail) {
             emailField.addClass("is-invalid");
 
             emailExists.removeClass("d-none");
             noEmail.addClass("d-none");
         } else {
-            form.addClass("was-validated");
-            emailField.removeClass("is-invalid");
+            if (mail === "") {
+                emailField.addClass("is-invalid");
+            } else {
+                emailField.removeClass("is-invalid");
+            }
 
             emailExists.addClass("d-none");
             noEmail.removeClass("d-none");
         }
     }
+    function checkConfirm() {
+        if (confirmField.val() === mdpField.val()) {
+            confirmField.addClass("is-valid");
+            confirmField.removeClass("is-invalid");
+        } else {
+            confirmField.addClass("is-invalid");
+            confirmField.removeClass("is-valid");
+        }
+    }
+    function checkRequired(event) {
+        const input = $(event.target);
 
-    // Init
-    checkConfirm();
-    emailValidateMsg();
+        if (input.val() === "" || (input.attr("type") === "checkbox" && !input.is(":checked"))) {
+            input.addClass("is-invalid");
+        } else {
+            input.removeClass("is-invalid");
+        }
+    }
 
     // Events
-    emailField.change(emailValidateMsg);
-    emailField.keyup(emailValidateMsg);
+    requiredFields.change(checkRequired);
+    requiredFields.keyup(checkRequired);
 
-    mdpField.change(checkConfirm);
-    mdpField.keyup(checkConfirm);
+    emailField.change(checkEmail);
+    emailField.keyup(checkEmail);
+
+    confirmField.change(checkConfirm);
+    confirmField.keyup(checkConfirm);
+
+    mdpField.change(() => { if (confirmField.hasClass("is-valid") || confirmField.hasClass("is-invalid")) checkConfirm()});
+    mdpField.keyup( () => { if (confirmField.hasClass("is-valid") || confirmField.hasClass("is-invalid")) checkConfirm()});
 
     form.submit(function(event) {
         // Validity check
-        if (emailField.hasClass("is-invalid")) {
+        requiredFields.each((i, e) => {
+            console.log(e);
+            checkRequired({target: e});
+        });
+
+        let valid = true;
+        valid &= !confirmField.hasClass("is-invalid");
+        valid &= !requiredFields.hasClass("is-invalid");
+
+        if (!valid) {
             event.preventDefault();
             event.stopPropagation();
-            return;
         }
-
-        if (form[0].checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        // Validated !
-        form.addClass("was-validated");
     });
 });
