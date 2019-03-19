@@ -12,15 +12,10 @@ append jslib
     script(src="/vendor/pg-calendar/dist/js/pignose.calendar.js")
 
 block content
-<<<<<<< HEAD
     include parts/disponibilite-popup 
     include parts/modifCitoyen
+    include parts/supprCitoyen
     //bootstrap
-=======
-    include parts/disponibilite-popup
-
-    // bootstrap
->>>>>>> 928c0e9b2aec35e689ab3c7b424795b51c608644
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
@@ -36,8 +31,10 @@ block content
                             p(class="mb-0") Informations personnelles
                             
                         div(class="card-toolbar col-auto")
-                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen") 
+                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen")
                                 i(class="fas fa-user-edit")
+                            button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-target="#supprCitoyen")
+                                i(class="fas fa-user-slash")
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
