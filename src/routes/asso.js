@@ -45,7 +45,7 @@ export default function(db) {
 
 
     //modifications Informations citoyen
-    router.post('/modifAsso',utils.asso_guard(async function(req, res, next) {
+    router.post('/',utils.asso_guard(async function(req, res, next) {
         // Récups nouv infos
         const { nom, adresse, tel, siteWeb, siret } = req.body;
 
