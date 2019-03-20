@@ -5,6 +5,7 @@ append css
     link(rel="stylesheet" href="/static/scss/profil.css")
 
 block content
+    include parts/modifAsso
     //bootstrap
     header(class="row")
         div(class="col")
@@ -14,10 +15,14 @@ block content
     section(class="row")
         //bootstrap
         aside(class="col-3")
-            div(class="card mb-3 card-infos")
+            div(class="card mb-3")
                 div(class="card-header")
-                    p(class="mb-0") Contacts
-                    a(href="#" class="btn btn-primary btn-sm right") Modifier Profil
+                    div(class="row")
+                        div(class="col")
+                            p(class="mb-0") Contacts
+                        div(class="card-toolbar col-auto")
+                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifAsso") 
+                                i(class="fas fa-user-edit")
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")

@@ -42,5 +42,53 @@ export default function(db) {
         });
     }));
 
+
+
+    //modifications Informations citoyen
+    router.post('/',utils.asso_guard(async function(req, res, next) {
+        // Récups nouv infos
+        const { nom, adresse, tel, siteWeb, siret } = req.body;
+
+        // Modif user
+        const asso = await Association.getLoggedInUser(db, req);
+
+        let needSave = false;
+
+
+        if (nom !== asso.nom) {
+            asso.nom = nom;
+            needSave = true;
+        }
+
+
+        if(adresse !== asso.adresse){
+            asso.adresse = adresse;
+            needSave = true;
+        }
+
+        if(tel !== asso.tel){
+            asso.tel = tel;
+            needSave = true;
+        }
+
+        if(siteWeb !== asso.siteWeb){
+            asso.siteWeb = siteWeb;
+            needSave = true;
+        }
+
+        if(siret !== asso.siret){
+            asso.siret = siret;
+            needSave = true;
+        }
+
+        if (needSave) {
+            asso.save()
+                .then(function() {
+                    res.redirect("/asso/Profil");
+                });
+        }
+    }));
+
+
     return router;
 };

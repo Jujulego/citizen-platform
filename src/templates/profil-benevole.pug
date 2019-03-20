@@ -12,15 +12,11 @@ append jslib
     script(src="/vendor/pg-calendar/dist/js/pignose.calendar.js")
 
 block content
-<<<<<<< HEAD
     include parts/disponibilite-popup 
     include parts/modifCitoyen
-    //bootstrap
-=======
-    include parts/disponibilite-popup
+    include parts/supprCitoyen
 
-    // bootstrap
->>>>>>> 928c0e9b2aec35e689ab3c7b424795b51c608644
+    //bootstrap
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
@@ -36,8 +32,10 @@ block content
                             p(class="mb-0") Informations personnelles
                             
                         div(class="card-toolbar col-auto")
-                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen") 
+                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen")
                                 i(class="fas fa-user-edit")
+                            button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-target="#supprCitoyen")
+                                i(class="fas fa-user-slash")
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
@@ -51,7 +49,23 @@ block content
                         span= `Téléphone : ${user.tel}`
 
                     li(class="list-group-item")
-                        span= `Situation : ${user.situation}`
+                        if(user.situation === "1")
+                            span= `Situation : Salarié`
+                        else if(user.situation === "2")
+                            span= `Situation : Etudiant`
+                        else if(user.situation === "3")
+                            span= `Situation : Chômage`
+                        else if(user.situation === "4")
+                            span= `Situation : Libéral`
+                        else if(user.situation === "5")
+                            span= `Situation : Fonctionnaire`
+                        else if(user.situation === "6")
+                            span= `Situation : Volontariat`
+                        else if(user.situation === "7")
+                            span= `Situation : Indépendant`
+                        else if(user.situation === "8")
+                            span= `Situation : Autre`
+                            
 
                     li(class="list-group-item")
                         span= user.permis ? "Permis B" : "Sans le permis"

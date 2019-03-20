@@ -75,10 +75,14 @@ block content
                                     label(for="situation-field") Situation
                                     select(id="situation-field" class="custom-select placeholder" name="situation")
                                         option(value selected=(values.situation === undefined) hidden) Statut
-                                        option(value="1" selected=(values.situation === "1")) Etudiant
-                                        option(value="2" selected=(values.situation === "2")) Chômage
-                                        option(value="3" selected=(values.situation === "3")) Commercial
-                                        option(value="4" selected=(values.situation === "4")) Ingénieur
+                                        option(value="1" selected=(values.situation === "1")) Salarié    
+                                        option(value="2" selected=(values.situation === "2")) Etudiant
+                                        option(value="3" selected=(values.situation === "3")) Chomage
+                                        option(value="4" selected=(values.situation === "4")) Libéral
+                                        option(value="5" selected=(values.situation === "5")) Fonctionnaire
+                                        option(value="6" selected=(values.situation === "6")) Volontariat
+                                        option(value="7" selected=(values.situation === "7")) Indépendant
+                                        option(value="8" selected=(values.situation === "8")) Autre
 
                             div(class="form-group mb-0")
                                 div(class="custom-control custom-checkbox")

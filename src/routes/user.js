@@ -49,7 +49,7 @@ export default function(db) {
 
 
     //modifications Informations citoyen
-    router.post('/modifCitoyen',utils.login_guard(async function(req, res, next) {
+    router.post('/',utils.login_guard(async function(req, res, next) {
         // Récups nouv infos
         const { nom, prenom, adresse, tel, situation, permis } = req.body;
 
@@ -95,6 +95,12 @@ export default function(db) {
                     res.redirect("/user");
                 });
         }
+    }));
+
+
+    //supprimer le profil citoyen
+    router.post('/supprCitoyen',utils.login_guard(async function(req, res, next) {
+
     }));
 
 
