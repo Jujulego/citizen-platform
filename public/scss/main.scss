@@ -18,6 +18,17 @@ select.placeholder {
   }
 }
 
+.custom-file-label.placeholder {
+  color: grey;
+}
+
+.custom-file-label::after {
+  height: 100%;
+
+  content: "Parcourir";
+}
+
+// Cards
 .card-toolbar {
   margin-top: -.25rem;
   margin-right: -.5rem;

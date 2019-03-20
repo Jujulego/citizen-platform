@@ -1,10 +1,16 @@
 // @flow
 // Importations
+import fs from "fs";
+import path from "path";
+
 import type { Database } from "sqlite";
 
 import Model from "./Model";
 import Citoyen from "./Citoyen";
 import ForeignKey from "./ForeignKey";
+
+// Constante
+const MEDIA_PATH = path.join(__dirname, "../../media");
 
 // Classe
 export default class Document extends Model<Document> {
@@ -19,6 +25,10 @@ export default class Document extends Model<Document> {
     #lien: string;
     get lien(): string { return `/media/${this.#lien}`; }
     set lien(v: string) { this.#lien = v; }
+
+    get filename(): string {
+        return this.titre + path.extname(this.#lien);
+    }
 
     // Constructeur
     constructor(db: Database, data: { idDocument: number, titre: string, lien: string, loginCitoyen: string }, fields: any = {}) {
@@ -71,5 +81,10 @@ export default class Document extends Model<Document> {
         await this.db.run(
             "delete from document where idDocument=?", [this.id]
         );
+
+        // Suppression du fichier
+        fs.unlink(path.join(MEDIA_PATH, this.#lien), (err) => {
+            if (err) console.error(`While deleting ${this.#lien}`, err);
+        })
     }
 }

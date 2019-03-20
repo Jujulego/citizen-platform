@@ -106,8 +106,10 @@ export default function(db) {
         Document.create(db, { titre: titre, lien: name, citoyen: user })
             .then(function(doc) {
                 res.json({
+                    id: doc.id,
                     titre: doc.titre,
                     lien: doc.lien,
+                    filename: doc.filename,
                 });
             })
             .catch(function(err) {
@@ -116,7 +118,7 @@ export default function(db) {
             });
     }
 
-    router.post('/documents/add', utils.user_guard(async function(req, res, next) {
+    router.post('/document/add', utils.user_guard(async function(req, res, next) {
         try {
             // Get user
             const user = await Citoyen.getLoggedInUser(db, req);
@@ -148,7 +150,7 @@ export default function(db) {
                 file.pipe(fstream);
 
                 fstream.on('close', function() {
-                    console.log(`${filename} downloaded to ${name}`);
+                    console.log(`${filename} uploaded to ${name}`);
                     fname = name;
 
                     if (titre && fname) {
@@ -163,6 +165,30 @@ export default function(db) {
             next(err);
         }
     }));
+    router.route('/document/:id')
+        .delete(utils.user_guard(async function(req, res, next) {
+            // Params
+            const { id } = req.params;
+
+            try {
+                // Get user
+                const doc = await Document.getById(db, id);
+                const user = await Citoyen.getLoggedInUser(db, req);
+
+                // Bon user ?
+                if (doc.citoyen.pk !== user.login) {
+                    return res.status(403).json({ msg: "Vous n'avez pas accès à ce fichier" });
+                }
+
+                // Suppression !
+                await doc.delete();
+                res.json({ msg: "Supprimé !" });
+
+            } catch(err) {
+                console.log(err);
+                next(err);
+            }
+        }));
 
     //supprimer le profil citoyen
     router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {

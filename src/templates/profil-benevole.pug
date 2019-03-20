@@ -7,10 +7,6 @@ append css
     link(rel="stylesheet" href="/static/scss/profil.css")
     //lien avec le css
 
-append jslib
-    script(src="/vendor/moment/moment.js")
-    script(src="/vendor/pg-calendar/dist/js/pignose.calendar.js")
-
 block content
     include parts/disponibilite-popup 
     include parts/modifCitoyen
@@ -71,27 +67,14 @@ block content
                             a(class="nav-link active" data-toggle="tab" href="#infoComplementaires") Informations Complémentaires
 
                         li(class="nav-item")
+                            a(class="nav-link" data-toggle="tab" href="#documents") Documents
+
+                        li(class="nav-item")
                             a(class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
 
                 div(class="card-body")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
-                            a(href="#" class="btn btn-primary btn-sm right") 
-                                i(class="fas fa-plus")
-                        
-                            //unless documents.length === 0
-                            div(class="row")
-                                h4 Documents
-
-                                form(id="doc-form" enctype="multipart/form-data" method="post" action="/user/documents/add")
-                                    input(name="titre" type="text" placeholder="Titre" required)
-                                    input(name="file" type="file" placeholder="Fichier" required)
-
-                                    button(class="btn btn-primary" type="submit") Ajouter
-
-                                each doc in documents
-                                    a(href=doc.lien)= doc.titre
-                            
                             unless domaineintervention.length === 0
                                 div(class="row")
                                     h4 Domaines d'intervention
@@ -103,7 +86,50 @@ block content
                                     h4 Savoir-Faire   
                                 each sf in competances
                                     p= sf.nom + " : " + sf.description
-                                                      
+
+
+                        div(id="documents" class="tab-pane fade" role="tabpanel")
+                            div(class="container-fluid px-0")
+                                div(class="row")
+                                    div(class="col-xs-12 col-md-8")
+                                        table(id="doc-table" class="table table-bordered table-hover mb-0")
+                                            thead(class="thead-light")
+                                                tr
+                                                    th(scope="col") Titre
+                                                    th(class="action-col" scope="col") Actions
+
+                                            tbody
+                                                each doc in documents
+                                                    tr
+                                                        td
+                                                            a(href=doc.lien)= doc.titre
+
+                                                        td(class="text-center action-col")
+                                                            div(class="btn-group btn-group-sm")
+                                                                a(class="btn btn-primary" href=doc.lien download=doc.filename)
+                                                                    i(class="fas fa-file-download")
+                                                                button(class="btn btn-danger btn-delete-doc" data-id=doc.id)
+                                                                    i(class="fas fa-trash")
+
+                                    div(class="col-xs-12 col-md-4")
+                                        h5(class="mb-3") Nouveau document :
+
+                                        form(id="doc-form" class="needs-validation" novalidate
+                                             enctype="multipart/form-data" method="post" action="/user/documents/add")
+                                            div(class="form-group")
+                                                input(id="titre-field" class="form-control" name="titre" type="text" placeholder="Titre" required)
+
+                                            div(class="form-group")
+                                                div(class="custom-file")
+                                                    input(id="file-field" class="custom-file-input"
+                                                          name="file" type="file" placeholder="Fichier" required)
+
+                                                    label(for="file-field" class="custom-file-label placeholder") Fichier
+
+                                            button(class="btn btn-primary btn-block" type="submit")
+                                                i(class="fas fa-plus mr-2")
+                                                | Ajouter
+
                         div(class="tab-pane fade" id="dispo" role="tabpanel") 
                             button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
                                 i(class="fas fa-plus-circle")  Ajouter Disponibilité
@@ -172,3 +198,6 @@ block content
                                             a(href='#') Soirée
                                         td
                                             a(href='#') Soirée
+
+append js
+    script(src="/static/js/profil-benevole.js")
