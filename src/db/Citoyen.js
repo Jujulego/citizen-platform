@@ -25,6 +25,28 @@ export default class Citoyen extends Model<Citoyen> {
     #login: string;
     get login(): string { return this.#login; }
 
+    get situation_txt(): string {
+        switch (this.situation) {
+            case "1":
+                return "Salarié";
+            case "2":
+                return "Etudiant";
+            case "3":
+                return "Chômage";
+            case "4":
+                return "Libéral";
+            case "5":
+                return "Fonctionnaire";
+            case "6":
+                return "Volontariat";
+            case "7":
+                return "Indépendant";
+            case "8":
+            default:
+                return "Autre";
+        }
+    }
+
     // Constructeur
     constructor(db: Database, data: { loginCitoyen: string, mdpCitoyen: string, nom: string, prenom: string, adresse: string, tel: string, situation: string, permis: boolean }, fields: any = {}) {
         super(db, data.loginCitoyen, fields);
