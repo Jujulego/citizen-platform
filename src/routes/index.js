@@ -46,7 +46,7 @@ export default function(db) {
                             mdpCitoyen: mdp,
                             situation: situation,
                             tel: tel,
-                            permis: (permis === "true"),
+                            permis: (permis === "on"),
                             adresse: adresse
                         });
 
