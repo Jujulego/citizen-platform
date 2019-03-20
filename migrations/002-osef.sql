@@ -30,7 +30,7 @@ create table document (
   lien         varchar(255),
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen)
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade
 );
 
 create table domaineIntervention(
@@ -38,7 +38,7 @@ create table domaineIntervention(
   nom          varchar(255),
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen)
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade
 );
 
 create table competance(
@@ -47,7 +47,7 @@ create table competance(
   description  varchar(255),
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen)
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade
 );
 
 create table mission(
@@ -61,15 +61,15 @@ create table mission(
   -- Ajouts (005-add-fields-mission)
   -- titre           varchar(255) default ''
 
-  foreign key(loginAsso) references association(loginAsso)
+  foreign key(loginAsso) references association(loginAsso) on delete cascade
 );
 
 create table linkMissionCitoyen(
   idMission    integer,
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen),
-  foreign key (idMission) references mission(idMission),
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade,
+  foreign key (idMission) references mission(idMission) on delete cascade,
 
   primary key (idMission, loginCitoyen)
 );
@@ -80,7 +80,7 @@ create table disponibiliteCitoyen(
   dateDispo    date,
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen),
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade,
 
   primary key (loginCitoyen, dateDispo, tranche)
 );
@@ -91,7 +91,7 @@ create table dateMission(
   dateMission   date,
   idMission     int,
 
-  foreign key (idMission) references mission(idMission),
+  foreign key (idMission) references mission(idMission) on delete cascade,
   primary key (idMission, dateMission)
 );
 
