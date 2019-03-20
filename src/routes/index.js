@@ -8,15 +8,30 @@ export default function(db) {
     const router = Router();
 
     /* GET home page. */
-    router.get('/', function (req, res, next) {
-        Mission.nextMissions(db)
-            .then(function (missions) {
-                res.render('index', { //utilise un pug (affichage avec un pug)
-                    title: 'Express',
-                    missions: missions
+    router.route('/')
+        .get(function (req, res, next) {
+            Mission.nextMissions(db)
+                .then(function (missions) {
+                    res.render('index', { //utilise un pug (affichage avec un pug)
+                        title: 'Express',
+                        missions: missions
+                    });
                 });
-            });
-    });
+        })
+        .post(function(req, res) {
+            // Paramètres
+            const { lieu } = req.body;
+            const { assos } = req.body;
+            const { keyword } = req.body;
+        
+            Mission.nextMissions(db, lieu, assos, keyword)
+                .then(function (missions) {
+                    res.render('index', { //utilise un pug (affichage avec un pug)
+                        title: 'Express',
+                        missions: missions
+                    });
+                });
+        });
 
     router.route('/inscription')
         .get(function(req, res, next) {

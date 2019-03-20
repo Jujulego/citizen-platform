@@ -24,16 +24,18 @@ block content
         h1(id="page-top" class="text-center")= "Citizen Platform Services c'est super cool ! ;)"
 
         //Le filtre de recherche pour les missions
-        form(id="search-bar")
-            select(class="custom-select placeholder")
-                option(value selected hidden) Type de mission
-                option Test
-                option Test
-                option Test
-                option Test
+        form(id="search-bar" method="post")
+            input(class="form-control" name="lieu" type="text" placeholder="Lieu")
+            input(class="form-control" name="assos" type="text" placeholder="Association")
+            
+            //select(class="custom-select placeholder" name="opdate")
+                option(value selected hidden) Quand
+                option Aujourd'hui
+                option Demain
+                option Cette semaine
 
-            input(class="form-control" type="text" placeholder="Où")
-            input(class="form-control" type="text" placeholder="Quoi")
+            //input(class="form-control" type="text" placeholder="Où")
+            input(class="form-control" name="keyword" type="text" placeholder="Mot clé")
 
             button(class="btn btn-primary" type="submit") Rechercher
 
