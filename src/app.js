@@ -20,6 +20,7 @@ import assosRouter from './routes/asso';  // routes pour la page asso
 const app = express();
 
 app.use(morgan('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -50,6 +51,7 @@ Promise.resolve()
         // - ressources
         app.use('/vendor', express.static(path.join(__dirname, '../node_modules')));
         app.use('/static', express.static(path.join(__dirname, '../public')));
+        app.use('/media',  express.static(path.join(__dirname, '../media')));
 
         // - middlewares
         app.use(async function(req, res, next) {

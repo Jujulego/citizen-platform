@@ -1,9 +1,16 @@
 // Importations
 import { Router } from "express";
+import Busboy from "busboy";
+import fs from "fs-extra";
+import path from "path";
 
 import Association from "../db/Association";
 import Citoyen from "../db/Citoyen";
+import Document from "../db/Document";
 import utils from "../utils";
+
+// Constante
+const MEDIA_PATH = path.join(__dirname, "../../media");
 
 // Router
 export default function(db) {
@@ -13,8 +20,6 @@ export default function(db) {
     router.route('/')
         .get(utils.user_guard(async function(req, res, next) { //route
             const user = await Citoyen.getLoggedInUser(db, req);
-            console.log(user);
-            console.log(await user.getCompetances());
 
             res.render('profil-benevole', { //lien entre la route et le pug profil
                 title: "Mon Profil",
@@ -94,6 +99,69 @@ export default function(db) {
             title: "Mes Candidatures",
             missions: missions
         });
+    }));
+
+    // Ajout documents
+    function createDoc(res, titre, name, user) {
+        Document.create(db, { titre: titre, lien: name, citoyen: user })
+            .then(function(doc) {
+                res.json({
+                    titre: doc.titre,
+                    lien: doc.lien,
+                });
+            })
+            .catch(function(err) {
+                console.error(err);
+                next(err);
+            });
+    }
+
+    router.post('/documents/add', utils.user_guard(async function(req, res, next) {
+        try {
+            // Get user
+            const user = await Citoyen.getLoggedInUser(db, req);
+
+            // Récupération du fichier
+            const busboy = new Busboy({ headers: req.headers });
+            let fname = null, titre = null;
+
+            busboy.on('field', function(field, val) {
+                if (field !== "titre") return;
+
+                titre = val;
+
+                if (titre && fname) {
+                    createDoc(res, titre, fname, user);
+                }
+            });
+
+            busboy.on('file', function(field, file, filename, encoding, mime) {
+                // Check field
+                if (field !== "file") return;
+
+                // Generate random name
+                const name = utils.random_text(40) + path.extname(filename);
+                console.log(`Uploading : ${filename} to ${name}`);
+
+                // Path to file
+                const fstream = fs.createWriteStream(path.join(MEDIA_PATH, name));
+                file.pipe(fstream);
+
+                fstream.on('close', function() {
+                    console.log(`${filename} downloaded to ${name}`);
+                    fname = name;
+
+                    if (titre && fname) {
+                        createDoc(res, titre, fname, user);
+                    }
+                });
+            });
+
+            req.pipe(busboy);
+        } catch(err) {
+            console.error(err);
+            next(err);
+        }
     }));
 
     //supprimer le profil citoyen

@@ -10,12 +10,15 @@ import ForeignKey from "./ForeignKey";
 export default class Document extends Model<Document> {
     // Attributs
     titre: string;
-    lien: string;
     citoyen: ForeignKey<Citoyen>;
 
     // Propriétés
     #id: number;
     get id(): number { return this.#id; }
+
+    #lien: string;
+    get lien(): string { return `/media/${this.#lien}`; }
+    set lien(v: string) { this.#lien = v; }
 
     // Constructeur
     constructor(db: Database, data: { idDocument: number, titre: string, lien: string, loginCitoyen: string }, fields: any = {}) {
@@ -24,14 +27,14 @@ export default class Document extends Model<Document> {
         // Remplissage
         this.#id   = data.idDocument;
         this.titre = data.titre;
-        this.lien  = data.lien;
+        this.#lien  = data.lien;
         this.citoyen = new ForeignKey<Citoyen>(data.loginCitoyen, (pk) => Citoyen.getByLogin(db, pk));
     }
 
     // Méthodes statiques
     static async create(db: Database, data: { titre: string, lien: string, citoyen: Citoyen }): Promise<Document> {
         const res = await db.run(
-            "insert into document values (null, ?, ?, ?)",
+            "insert into document(idDocument, titre, lien, loginCitoyen) values (null, ?, ?, ?)",
             [data.titre, data.lien, data.citoyen.pk]
         );
 

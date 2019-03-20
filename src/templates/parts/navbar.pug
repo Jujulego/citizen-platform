@@ -15,33 +15,32 @@ nav(class="navbar navbar-expand-lg navbar-light bg-light")
             unless session.connected
                 li(class="nav-item")
                     //Inscription
-                    a(class="nav-link btn btn-link" href="/inscription")
+                    a(class="nav-link btn btn-link btn-block" href="/inscription")
                         i(class="fas fa-user-plus mr-2")
                         span Inscription
 
                 li(class="nav-item")
                     //Connexion
-                    button(class="nav-link btn btn-link" type="button" data-toggle="modal" data-target="#connectionPopup")
+                    button(class="nav-link btn btn-link btn-block" type="button" data-toggle="modal" data-target="#connectionPopup")
                         i(class="fas fa-sign-in-alt mr-2")
                         span Connexion
             else
                 
                 //acceuil asso
                 if session.assoLogin !== undefined
-                    li(class="vav-item")
-                        a(class="nav-link btn btn-link" href="/asso")
+                    li(class="nav-item")
+                        a(class="nav-link btn btn-linkbtn-block" href="/asso")
                             i(class="fas fa-home mr-2")
                             span Accueil
                             
                 //Profil
                 li(class="nav-item")
-                    a(class="nav-link btn btn-link" href=(session.assoLogin !== undefined ? "/asso/profil" : "/user"))
+                    a(class="nav-link btn btn-link btn-block" href=(session.assoLogin !== undefined ? "/asso/profil" : "/user"))
                         i(class="fas fa-user mr-2")
                         span Profil
 
-
                 //Connexion
                 li(class="nav-item")
-                    a(class="nav-link btn btn-link" href="/user/deconnexion")
+                    a(class="nav-link btn btn-link btn-block" href="/user/deconnexion")
                         i(class="fas fa-sign-out-alt mr-2")
                         span Déconnexion
