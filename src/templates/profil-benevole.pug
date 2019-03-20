@@ -32,10 +32,11 @@ block content
                             p(class="mb-0") Informations personnelles
                             
                         div(class="card-toolbar col-auto")
-                            button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen")
-                                i(class="fas fa-user-edit")
-                            button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-target="#supprCitoyen")
-                                i(class="fas fa-user-slash")
+                            div(class="btn-group")
+                                button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen")
+                                    i(class="fas fa-user-edit")
+                                button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-target="#supprCitoyen")
+                                    i(class="fas fa-user-slash")
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
@@ -49,23 +50,7 @@ block content
                         span= `Téléphone : ${user.tel}`
 
                     li(class="list-group-item")
-                        if(user.situation === "1")
-                            span= `Situation : Salarié`
-                        else if(user.situation === "2")
-                            span= `Situation : Etudiant`
-                        else if(user.situation === "3")
-                            span= `Situation : Chômage`
-                        else if(user.situation === "4")
-                            span= `Situation : Libéral`
-                        else if(user.situation === "5")
-                            span= `Situation : Fonctionnaire`
-                        else if(user.situation === "6")
-                            span= `Situation : Volontariat`
-                        else if(user.situation === "7")
-                            span= `Situation : Indépendant`
-                        else if(user.situation === "8")
-                            span= `Situation : Autre`
-                            
+                        span= `Situation : ${user.situation_txt}`
 
                     li(class="list-group-item")
                         span= user.permis ? "Permis B" : "Sans le permis"

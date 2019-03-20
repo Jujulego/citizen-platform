@@ -70,17 +70,48 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-    static async nextMissions(db: Database, nb: number = 5): Promise<Array<Mission>> {
+    static async nextMissions(db: Database, lieu: string = null, assos: string = null, keyword: string = null, nb: number = 5): Promise<Array<Mission>> {
+        // Declaration des morceaux falcultatifs de requete sql (dépent des champs remplis)
+        const where = "  where ";
+        const wlieu = "  lieu like ?\n";
+        const wassos = " asso.nom like ?\n";
+        const wkeyword = " description like ?\n";
+        
+        const params = [nb];
+        
+        if (lieu) { params.unshift(`%${lieu}%`); }
+        if (assos) { params.unshift(`%${assos}%`); } 
+        if (keyword) { params.unshift(`%${keyword}%`); } 
+        
+        //console.log(keyword);
         return await Mission.all(db,
-            "select idMission, titre, lieu, description, nbPersAtteindre, loginAsso, min(cm.debut) as dateMission\n" +
-            "  from mission as m\n" +
-            "    inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
+            "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
+            " from mission as m\n" +
+            " inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
+            " join  association  as asso on m.loginAsso = asso.loginAsso \n" +            
+            
+            //test/condition pour ajouter les morceau de requete
+            ((lieu || assos || keyword)? "where " : "") +
+            (lieu ? wlieu : "") +
+            
+            ((lieu && assos)? " AND ": "") +
+            (assos ? wassos : "") + 
+             
+            (( (lieu || assos) && keyword)? " AND ": "") +
+            (keyword ? wkeyword : "") +
+            
             "  group by titre, lieu, description\n" +
             "  order by dateMission\n" +
-            "  limit ?", [nb],
+            "  limit ?", params,
             (data) => new Mission(db, data, { dateMission: data.dateMission })
         );
     }
+
+
+
+
+
+
 
     // Méthodes
     async save(): Promise<void> {

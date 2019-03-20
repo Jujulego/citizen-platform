@@ -7,7 +7,7 @@ create table mission2 (
   loginAsso varchar(100),
   titre varchar(255) default '',
 
-  foreign key(loginAsso) references association(loginAsso)
+  foreign key(loginAsso) references association(loginAsso) on delete cascade
 );
 
 insert into mission2 select idMission, nbPersAtteindre, description, lieu, loginAsso, titre from mission;
@@ -39,7 +39,7 @@ create table creneau_citoyen(
 
   citoyen varchar(100) default null,
 
-  foreign key (citoyen) references citoyen(loginCitoyen)
+  foreign key (citoyen) references citoyen(loginCitoyen) on delete cascade
 );
 
 create table creneau_mission(
@@ -52,15 +52,15 @@ create table creneau_mission(
 
   mission int default null,
 
-  foreign key (mission) references mission(idMission)
+  foreign key (mission) references mission(idMission) on delete cascade
 );
 
 create table postulation(
   creneau int not null,
   citoyen varchar(100) not null,
 
-  foreign key (citoyen) references citoyen(loginCitoyen),
-  foreign key (creneau) references creneau_mission(id),
+  foreign key (citoyen) references citoyen(loginCitoyen) on delete cascade,
+  foreign key (creneau) references creneau_mission(id) on delete cascade,
 
   primary key (creneau, citoyen)
 );
@@ -190,7 +190,7 @@ create table dateMission(
   dateMission date,
   idMission INT,
 
-  foreign key (idMission) references mission(idMission),
+  foreign key (idMission) references mission(idMission) on delete cascade,
   primary key (idMission, dateMission)
 );
 
@@ -198,8 +198,8 @@ create table linkMissionCitoyen(
   idMission    int,
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen),
-  foreign key (idMission) references mission(idMission),
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade,
+  foreign key (idMission) references mission(idMission) on delete cascade,
 
   primary key (idMission, loginCitoyen)
 );
@@ -210,7 +210,7 @@ create table disponibiliteCitoyen(
   dateDispo date,
   loginCitoyen varchar(100),
 
-  foreign key (loginCitoyen) references citoyen(loginCitoyen),
+  foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade,
 
   primary key (loginCitoyen, dateDispo, tranche)
 );

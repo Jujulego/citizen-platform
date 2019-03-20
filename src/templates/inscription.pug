@@ -21,13 +21,15 @@ block content
                                           name="login" type="email" placeholder="Email*" value=values.login required)
 
                                     div(id="email-exists" class=("invalid-feedback" + (loginExists ? "" : " d-none"))) Cet email est déjà pris
-                                    div(id="no-email" class=("invalid-feedback" + (loginExists ? " d-none" : ""))) Renseignez un email
+                                    div(id="no-email" class=("invalid-feedback" + (loginExists ? " d-none" : ""))) Entrez votre email
 
                             div(class="form-row")
                                 div(class="col-md mb-3 mb-md-0")
                                     label(for="mdp-field") Mot de passe*
                                     input(id="mdp-field" class="form-control"
                                           name="mdp" type="password" placeholder="Mot de passe*" required)
+
+                                    div(class="invalid-feedback") Entrez un mot de passe
 
                                 div(class="col-md")
                                     label(for="confirm-mdp-field") Confirmation*
@@ -48,16 +50,20 @@ block content
                                     input(id="nom-field" class="form-control"
                                           name="nom" type="text" placeholder="Nom*" value=values.nom required)
 
+                                    div(class="invalid-feedback") Entrez votre nom
+
                                 div(class="col-md mb-3")
                                     label(for="prenom-field") Prénom*
                                     input(id="prenom-field" class="form-control"
                                           name="prenom" type="text" placeholder="Prenom*" value=values.prenom required)
 
+                                    div(class="invalid-feedback") Entrez votre prénom
+
                             div(class="form-row")
                                 div(class="col-md mb-3")
                                     label(for="adresse-field") Adresse
                                     input(id="adresse-field" class="form-control"
-                                    name="adresse" type="text" placeholder="Adresse" value=values.adresse)
+                                          name="adresse" type="text" placeholder="Adresse" value=values.adresse)
 
                             div(class="form-row")
                                 div(class="col-md mb-3")
