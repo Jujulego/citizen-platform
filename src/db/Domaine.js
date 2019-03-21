@@ -3,6 +3,7 @@
 import type { Database } from "sqlite";
 
 import Model from "./Model";
+import Mission from "./Mission";
 
 // Classe
 export default class Domaine extends Model<Domaine> {
@@ -41,6 +42,13 @@ export default class Domaine extends Model<Domaine> {
         );
     }
 
+    static async allByMission(db: Database, mission: Mission): Promise<Array<Domaine>> {
+        return await Domaine.all(db,
+            "select distinct d.* from domaine d inner join domaine_mission dm on d.id = dm.domaine where dm.mission = ?", [mission.id],
+            (data) => new Domaine(db, data)
+        );
+    }
+
     // Méthodes
     async save(): Promise<void> {
         await this.db.run(
@@ -52,6 +60,22 @@ export default class Domaine extends Model<Domaine> {
     async delete(): Promise<void> {
         await this.db.run(
             "delete from domaine where id=?", [this.id]
+        )
+    }
+
+    async getMissions(): Promise<Array<Mission>> {
+        return Mission.allByDomaine(this.db, this);
+    }
+    async linkMission(mission: Mission): Promise<void> {
+        await this.db.run(
+            "insert into domaine_mission(domaine, mission) values (?, ?)",
+            [this.id, mission.id]
+        )
+    }
+    async unlinkMission(mission: Mission): Promise<void> {
+        await this.db.run(
+            "delete from domaine_mission where domaine=? and mission=?",
+            [this.id, mission.id]
         )
     }
 }
