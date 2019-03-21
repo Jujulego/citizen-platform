@@ -103,12 +103,12 @@ export default function(db) {
 
     // Ajout documents
     function createDoc(res, titre, name, user) {
-        Document.create(db, { titre: titre, lien: name, citoyen: user })
+        Document.create(db, { titre: titre, fichier: name, citoyen: user })
             .then(function(doc) {
                 res.json({
                     id: doc.id,
                     titre: doc.titre,
-                    lien: doc.lien,
+                    fichier: doc.fichier,
                     filename: doc.filename,
                 });
             })
@@ -192,7 +192,7 @@ export default function(db) {
                 res.json({
                     id: doc.id,
                     titre: doc.titre,
-                    lien: doc.lien,
+                    fichier: doc.fichier,
                     filename: doc.filename,
                 });
 

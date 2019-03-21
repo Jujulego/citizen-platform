@@ -59,19 +59,6 @@ INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCi
 INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCitoyen`) VALUES ('0', 'après-midi', '2019-02-18', 'aliceinwonderland@wanadoo.com');
 INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCitoyen`) VALUES ('0', 'après-midi', '2019-03-30', 'claude.dupond@gmail.com');
 
--- Document
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0001', 'Lettre de motivation', 'Je ne paux pas choisir', 'charleslegrand@carolingiens.fr');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0002', 'CV', 'Mode d\emploi dun prise de pouvoir', 'premierempire@jesuislemeilleur.fr');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0003', 'Lettre de motivation', 'Les 10 raisons pour lesquelles président était insuffisant', 'premierempire@jesuislemeilleur.fr');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0004', 'CV', 'onelink', 'someone@gmail.fr');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0005', 'CV', 'secondlink', 'emmanuel.macron@hotmail.com');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0006', 'CV', 'onelink', 'maybe.someone@gmail.com');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0007', 'CV', 'onelink', 'gilbert-jaune@yolo.fr');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0008', 'CV', 'onelink', 'jean-michel.toutlemonde@outlook.com');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0009', 'CV', 'onelink', 'bulle-supernana@yolo.com');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0010', 'CV', 'onelink', 'belle-supernana@yolo.com');
-INSERT INTO `document` (`idDocument`, `titre`, `lien`, `loginCitoyen`) VALUES ('0011', 'CV', 'onelink', 'lea.doucet@ygmail.com');
-
 -- Domaine d'intervention
 INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('01', 'Enseignement', '0001');
 INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('02', 'Enseignement', 'belle-supernana@yolo.com');

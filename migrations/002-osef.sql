@@ -27,7 +27,7 @@ create table association(
 create table document (
   idDocument   integer primary key autoincrement,
   titre        varchar(255),
-  lien         varchar(255),
+  lien         varchar(255), -- renommé en fichier (007-document)
   loginCitoyen varchar(100),
 
   foreign key (loginCitoyen) references citoyen(loginCitoyen) on delete cascade

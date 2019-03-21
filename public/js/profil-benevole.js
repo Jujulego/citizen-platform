@@ -16,10 +16,10 @@ $(document).ready(function() {
     function addDocToTable(doc) {
         const newline =
             $(` <tr data-id="${doc.id}">
-                    <td><a class="doc-title" href="${doc.lien}">${doc.titre}</a></td>
+                    <td><a class="doc-title" href="${doc.fichier}">${doc.titre}</a></td>
                     <td class="text-center action-col">
                         <div class="btn-group btn-group-sm">
-                            <a class="btn btn-secondary doc-dl" href="${doc.lien}" download="${doc.filename}">
+                            <a class="btn btn-secondary doc-dl" href="${doc.fichier}" download="${doc.filename}">
                                 <i class="fas fa-file-download fa-fw"/>
                             </a>
                             <button class="btn btn-primary btn-rename-doc">

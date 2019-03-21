@@ -126,11 +126,11 @@ block content
                                                 each doc in documents
                                                     tr(data-id=doc.id)
                                                         td
-                                                            a(class="doc-title" href=doc.lien)= doc.titre
+                                                            a(class="doc-title" href=doc.fichier)= doc.titre
 
                                                         td(class="text-center action-col")
                                                             div(class="btn-group btn-group-sm")
-                                                                a(class="btn btn-secondary doc-dl" href=doc.lien download=doc.filename)
+                                                                a(class="btn btn-secondary doc-dl" href=doc.fichier download=doc.filename)
                                                                     i(class="fas fa-file-download fa-fw")
 
                                                                 button(class="btn btn-primary btn-rename-doc")

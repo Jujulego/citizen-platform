@@ -7,17 +7,6 @@ import Citoyen from "../../src/db/Citoyen";
 // Tests
 describe("Document", function() {
     // Tests
-    test("get", async function() {
-        const doc = await Document.getById(database, 1);
-
-        expect(doc).not.toBeNull();
-
-        if (doc != null) {
-            expect(doc instanceof Document).toBe(true);
-            expect(doc.titre).toBe("Lettre de motivation");
-        }
-    });
-
     test("create/update/delete", async function() {
         // Get citoyen
         const cit = await Citoyen.getByLogin(database, "charleslegrand@carolingiens.fr");
@@ -27,7 +16,7 @@ describe("Document", function() {
         // Create
         const doc = await Document.create(database, {
             titre: "Test",
-            lien: "Test",
+            fichier: "",
             citoyen: cit
         });
 
