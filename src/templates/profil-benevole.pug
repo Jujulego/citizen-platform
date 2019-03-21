@@ -96,12 +96,6 @@ block content
                 div(class="card-body")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
-                            unless domaineintervention.length === 0
-                                div(class="row")
-                                    h4 Domaines d'intervention
-                                each dom in domaineintervention
-                                    p= dom.nom
-                                    
                             unless competances.length === 0
                                 div(class="row")
                                     h4 Savoir-Faire   

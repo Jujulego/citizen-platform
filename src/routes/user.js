@@ -25,9 +25,8 @@ export default function(db) {
                 title: "Mon Profil",
 
                 user: user,
-                documents:           await user.getDocuments(),
-                domaineintervention: await user.getDomainesIntervention(),
-                competances:         await user.getCompetances(),
+                documents:   await user.getDocuments(),
+                competances: await user.getCompetances(),
             });
         }))
         // Modification Informations citoyen

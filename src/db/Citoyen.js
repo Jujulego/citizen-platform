@@ -7,7 +7,6 @@ import Model from './Model';
 import Competance from "./Competance";
 import CreneauCitoyen from "./CreneauCitoyen";
 import Document from "./Document";
-import DomaineIntervention from "./DomaineIntervention";
 import Postulation from "./Postulation";
 
 // Classe
@@ -146,10 +145,6 @@ export default class Citoyen extends Model<Citoyen> {
 
     async getDocuments(): Promise<Array<Document>> {
         return await Document.allByCitoyen(this.db, this);
-    }
-
-    async getDomainesIntervention(): Promise<Array<DomaineIntervention>> {
-        return await DomaineIntervention.allByCitoyen(this.db, this);
     }
 
     async getPostulations(): Promise<Array<Postulation>> {
