@@ -1,9 +1,9 @@
 -- UP
 create table document2 (
   id      integer primary key autoincrement,
-  titre   varchar(255),
-  fichier varchar(255),
-  citoyen varchar(100),
+  titre   varchar(255) not null,
+  fichier varchar(255) not null,
+  citoyen varchar(100) not null,
 
   foreign key (citoyen) references citoyen(loginCitoyen) on delete cascade
 );

@@ -35,7 +35,7 @@ create table creneau_citoyen(
   fin   datetime not null,
 
   repetitions int unsigned default 1, -- 0 => infini
-  ecart       time,
+  ecart       integer default null,
 
   citoyen varchar(100) default null,
 
@@ -70,20 +70,20 @@ drop table linkMissionCitoyen;
 drop table disponibiliteCitoyen;
 
 -- Dispo citoyen
-insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-02-05 14:00:00', '2019-02-05 17:00:00', '13', '168:00:00', 'charleslegrand@carolingiens.fr');
-insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-02-03 14:00:00', '2019-02-03 17:00:00', '13', '168:00:00', 'premierempire@jesuislemeilleur.fr');
-insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-02-09 14:00:00', '2019-02-09 17:00:00', '0',  '168:00:00', 'someone@gmail.fr');
-insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-01-30 9:00:00',  '2019-02-09 11:00:00', '0',  '168:00:00', 'maybe.someone@gmail.fr');
-insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-01-01 9:00:00',  '2019-02-09 11:00:00', '52', '168:00:00', 'gilbert-jaune@yolo.fr');
-insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-03-01 14:00:00', '2019-03-01 17:00:00', '4',  '168:00:00', 'jean-michel.toutlemonde@outlook.com');
+insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-02-05 14:00:00', '2019-02-05 17:00:00', 13, 7, 'charleslegrand@carolingiens.fr');
+insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-02-03 14:00:00', '2019-02-03 17:00:00', 13, 7, 'premierempire@jesuislemeilleur.fr');
+insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-02-09 14:00:00', '2019-02-09 17:00:00',  0, 7, 'someone@gmail.fr');
+insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-01-30 09:00:00', '2019-02-09 11:00:00',  0, 7, 'maybe.someone@gmail.fr');
+insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-01-01 09:00:00', '2019-02-09 11:00:00', 52, 7, 'gilbert-jaune@yolo.fr');
+insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values ('2019-03-01 14:00:00', '2019-03-01 17:00:00',  4, 7, 'jean-michel.toutlemonde@outlook.com');
 
-insert into creneau_citoyen(debut, fin, citoyen) values ('2019-04-02 9:00:00',  '2019-02-02 11:00:00', 'charleslegrand@carolingiens.fr');
+insert into creneau_citoyen(debut, fin, citoyen) values ('2019-04-02 09:00:00', '2019-02-02 11:00:00', 'charleslegrand@carolingiens.fr');
 insert into creneau_citoyen(debut, fin, citoyen) values ('2019-04-02 14:00:00', '2019-02-02 17:00:00', 'emmanuel.macron@hotmail.com');
 insert into creneau_citoyen(debut, fin, citoyen) values ('2019-04-25 14:00:00', '2019-02-25 17:00:00', 'bulle-supernana@yolo.com');
-insert into creneau_citoyen(debut, fin, citoyen) values ('2019-01-30 9:00:00',  '2019-01-30 11:00:00', 'belle-supernana@yolo.com');
-insert into creneau_citoyen(debut, fin, citoyen) values ('2019-02-01 9:00:00',  '2019-02-01 11:00:00', 'harry.potter@tutanota.com');
+insert into creneau_citoyen(debut, fin, citoyen) values ('2019-01-30 09:00:00', '2019-01-30 11:00:00', 'belle-supernana@yolo.com');
+insert into creneau_citoyen(debut, fin, citoyen) values ('2019-02-01 09:00:00', '2019-02-01 11:00:00', 'harry.potter@tutanota.com');
 insert into creneau_citoyen(debut, fin, citoyen) values ('2019-03-05 20:00:00', '2019-03-05 22:00:00', 'harry.potter@tutanota.com');
-insert into creneau_citoyen(debut, fin, citoyen) values ('2019-03-12 9:00:00',  '2019-03-12 11:00:00', 'numeroneninja@gmail.com');
+insert into creneau_citoyen(debut, fin, citoyen) values ('2019-03-12 09:00:00', '2019-03-12 11:00:00', 'numeroneninja@gmail.com');
 insert into creneau_citoyen(debut, fin, citoyen) values ('2019-03-12 14:00:00', '2019-03-12 17:00:00', 'numeroneninja@gmail.com');
 insert into creneau_citoyen(debut, fin, citoyen) values ('2019-02-18 14:00:00', '2019-02-18 17:00:00', 'aliceinwonderland@wanadoo.com');
 insert into creneau_citoyen(debut, fin, citoyen) values ('2019-03-30 14:00:00', '2019-03-30 17:00:00', 'claude.dupond@gmail.com');

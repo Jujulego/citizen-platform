@@ -26,10 +26,10 @@ describe("CreneauMission", function() {
 
         // Create
         const cre = await CreneauMission.create(database, {
-            debut: "01/01/2019 00:00:00",
-            fin: "01/01/2019 01:00:00",
+            debut: new Date(),
+            fin: new Date(),
             repetitions: 1,
-            ecart: "24:00:00",
+            ecart: 1,
             mission: mis
         });
 

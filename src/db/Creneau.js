@@ -6,23 +6,23 @@ import Model from './Model';
 // Classe
 export default class Creneau<T: Creneau<*>> extends Model<T> {
     // Attributs
-    debut: string;
-    fin: string;
+    debut: Date;
+    fin: Date;
     repetitions: number; // 0 => infini
-    ecart: string;       // entre 2 répétitions
+    ecart: number;       // nb de jours entre 2 répétitions
 
     // Propriétés
     #id: number;
     get id(): number { return this.#id; }
 
     // Constructeur
-    constructor(db: Database, data: { id: number, debut: string, fin: string, repetitions: number, ecart: string }, fields: any = {}) {
+    constructor(db: Database, data: { id: number, debut: Date|string, fin: Date|string, repetitions: number, ecart: number }, fields: any = {}) {
         super(db, data.id, fields);
 
         // Remplissage
         this.#id   = data.id;
-        this.debut = data.debut;
-        this.fin   = data.fin;
+        this.debut = new Date(data.debut);
+        this.fin   = new Date(data.fin);
         this.repetitions = data.repetitions;
         this.ecart = data.ecart;
     }

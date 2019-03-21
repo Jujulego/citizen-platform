@@ -12,7 +12,7 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
     citoyen: ForeignKey<Citoyen>;
 
     // Constructeur
-    constructor(db: Database, data: { id: number, debut: string, fin: string, repetitions: number, ecart: string, citoyen: string }, fields: any = {}) {
+    constructor(db: Database, data: { id: number, debut: Date|string, fin: Date|string, repetitions: number, ecart: number, citoyen: string }, fields: any = {}) {
         super(db, data, fields);
 
         // Remplissage
@@ -20,10 +20,13 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
     }
 
     // Méthodes statiques
-    static async create(db: Database, data: { debut: string, fin: string, repetitions: number, ecart: string, citoyen: Citoyen }): Promise<CreneauCitoyen> {
+    static async create(db: Database, data: { debut: Date, fin: Date, repetitions: number, ecart: number, citoyen: Citoyen }): Promise<CreneauCitoyen> {
+        const debut = data.debut.toISOString().slice(0,-1);
+        const fin   = data.fin.toISOString().slice(0,-1);
+
         const res = await db.run(
-            "insert into creneau_citoyen values (null, ?, ?, ?, ?, ?)",
-            [data.debut, data.fin, data.repetitions, data.ecart, data.citoyen.login]
+            "insert into creneau_citoyen(debut, fin, repetitions, ecart, citoyen) values (?, ?, ?, ?, ?)",
+            [debut, fin, data.repetitions, data.ecart, data.citoyen.login]
         );
 
         return new CreneauCitoyen(db, {
@@ -49,9 +52,12 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
 
     // Méthodes
     async save(): Promise<void> {
+        const debut = this.debut.toISOString().slice(0,-1);
+        const fin   = this.fin.toISOString().slice(0,-1);
+
         await this.db.run(
             "update creneau_citoyen set debut=?, fin=?, repetitions=?, ecart=?, citoyen=? where id=?",
-            [this.debut, this.fin, this.repetitions, this.ecart, this.citoyen.pk, this.id]
+            [debut, fin, this.repetitions, this.ecart, this.citoyen.pk, this.id]
         )
     }
 

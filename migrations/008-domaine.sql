@@ -3,12 +3,12 @@ drop table domaineIntervention;
 
 create table domaine(
   id  integer primary key autoincrement,
-  nom varchar(255)
+  nom varchar(255) not null
 );
 
 create table domaine_mission(
-  domaine integer,
-  mission integer,
+  domaine integer not null,
+  mission integer not null,
 
   foreign key (domaine) references domaine(id) on delete cascade,
   foreign key (mission) references mission(idMission) on delete cascade

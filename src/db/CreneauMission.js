@@ -13,7 +13,7 @@ export default class CreneauMission extends Creneau<CreneauMission> {
     mission: ForeignKey<Mission>;
 
     // Constructeur
-    constructor(db: Database, data:  { id: number, debut: string, fin: string, repetitions: number, ecart: string, mission: number }, fields: any = {}) {
+    constructor(db: Database, data:  { id: number, debut: Date|string, fin: Date|string, repetitions: number, ecart: number, mission: number }, fields: any = {}) {
         super(db, data, fields);
 
         // Remplissage
@@ -21,10 +21,13 @@ export default class CreneauMission extends Creneau<CreneauMission> {
     }
 
     // Méthodes statiques
-    static async create(db: Database, data: { debut: string, fin: string, repetitions: number, ecart: string, mission: Mission }): Promise<CreneauMission> {
+    static async create(db: Database, data: { debut: Date, fin: Date, repetitions: number, ecart: number, mission: Mission }): Promise<CreneauMission> {
+        const debut = data.debut.toISOString().slice(0,-1);
+        const fin   = data.fin.toISOString().slice(0,-1);
+
         const res = await db.run(
             "insert into creneau_mission values (null, ?, ?, ?, ?, ?)",
-            [data.debut, data.fin, data.repetitions, data.ecart, data.mission.id]
+            [debut, fin, data.repetitions, data.ecart, data.mission.id]
         );
 
         return new CreneauMission(db, {
@@ -50,9 +53,12 @@ export default class CreneauMission extends Creneau<CreneauMission> {
 
     // Méthodes
     async save(): Promise<void> {
+        const debut = this.debut.toISOString().slice(0,-1);
+        const fin   = this.fin.toISOString().slice(0,-1);
+
         await this.db.run(
             "update creneau_mission set debut=?, fin=?, repetitions=?, ecart=?, mission=? where id=?",
-            [this.debut, this.fin, this.repetitions, this.ecart, this.mission.pk, this.id]
+            [debut, fin, this.repetitions, this.ecart, this.mission.pk, this.id]
         )
     }
 
