@@ -34,3 +34,8 @@ select.placeholder {
   margin-right: -.5rem;
   margin-bottom: -.25rem;
 }
+
+// autre
+.must-be-only:not(:only-child) {
+  display: none;
+}

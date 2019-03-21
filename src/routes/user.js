@@ -166,6 +166,41 @@ export default function(db) {
         }
     }));
     router.route('/document/:id')
+        .post(utils.user_guard(async function(req, res, next) {
+            // Params
+            const { id } = req.params;
+            const { titre } = req.body;
+
+            if (!titre) {
+                return res.status(400).json({ msg: "Missing titre parameter" })
+            }
+
+            try {
+                // Get user
+                const doc = await Document.getById(db, id);
+                const user = await Citoyen.getLoggedInUser(db, req);
+
+                // Bon user ?
+                if (doc.citoyen.pk !== user.login) {
+                    return res.status(403).json({ msg: "Vous n'avez pas accès à ce fichier" });
+                }
+
+                // Renomage
+                doc.titre = titre;
+                await doc.save();
+
+                res.json({
+                    id: doc.id,
+                    titre: doc.titre,
+                    lien: doc.lien,
+                    filename: doc.filename,
+                });
+
+            } catch(err) {
+                console.log(err);
+                next(err);
+            }
+        }))
         .delete(utils.user_guard(async function(req, res, next) {
             // Params
             const { id } = req.params;

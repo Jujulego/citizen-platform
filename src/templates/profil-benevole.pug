@@ -12,6 +12,24 @@ block content
     include parts/modifCitoyen
     include parts/supprCitoyen
 
+    div(id="doc-dialog" class="modal fade" tabindex="-1" role="dialog")
+        div(class="modal-dialog" role="document")
+            form(class="modal-content" novalidate)
+                div(class="modal-header")
+                    h5(class="modal-title") Modifier le document
+
+                    button(class="close" type="button" data-dismiss="modal")
+                        i(class="fas fa-times")
+
+                div(class="modal-body")
+                    div(class="form-group")
+                        label Titre
+                        input(id="rename-field" class="form-control" name="titre" placeholder="Titre" required)
+
+                div(class="modal-footer")
+                    button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
+                    button(class="btn btn-primary" type="submit") Modifier
+
     //bootstrap
     header(class="row")
         div(class="col")
@@ -31,25 +49,28 @@ block content
                             div(class="btn-group")
                                 button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifCitoyen")
                                     i(class="fas fa-user-edit")
+
                                 button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-target="#supprCitoyen")
                                     i(class="fas fa-user-slash")
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        span 
-                            a(href=`mailto:${user.login}`)= `Email : ${user.login}`
+                        i(class="fas fa-at fa-fw mr-3")
+                        a(href=`mailto:${user.login}`)= user.login
 
                     li(class="list-group-item")
-                        span= `Adresse : ${user.adresse}`
+                        i(class="fas fa-address-card fa-fw mr-3")
+                        = user.adresse
 
                     li(class="list-group-item")
-                        span= `Téléphone : ${user.tel}`
+                        i(class="fas fa-phone fa-fw mr-3")
+                        = user.tel
 
                     li(class="list-group-item")
-                        span= `Situation : ${user.situation_txt}`
+                        i(class="fas fa-briefcase fa-fw mr-3")
+                        = user.situation_txt
 
-                    li(class="list-group-item")
-                        span= user.permis ? "Permis B" : "Sans le permis"
+                    li(class="list-group-item")= user.permis ? "Permis B" : "Sans le permis"
 
             div(class="card mb-3")
                 div(class="card-header")
@@ -99,17 +120,24 @@ block content
                                                     th(class="action-col" scope="col") Actions
 
                                             tbody
+                                                tr(class="must-be-only")
+                                                    td(class="text-center" colspan="2") Aucun documents
+
                                                 each doc in documents
-                                                    tr
+                                                    tr(data-id=doc.id)
                                                         td
-                                                            a(href=doc.lien)= doc.titre
+                                                            a(class="doc-title" href=doc.lien)= doc.titre
 
                                                         td(class="text-center action-col")
                                                             div(class="btn-group btn-group-sm")
-                                                                a(class="btn btn-primary" href=doc.lien download=doc.filename)
-                                                                    i(class="fas fa-file-download")
-                                                                button(class="btn btn-danger btn-delete-doc" data-id=doc.id)
-                                                                    i(class="fas fa-trash")
+                                                                a(class="btn btn-secondary doc-dl" href=doc.lien download=doc.filename)
+                                                                    i(class="fas fa-file-download fa-fw")
+
+                                                                button(class="btn btn-primary btn-rename-doc")
+                                                                    i(class="fas fa-pen fa-fw")
+
+                                                                button(class="btn btn-danger btn-delete-doc")
+                                                                    i(class="fas fa-trash fa-fw")
 
                                     div(class="col-xs-12 col-md-4")
                                         h5(class="mb-3") Nouveau document :
@@ -127,8 +155,8 @@ block content
                                                     label(for="file-field" class="custom-file-label placeholder") Fichier
 
                                             button(class="btn btn-primary btn-block" type="submit")
-                                                i(class="fas fa-plus mr-2")
-                                                | Ajouter
+                                                i(class="fas fa-file-upload mr-2")
+                                                | Envoyer
 
                         div(class="tab-pane fade" id="dispo" role="tabpanel") 
                             button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
