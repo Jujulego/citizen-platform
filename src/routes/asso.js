@@ -90,5 +90,48 @@ export default function(db) {
     }));
 
 
+    //Création de missions
+    router.get('/createMission', utils.asso_guard(async function(req, res, next) {
+            const asso = await Association.getLoggedInUser(db, req);
+
+            res.render('createMission', {
+                title: "Creation Mission",
+                asso: asso,
+            });
+        }));
+
+    router.post('/createMission',utils.asso_guard(async function(req, res, next) {
+            // Récups nouv infos
+            const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetition } = req.body;
+            const asso = await Association.getLoggedInUser(db, req);
+            
+            // Validation
+            if (!titre || !lieu || !description || !dateDebut || !timeDebut || !dateFin || !timeFin) {
+                res.render('createMission', {
+                    title: "Creation Mission",
+                    asso: asso,
+                });
+            }
+            else{
+                try{
+                    //mission
+                    let dataM =  { titre, lieu, description, asso, nbPersAtteindre: nbPers ? nbPers : 0}
+                    let miss = await Mission.create(db, dataM);
+
+                    //debut
+                    let debut = dateDebut + " " +  timeDebut;
+                    //fin
+                    let fin = dateFin + " " + timeFin;
+                    //Crénau
+                    let dataC = { debut, fin, repetitions: repetition, ecart, miss }
+
+                    res.redirect("/asso/");
+                }catch(err) {
+                    console.error(err);
+                    next(err);
+                }
+            }
+        }));
+
     return router;
 };

@@ -1,0 +1,85 @@
+extends base
+
+
+append css
+    link(rel="stylesheet" href="/static/scss/mission.css")
+
+block content
+    //div= test
+    header(class="row")
+        //titre
+        h1(class="col text-center my-3")= "Creation Mission"
+
+    section(class="row")
+        form(id="createMission-form" class="container-fluid" method="post" action="/asso/createMission")
+                
+            div(class="col-xl")
+                fieldset(class="card ")
+                    label(class="card-header") Informations
+
+                    div(class="card-body")
+                        div(class="form-row mb-3")
+                            div(class="col")
+                                label(for="title-field") Titre de la Mission*
+                                input(id="title-field" class="form-control"
+                                      name="titre" type="text" placeholder="Titre de la Mission*" required)
+
+                            div(class="col")
+                                label(for="lieu-field") Lieu*
+                                input(id="lieu-field" class="form-control"
+                                      name="lieu" type="text" placeholder="Lieu*" required)
+
+                        div(class="form-row mb-3")
+                            div(class="col-6 mb-3")
+                                div(class="mb-3")
+                                    label(for="description-field") Description de la Mission*
+                                    textarea(id="description-field" class="form-control"
+                                            type="textarea" placeholder="Description de la Mission*" required name="description")
+
+                                div(class="mb-3")
+                                    label(for="nbPers-field") Nombre de Personne Requise pour la mission
+                                    input(id="nbPers-field" class="form-control"
+                                            type="text" name="nbPers" placeholder="Nombre de Personne Requise pour la mission")
+
+                        
+                            div(class="col mb-3")
+                                div(class="mb-3")
+                                    label(for="dateDebut-field") Date début*
+                                    input(id="dateDebut-field" class="form-control"
+                                          name="dateDebut" type="date" required)
+                                          
+                                div(class="mb-3")
+                                    label(for="timeDebut-field") Heure début*
+                                    input(id="timeDebut-field" class="form-control" name="timeDebut" type="time"  required)
+                                          
+                                
+                                div(class="mb-3")
+                                    label(for="recurence-field") Récurrence
+                                    select(id="recurence-field" class="custom-select placeholder" name="ecart")
+                                        option(value selected) Pas de récurrence
+                                        option(value="24:00:00") Tous les jours    
+                                        option(value="168:00:00") Toutes les semaines
+                                        option(value="336:00:00") Toutes les 2 semaines
+                    
+                                      
+                            div(class="col mb-3")
+                                div(class="mb-3")
+                                    label(for="dateFin-field") Date fin*
+                                    input(id="dateFin-field" class="form-control"
+                                          name="dateFin" type="date" required)
+                                          
+                                div(class="mb-3")
+                                    label(for="timeFin-field") Heure fin*
+                                    input(id="timeFin-field" class="form-control" name="timeFin" type="time" required)
+                                    
+                                div(class="mb-3")
+                                    label(for="recurenceEnd-field") Fin de la récurrence
+                                    select(id="recurenceEnd-field" class="custom-select placeholder" name="repetition")
+                                        option(value="0" selected ) Jamais
+                                        option(value="1") Au bout de 1 fois   
+                                        option(value="2") Au bout de 2 fois
+                                        option(value="3") Au bout de 3 fois 
+                                        option(value="4") Au bout de 4 fois
+                                        option(value="5") Au bout de 5 fois
+                                                        
+                        button(class="btn btn-primary px-5 m-3 right" type="submit") Créer 
