@@ -24,6 +24,18 @@ export default class Postulation extends Model<Postulation> {
     }
 
     // Méthodes statiques
+    static async create(db: Database, data: {citoyen: Citoyen, creneau: CreneauMission }): Promise<Postulation> {
+        const res = await db.run(
+            "insert into postulation(creneau, citoyen) values (?, ?)",
+            [data.creneau.id, data.citoyen.login]
+        );
+
+        return new Postulation(db, {
+            loginCitoyen: data.citoyen.login,
+            idCreneau: data.creneau.id
+        });
+    }
+
     static async allByCreneauMission(db: Database, creneau: CreneauMission): Promise<Array<Postulation>> {
         return await Postulation.all(db,
             "select * from postulation where creneau = ?", [creneau.id],

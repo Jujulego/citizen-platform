@@ -1,0 +1,77 @@
+extends base
+
+append css
+    // Datatable
+    link(rel="stylesheet" href="/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")
+
+    //lien avec le css
+    link(rel="stylesheet" href="/static/scss/profil.css")
+
+append jslib
+    script(src="/vendor/datatables.net/js/jquery.dataTables.min.js")
+    script(src="/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js")
+
+block content
+    //TOUT CE QUI CONCERNE LA MISSION
+    //PAGE MISSION : MISSION (en dessous de résultat)
+    header(class="row ") 
+        div(class="col justify-content-end") 
+            h1(class="text-white")= mission.titre
+
+    section(class="row")
+        aside(class="col-3")
+            div(class="card mb-3")
+                div(class="card-header") Informations
+
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        span= `Lieu : ` + mission.lieu
+
+                    li(class="list-group-item")
+                        span= "Temps estimé de la mission : " + creneaux[0].tempsMission + " minutes"
+                    
+                    li(class="list-group-item")
+                        span Créneau : 
+                    
+                        //pour l'instant : si on est connecté : checkbox + possibilité de Postuler
+                        //sinon : ul + pas de postulation
+                        
+                        if session.userLogin !== undefined
+                            form(id="postulation-form" class="container-fluid" method="post" action="/user/postuler")
+                                each creneau in creneaux
+                                    div(class="form-group form-check")
+                                        input(type="checkbox" class="form-check-input" name="check" value="" + creneau.id +  "" id="" + creneau.id +  "")
+                                        label(class="form-check-label" for="" + creneau.id +  "")= creneau.debut_txt
+                                button(type="submit" class="btn btn-primary") Postuler
+                        
+                            
+                        
+                        else
+                            ul
+                                each creneau in creneaux
+                                    li= creneau.debut_txt
+                    
+                    
+
+            div(class="card mb-3")
+                div(class="card-header") Contact
+                    
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        a(href=`mailto:${asso.mail}`)= asso.mail
+
+        article(class="col")
+            div(class="card")
+                div(class="card-header")
+                    h2 Informations complémentaires
+
+
+                div(class="card-body")
+                    div(class="tab-content")
+                        h4 Description de la mission :
+                        p(class="ml-3")= mission.description
+
+                        h4 Domaine d'intervention
+                        p(class="ml-3")  A FAIRE !!
+                        
+                        

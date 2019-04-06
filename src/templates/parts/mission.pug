@@ -7,10 +7,16 @@ div(class="card m-3")
 
             block toolbar
                 div(class="col-auto card-toolbar")
-                    a(href="#" class="btn btn-primary btn-sm") Postuler
+                    if session.assoLogin !== undefined
+                        a(href="/asso/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
+                    else if session.userLogin !== undefined
+                        a(href="/user/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
+                    else 
+                        a(href="/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
 
-    div(class="card-body")
-        p(class="card-text")= mission.description
+    a(href=`/user/mission/${mission.id}`)
+        div(class="card-body")
+            p(class="card-text")= mission.description
 
     block footer
         div(class="card-footer text-right px-3 py-1")

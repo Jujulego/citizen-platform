@@ -9,6 +9,7 @@ import CreneauCitoyen from "./CreneauCitoyen";
 import Document from "./Document";
 import DomaineIntervention from "./DomaineIntervention";
 import Postulation from "./Postulation";
+import Mission from "./Mission";
 
 // Classe
 export default class Citoyen extends Model<Citoyen> {
@@ -135,6 +136,11 @@ export default class Citoyen extends Model<Citoyen> {
             "delete from citoyen where loginCitoyen=?", [this.login]
         );
     }
+
+    async getMission(id: number): Promise<?Mission> {
+        return await Mission.getById(this.db, id);
+    }
+
 
     async getCompetances(): Promise<Array<Competance>> {
         return await Competance.getForCitoyen(this.db, this);
