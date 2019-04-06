@@ -82,15 +82,6 @@ export default function(db) {
             }
         });
 
-    router.get('/test', function(req, res, next) { //route
-        db.all('SELECT * FROM test') //requête
-            .then(function(tests) {
-                res.send(tests); //on envoie le résultat de la requête (affichage)
-            });
-
-        db.run("INSERT INTO test VALUES (9)"); //on ajoute une valeur 9
-    });
-
     //missions
     router.get('/mission/:id', async function(req, res, next) {
         const mission = await Mission.getById(db, req.params.id);
@@ -102,9 +93,6 @@ export default function(db) {
             creneaux : await mission.getCreneaux(),
             candidats: await mission.getPostulants()
         });
-
-
-
     });
 
     return router;

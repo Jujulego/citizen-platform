@@ -58,13 +58,10 @@ export default function(db) {
             title: "accueil association",
             missions: await asso.getMissions()
         });
-
     }));
 
-
-
     //modifications Informations citoyen
-    router.post('/',utils.asso_guard(async function(req, res, next) {
+    router.post('/', utils.asso_guard(async function(req, res, next) {
         // Récups nouv infos
         const { nom, adresse, tel, siteWeb, siret } = req.body;
 
