@@ -8,11 +8,8 @@ import Mission from "../db/Mission";
 import Postulation from '../db/Postulation';
 import Association from "../db/Association";
 import Citoyen from "../db/Citoyen";
-<<<<<<< HEAD
 import CreneauMission from '../db/CreneauMission';
-=======
 import Document from "../db/Document";
->>>>>>> 2e95c667951318128978aad0181e62bcff8c4ee9
 import utils from "../utils";
 
 // Constante
