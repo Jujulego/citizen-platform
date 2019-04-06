@@ -1,7 +1,6 @@
 //aspect de la page profil
 
 header div {
-
   display: flex;
   height: 300px;
 
@@ -22,24 +21,19 @@ header div {
   }
 }
 
-.card-infos .list-group-item { //icône petit crayon à coté des infos (mail, adresse,tel...)
-  display: flex;
-
-  span {
-    flex: 1;
-  }
-
-  &::after {
-    content: "\f044";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-  }
-}
-
 .right{
     float: right;
 }
 
 .champ{
-    margin: 5px
+    margin: 5px;
+}
+
+.action-col {
+  width: 150px;
+}
+
+td.action-col {
+  padding: 0;
+  vertical-align: middle;
 }

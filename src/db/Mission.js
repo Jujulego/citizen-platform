@@ -8,6 +8,7 @@ import CreneauMission from './CreneauMission';
 import Postulation from "./Postulation";
 import Citoyen from "./Citoyen";
 import ForeignKey from "./ForeignKey";
+import Domaine from "./Domaine";
 
 // Classe
 export default class Mission extends Model<Mission> {
@@ -70,7 +71,14 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-    static async nextMissions(db: Database, lieu: string = null, assos: string = null, keyword: string = null, nb: number = 5): Promise<Array<Mission>> {
+    static async allByDomaine(db: Database, domaine: Domaine): Promise<Array<Mission>> {
+        return await Mission.all(db,
+            "select distinct m.* from mission m inner join domaine_mission dm on m.idMission = dm.mission where dm.domaine = ?", [domaine.id],
+            (data) => new Mission(db, data)
+        );
+    }
+
+    static async nextMissions(db: Database, lieu: ?string = null, assos: ?string = null, keyword: ?string = null, nb: number = 5): Promise<Array<Mission>> {
         // Declaration des morceaux falcultatifs de requete sql (dépent des champs remplis)
         const where = "  where ";
         const wlieu = "  lieu like ?\n";
@@ -107,12 +115,6 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-
-
-
-
-
-
     // Méthodes
     async save(): Promise<void> {
         await this.db.run(
@@ -127,14 +129,28 @@ export default class Mission extends Model<Mission> {
         )
     }
 
+    async getDomaines(): Promise<Array<Domaine>> {
+        return await Domaine.allByMission(this.db, this);
+    }
+    async linkDomaine(domaine: Domaine): Promise<void> {
+        await this.db.run(
+            "insert into domaine_mission(domaine, mission) values (?, ?)",
+            [domaine.id, this.id]
+        )
+    }
+    async unlinkDomaine(domaine: Domaine): Promise<void> {
+        await this.db.run(
+            "delete from domaine_mission where domaine=? and mission=?",
+            [domaine.id, this.id]
+        )
+    }
+
     async getCreneaux(): Promise<Array<CreneauMission>> {
         return await CreneauMission.allByMission(this.db, this);
     }
-
     async getPostulations(): Promise<Array<Postulation>> {
         return await Postulation.allByMission(this.db, this);
     }
-
     async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission }>> {
         const postulations: Array<Postulation> = await this.getPostulations();
 

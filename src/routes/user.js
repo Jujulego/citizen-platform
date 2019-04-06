@@ -1,12 +1,22 @@
 // Importations
 import { Router } from "express";
+import Busboy from "busboy";
+import fs from "fs-extra";
+import path from "path";
 
 import Mission from "../db/Mission";
 import Postulation from '../db/Postulation';
 import Association from "../db/Association";
 import Citoyen from "../db/Citoyen";
+<<<<<<< HEAD
 import CreneauMission from '../db/CreneauMission';
+=======
+import Document from "../db/Document";
+>>>>>>> 2e95c667951318128978aad0181e62bcff8c4ee9
 import utils from "../utils";
+
+// Constante
+const MEDIA_PATH = path.join(__dirname, "../../media");
 
 // Router
 export default function(db) {
@@ -16,16 +26,13 @@ export default function(db) {
     router.route('/')
         .get(utils.user_guard(async function(req, res, next) { //route
             const user = await Citoyen.getLoggedInUser(db, req);
-            console.log(user);
-            console.log(await user.getCompetances());
 
             res.render('profil-benevole', { //lien entre la route et le pug profil
                 title: "Mon Profil",
 
                 user: user,
-                documents:           await user.getDocuments(),
-                domaineintervention: await user.getDomainesIntervention(),
-                competances:         await user.getCompetances(),
+                documents:   await user.getDocuments(),
+                competances: await user.getCompetances(),
             });
         }))
         // Modification Informations citoyen
@@ -98,6 +105,130 @@ export default function(db) {
             missions: missions
         });
     }));
+
+    // Ajout documents
+    function createDoc(res, titre, name, user) {
+        Document.create(db, { titre: titre, fichier: name, citoyen: user })
+            .then(function(doc) {
+                res.json({
+                    id: doc.id,
+                    titre: doc.titre,
+                    fichier: doc.fichier,
+                    filename: doc.filename,
+                });
+            })
+            .catch(function(err) {
+                console.error(err);
+                next(err);
+            });
+    }
+
+    router.post('/document/add', utils.user_guard(async function(req, res, next) {
+        try {
+            // Get user
+            const user = await Citoyen.getLoggedInUser(db, req);
+
+            // Récupération du fichier
+            const busboy = new Busboy({ headers: req.headers });
+            let fname = null, titre = null;
+
+            busboy.on('field', function(field, val) {
+                if (field !== "titre") return;
+
+                titre = val;
+
+                if (titre && fname) {
+                    createDoc(res, titre, fname, user);
+                }
+            });
+
+            busboy.on('file', function(field, file, filename, encoding, mime) {
+                // Check field
+                if (field !== "file") return;
+
+                // Generate random name
+                const name = utils.random_text(40) + path.extname(filename);
+                console.log(`Uploading : ${filename} to ${name}`);
+
+                // Path to file
+                const fstream = fs.createWriteStream(path.join(MEDIA_PATH, name));
+                file.pipe(fstream);
+
+                fstream.on('close', function() {
+                    console.log(`${filename} uploaded to ${name}`);
+                    fname = name;
+
+                    if (titre && fname) {
+                        createDoc(res, titre, fname, user);
+                    }
+                });
+            });
+
+            req.pipe(busboy);
+        } catch(err) {
+            console.error(err);
+            next(err);
+        }
+    }));
+    router.route('/document/:id')
+        .post(utils.user_guard(async function(req, res, next) {
+            // Params
+            const { id } = req.params;
+            const { titre } = req.body;
+
+            if (!titre) {
+                return res.status(400).json({ msg: "Missing titre parameter" })
+            }
+
+            try {
+                // Get user
+                const doc = await Document.getById(db, id);
+                const user = await Citoyen.getLoggedInUser(db, req);
+
+                // Bon user ?
+                if (doc.citoyen.pk !== user.login) {
+                    return res.status(403).json({ msg: "Vous n'avez pas accès à ce fichier" });
+                }
+
+                // Renomage
+                doc.titre = titre;
+                await doc.save();
+
+                res.json({
+                    id: doc.id,
+                    titre: doc.titre,
+                    fichier: doc.fichier,
+                    filename: doc.filename,
+                });
+
+            } catch(err) {
+                console.log(err);
+                next(err);
+            }
+        }))
+        .delete(utils.user_guard(async function(req, res, next) {
+            // Params
+            const { id } = req.params;
+
+            try {
+                // Get user
+                const doc = await Document.getById(db, id);
+                const user = await Citoyen.getLoggedInUser(db, req);
+
+                // Bon user ?
+                if (doc.citoyen.pk !== user.login) {
+                    return res.status(403).json({ msg: "Vous n'avez pas accès à ce fichier" });
+                }
+
+                // Suppression !
+                await doc.delete();
+                res.json({ msg: "Supprimé !" });
+
+            } catch(err) {
+                console.log(err);
+                next(err);
+            }
+        }));
 
     //supprimer le profil citoyen
     router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
