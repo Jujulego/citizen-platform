@@ -48,7 +48,7 @@ create table creneau_mission(
   fin   datetime not null,
 
   repetitions int unsigned default 1 not null, -- 0 => infini
-  ecart       time,
+  ecart       integer default null,
 
   mission int default null,
 
