@@ -227,7 +227,7 @@ export default function(db) {
             }
         }));
 
-    //supprimer le profil citoyen
+    // Supprimer le profil citoyen
     router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
         const user = await Citoyen.getLoggedInUser(db, req);
         await user.delete();
@@ -239,20 +239,6 @@ export default function(db) {
 
 
     //missions
-    router.get('/mission/:id', utils.user_guard(async function(req, res, next) {
-        const user = await Citoyen.getLoggedInUser(db, req);
-        const mission = await user.getMission(req.params.id);
-
-        res.render("read-mission", {
-            title: mission.titre,
-            asso: await mission.association.get(),
-            mission: mission,
-            creneaux : await mission.getCreneaux(),
-            candidats: await mission.getPostulants()
-        });
-
-    }));
-
     router.post('/postuler', utils.user_guard(async function(req, res, next){
         console.log("dans le postuler");
 
@@ -316,6 +302,7 @@ export default function(db) {
                 break;
         }
     });
+
     router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
         // Déconnexion
         Association.disconnect(req);
@@ -323,13 +310,6 @@ export default function(db) {
 
         res.redirect("/");
     }));
-
-
-
-
-
-
-
 
     return router;
 };

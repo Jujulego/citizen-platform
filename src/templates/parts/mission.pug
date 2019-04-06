@@ -9,8 +9,6 @@ div(class="card m-3")
                 div(class="col-auto card-toolbar")
                     if session.assoLogin !== undefined
                         a(href="/asso/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
-                    else if session.userLogin !== undefined
-                        a(href="/user/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
                     else 
                         a(href="/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
 

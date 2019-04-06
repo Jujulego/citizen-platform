@@ -1,6 +1,5 @@
 extends base
 
-
 append css
     link(rel="stylesheet" href="/static/scss/mission.css")
 
@@ -57,11 +56,10 @@ block content
                                     label(for="recurence-field") Récurrence
                                     select(id="recurence-field" class="custom-select placeholder" name="ecart")
                                         option(value selected) Pas de récurrence
-                                        option(value="24:00:00") Tous les jours    
-                                        option(value="168:00:00") Toutes les semaines
-                                        option(value="336:00:00") Toutes les 2 semaines
-                    
-                                      
+                                        option(value="1")  Tous les jours
+                                        option(value="7")  Toutes les semaines
+                                        option(value="14") Toutes les 2 semaines
+
                             div(class="col mb-3")
                                 div(class="mb-3")
                                     label(for="dateFin-field") Date fin*
@@ -74,7 +72,7 @@ block content
                                     
                                 div(class="mb-3")
                                     label(for="recurenceEnd-field") Fin de la récurrence
-                                    select(id="recurenceEnd-field" class="custom-select placeholder" name="repetition")
+                                    select(id="recurenceEnd-field" class="custom-select placeholder" name="repetitions")
                                         option(value="0" selected ) Jamais
                                         option(value="1") Au bout de 1 fois   
                                         option(value="2") Au bout de 2 fois

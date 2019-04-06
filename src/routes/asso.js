@@ -34,10 +34,6 @@ export default function(db) {
         const asso = await Association.getLoggedInUser(db, req);
         const mission = await asso.getMission(req.params.id);
 
-
-        console.log(mission);
-        console.log(await mission.getCreneaux());
-
         res.render("edit-mission", {
             title: mission.titre,
 
@@ -45,18 +41,6 @@ export default function(db) {
             mission: mission,
             creneaux : await mission.getCreneaux(),
             candidats: await mission.getPostulants()
-        });
-    }));
-
-    router.get('/supprMission/:id', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
-
-        await mission.delete();
-
-        res.render('accueil-assos', { //quel template utilisé : ici accueil asso
-            title: "accueil association",
-            missions: await asso.getMissions()
         });
     }));
 
@@ -105,48 +89,60 @@ export default function(db) {
         }
     }));
 
-
     //Création de missions
     router.get('/createMission', utils.asso_guard(async function(req, res, next) {
-            const asso = await Association.getLoggedInUser(db, req);
+        const asso = await Association.getLoggedInUser(db, req);
 
-            res.redirect("/asso/");
-            
-        }));
+        res.render('createMission', {
+            title: "Creation Mission",
+            asso: asso,
+        });
+    }));
 
-    router.post('/createMission',utils.asso_guard(async function(req, res, next) {
-            // Récups nouv infos
-            const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetition } = req.body;
-            const asso = await Association.getLoggedInUser(db, req);
+    router.post('/createMission', utils.asso_guard(async function(req, res, next) {
+        // Récups nouv infos
+        const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions } = req.body;
+        const asso = await Association.getLoggedInUser(db, req);
 
-            // Validation
-            if (!titre || !lieu || !description || !dateDebut || !timeDebut || !dateFin || !timeFin) {
-                res.render('createMission', {
-                    title: "Creation Mission",
-                    asso: asso,
-                });
+        // Validation
+        if (!titre || !lieu || !description || !dateDebut || !timeDebut || !dateFin || !timeFin) {
+            res.render('createMission', {
+                title: "Creation Mission",
+                asso: asso,
+            });
+        } else {
+            try {
+                //mission
+                const mission = await Mission.create(db,
+                    { titre, lieu, description, asso, nbPersAtteindre: nbPers || 0}
+                );
+
+                // Dates
+                const debut = new Date(dateDebut + " " +  timeDebut);
+                const fin = new Date(dateFin + " " + timeFin);
+
+                // Créneau
+                await CreneauMission.create(db, { debut, fin, repetitions, ecart, mission });
+
+                res.redirect("/asso/");
+            } catch(err) {
+                console.error(err);
+                next(err);
             }
-            else{
-                try{
-                    //mission
-                    let dataM =  { titre, lieu, description, asso, nbPersAtteindre: nbPers ? nbPers : 0}
-                    let miss = await Mission.create(db, dataM);
+        }
+    }));
 
-                    //debut
-                    let debut = dateDebut + " " +  timeDebut;
-                    //fin
-                    let fin = dateFin + " " + timeFin;
-                    //Crénau
-                    let dataC = { debut, fin, repetitions: repetition, ecart, mission: miss }
-                    let creneau = await CreneauMission.create(db, dataC);
+    router.post('/supprMission/:id', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+        const mission = await asso.getMission(req.params.id);
 
-                    res.redirect("/asso/");
-                }catch(err) {
-                    console.error(err);
-                    next(err);
-                }
-            }
-        }));
+        await mission.delete();
+
+        res.render('accueil-assos', { //quel template utilisé : ici accueil asso
+            title: "accueil association",
+            missions: await asso.getMissions()
+        });
+    }));
 
     return router;
 };
