@@ -23,7 +23,7 @@ export default function(db) {
             const { lieu } = req.body;
             const { assos } = req.body;
             const { keyword } = req.body;
-        
+
             Mission.nextMissions(db, lieu, assos, keyword)
                 .then(function (missions) {
                     res.render('index', { //utilise un pug (affichage avec un pug)
@@ -89,6 +89,22 @@ export default function(db) {
             });
 
         db.run("INSERT INTO test VALUES (9)"); //on ajoute une valeur 9
+    });
+
+    //missions
+    router.get('/mission/:id', async function(req, res, next) {
+        const mission = await Mission.getById(db, req.params.id);
+
+        res.render("read-mission", {
+            title: mission.titre,
+            asso: await mission.association.get(),
+            mission: mission,
+            creneaux : await mission.getCreneaux(),
+            candidats: await mission.getPostulants()
+        });
+
+
+
     });
 
     return router;

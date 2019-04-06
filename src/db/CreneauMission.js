@@ -32,7 +32,10 @@ export default class CreneauMission extends Creneau<CreneauMission> {
 
         return new CreneauMission(db, {
             id: res.stmt.lastID,
-            debut: data.debut, fin: data.fin, repetitions: data.repetitions, ecart: data.ecart,
+            debut: data.debut,
+            fin: data.fin,
+            repetitions: data.repetitions,
+            ecart: data.ecart,
             mission: data.mission.id
         });
     }

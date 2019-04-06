@@ -2,6 +2,7 @@
 import { Router } from 'express';
 
 import Mission from '../db/mission';
+import CreneauMission from '../db/CreneauMission';
 import utils from '../utils';
 import Association from "../db/Association";
 
@@ -33,13 +34,31 @@ export default function(db) {
         const asso = await Association.getLoggedInUser(db, req);
         const mission = await asso.getMission(req.params.id);
 
+
+        console.log(mission);
+        console.log(await mission.getCreneaux());
+
         res.render("edit-mission", {
             title: mission.titre,
 
             asso: asso,
             mission: mission,
+            creneaux : await mission.getCreneaux(),
             candidats: await mission.getPostulants()
         });
+    }));
+
+    router.get('/supprMission/:id', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+        const mission = await asso.getMission(req.params.id);
+
+        await mission.delete();
+
+        res.render('accueil-assos', { //quel template utilisé : ici accueil asso
+            title: "accueil association",
+            missions: await asso.getMissions()
+        });
+
     }));
 
 
@@ -94,17 +113,15 @@ export default function(db) {
     router.get('/createMission', utils.asso_guard(async function(req, res, next) {
             const asso = await Association.getLoggedInUser(db, req);
 
-            res.render('createMission', {
-                title: "Creation Mission",
-                asso: asso,
-            });
+            res.redirect("/asso/");
+            
         }));
 
     router.post('/createMission',utils.asso_guard(async function(req, res, next) {
             // Récups nouv infos
             const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetition } = req.body;
             const asso = await Association.getLoggedInUser(db, req);
-            
+
             // Validation
             if (!titre || !lieu || !description || !dateDebut || !timeDebut || !dateFin || !timeFin) {
                 res.render('createMission', {
@@ -123,7 +140,8 @@ export default function(db) {
                     //fin
                     let fin = dateFin + " " + timeFin;
                     //Crénau
-                    let dataC = { debut, fin, repetitions: repetition, ecart, miss }
+                    let dataC = { debut, fin, repetitions: repetition, ecart, mission: miss }
+                    let creneau = await CreneauMission.create(db, dataC);
 
                     res.redirect("/asso/");
                 }catch(err) {

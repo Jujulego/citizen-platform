@@ -4,8 +4,11 @@ import Busboy from "busboy";
 import fs from "fs-extra";
 import path from "path";
 
+import Mission from "../db/Mission";
+import Postulation from '../db/Postulation';
 import Association from "../db/Association";
 import Citoyen from "../db/Citoyen";
+import CreneauMission from '../db/CreneauMission';
 import Document from "../db/Document";
 import utils from "../utils";
 
@@ -234,6 +237,48 @@ export default function(db) {
         res.redirect("/");
     }));
 
+
+    //missions
+    router.get('/mission/:id', utils.user_guard(async function(req, res, next) {
+        const user = await Citoyen.getLoggedInUser(db, req);
+        const mission = await user.getMission(req.params.id);
+
+        res.render("read-mission", {
+            title: mission.titre,
+            asso: await mission.association.get(),
+            mission: mission,
+            creneaux : await mission.getCreneaux(),
+            candidats: await mission.getPostulants()
+        });
+
+    }));
+
+    router.post('/postuler', utils.user_guard(async function(req, res, next){
+        console.log("dans le postuler");
+
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        console.log(req.body.check);
+
+        if(typeof req.body.check === 'string'){
+            let postu = await Postulation.create(db, {
+                citoyen : user,
+                creneau : await CreneauMission.getById(db, req.body.check)
+            })
+        }
+        else{
+            for (let idcreneauSel of req.body.check ){
+                console.log(idcreneauSel);
+                let postu = await Postulation.create(db, {
+                    citoyen : user,
+                    creneau : await CreneauMission.getById(db, idcreneauSel)
+                })
+            }
+        }
+
+        res.redirect("/");
+    }));
+
     // Connexion
     router.post('/connexion', function(req, res, next) {
         // Déjà connecté ?
@@ -278,6 +323,13 @@ export default function(db) {
 
         res.redirect("/");
     }));
+
+
+
+
+
+
+
 
     return router;
 };
