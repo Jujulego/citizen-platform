@@ -306,6 +306,6 @@ export default function(db) {
                 next(err);
             }
         }));
-    
+
     return router;
 };

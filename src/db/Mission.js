@@ -83,13 +83,12 @@ export default class Mission extends Model<Mission> {
         const where = "  where ";
         const wlieu = "  lieu like ?\n";
         const wassos = " asso.nom like ?\n";
-        const wkeyword = " description like ?\n";
+        const wkeyword = " description like ? \n";
         
         const params = [nb];
-        
-        if (lieu) { params.unshift(`%${lieu}%`); }
-        if (assos) { params.unshift(`%${assos}%`); } 
         if (keyword) { params.unshift(`%${keyword}%`); } 
+        if (assos) { params.unshift(`%${assos}%`); } 
+        if (lieu) { params.unshift(`%${lieu}%`); } 
         
         //console.log(keyword);
         return await Mission.all(db,
