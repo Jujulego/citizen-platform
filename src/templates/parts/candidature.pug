@@ -1,5 +1,6 @@
 
 //Card d'une Mission - vision Citoyen - Où il a déjà postulé : morceau candidature que l'on retrouve dans profil citoyen
+
 div(class="card m-3")
     div(class="card-header")
         div(class="row")
@@ -18,7 +19,8 @@ div(class="card m-3")
     block footer
         div(class="card-footer")
             div(class="m-0")
-                small(class="font-italic")=  mission.status? "En Attente de traitement" : "Accepté"
+                small(class="font-italic")=  mission.status?  "Accepté" : "En Attente de traitement"
                 div(class="float-right")
                     small(class="font-italic")=  mission.creneau.debut_txt
     
+//mission.status?  class="border border-info card m-3" : class="border border-success card-footer"

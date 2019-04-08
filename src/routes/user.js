@@ -154,7 +154,8 @@ export default function(db) {
                 console.log(idcreneauSel);
                 let postu = await Postulation.create(db, {
                     citoyen : user,
-                    creneau : await CreneauMission.getById(db, idcreneauSel)
+                    creneau : await CreneauMission.getById(db, idcreneauSel),
+                    status : false
                 })
             }
         }

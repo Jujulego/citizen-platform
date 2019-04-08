@@ -86,36 +86,36 @@ export default class Mission extends Model<Mission> {
         const wdateDebut = " dateMission >= ? \n";
         const wkeyword = " description like ? \n";
         const wkeyword2 = " OR titre like ? \n";
-        
+
         const params = [nb];
         if (dateDebut) { params.unshift(`${dateDebut}`); }
-        if (keyword) { params.unshift(`%${keyword}%`); } 
-        if (keyword) { params.unshift(`%${keyword}%`); } 
-        if (assos) { params.unshift(`%${assos}%`); } 
-        if (lieu) { params.unshift(`%${lieu}%`); } 
-        
+        if (keyword) { params.unshift(`%${keyword}%`); }
+        if (keyword) { params.unshift(`%${keyword}%`); }
+        if (assos) { params.unshift(`%${assos}%`); }
+        if (lieu) { params.unshift(`%${lieu}%`); }
+
         //console.log(keyword);
         return await Mission.all(db,
             //"select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
             "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, cm.debut as dateMission\n" +
             " from mission as m\n" +
             " inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
-            " join  association  as asso on m.loginAsso = asso.loginAsso \n" +            
-            
+            " join  association  as asso on m.loginAsso = asso.loginAsso \n" +
+
             //test/condition pour ajouter les morceau de requete
             ((lieu || assos || keyword || dateDebut)? "where " : "") +
             (lieu ? wlieu : "") +
-            
+
             ((lieu && assos)? " AND ": "") +
-            (assos ? wassos : "") +  
-             
+            (assos ? wassos : "") +
+
             (( (lieu || assos) && keyword)? " AND ": "") +
             (keyword ? wkeyword : "") +
             (keyword ? wkeyword2 : "") +
 
             (((lieu || assos || keyword)&& dateDebut)? " AND ": "") +
-            (dateDebut ? wdateDebut : "") +  
-            
+            (dateDebut ? wdateDebut : "") +
+
             "  group by titre, lieu, description\n" +
             "  order by dateMission\n" +
             "  limit ?", params,
@@ -159,14 +159,15 @@ export default class Mission extends Model<Mission> {
     async getPostulations(): Promise<Array<Postulation>> {
         return await Postulation.allByMission(this.db, this);
     }
-    async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission }>> {
+    async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission, status: boolean }>> {
         const postulations: Array<Postulation> = await this.getPostulations();
 
         const result = [];
         for (const p of postulations) {
             result.push({
                 postulant: await p.citoyen.get(),
-                creneau:   await p.creneau.get()
+                creneau:   await p.creneau.get(),
+                status:    p.status,
             });
         }
 
