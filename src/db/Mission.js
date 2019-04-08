@@ -78,34 +78,43 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-    static async nextMissions(db: Database, lieu: ?string = null, assos: ?string = null, keyword: ?string = null, nb: number = 5): Promise<Array<Mission>> {
+    static async nextMissions(db: Database, lieu: ?string = null, assos: ?string = null, dateDebut: ?Date, keyword: ?string = null, nb: number = 5): Promise<Array<Mission>> {
         // Declaration des morceaux falcultatifs de requete sql (dépent des champs remplis)
         const where = "  where ";
         const wlieu = "  lieu like ?\n";
         const wassos = " asso.nom like ?\n";
+        const wdateDebut = " dateMission >= ? \n";
         const wkeyword = " description like ? \n";
+        const wkeyword2 = " OR titre like ? \n";
         
         const params = [nb];
+        if (dateDebut) { params.unshift(`${dateDebut}`); }
+        if (keyword) { params.unshift(`%${keyword}%`); } 
         if (keyword) { params.unshift(`%${keyword}%`); } 
         if (assos) { params.unshift(`%${assos}%`); } 
         if (lieu) { params.unshift(`%${lieu}%`); } 
         
         //console.log(keyword);
         return await Mission.all(db,
-            "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
+            //"select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
+            "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, cm.debut as dateMission\n" +
             " from mission as m\n" +
             " inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
             " join  association  as asso on m.loginAsso = asso.loginAsso \n" +            
             
             //test/condition pour ajouter les morceau de requete
-            ((lieu || assos || keyword)? "where " : "") +
+            ((lieu || assos || keyword || dateDebut)? "where " : "") +
             (lieu ? wlieu : "") +
             
             ((lieu && assos)? " AND ": "") +
-            (assos ? wassos : "") + 
+            (assos ? wassos : "") +  
              
             (( (lieu || assos) && keyword)? " AND ": "") +
             (keyword ? wkeyword : "") +
+            (keyword ? wkeyword2 : "") +
+
+            (((lieu || assos || keyword)&& dateDebut)? " AND ": "") +
+            (dateDebut ? wdateDebut : "") +  
             
             "  group by titre, lieu, description\n" +
             "  order by dateMission\n" +
