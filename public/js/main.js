@@ -56,4 +56,50 @@
         return this;
     };
     $("select.placeholder").placeholder(); //s'applique sur tous les éléments select.placeholder
+
+    // Editable select
+    $.fn.editableselect = function() {
+        this.each(function() {
+            // Elements
+            const editableselect = $(this);
+
+            const input = $('input', this);
+            const button = $('button', this);
+            const div = $('div', this);
+
+            // Events
+            // - focus
+            input.focusout(function() {
+                // Fermeture
+                input.removeClass("focus");
+                button.removeClass("actif");
+                div.removeClass("actif");
+            });
+
+            $("*", this).focusin(function() {
+                input.addClass("focus");
+            });
+            $("*", this).not(input).focusout(function(e) {
+                // Perte de focus
+                if (!$(e.relatedTarget).parents().is(editableselect)) {
+                    input.trigger("focusout");
+                }
+            });
+
+            // - clicks
+            button.click(function() {
+                input.toggleClass("actif");
+                button.toggleClass("actif");
+                div.toggleClass("actif");
+            });
+
+            $("p", div).click(function() {
+                // Copie de la valeur
+                input.val($(this).text());
+            });
+        });
+
+        return this;
+    };
+    $(".editable-select").editableselect();
 })();
