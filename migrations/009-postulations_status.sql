@@ -2,7 +2,7 @@
 create table postulation2(
   creneau int not null,
   citoyen varchar(100) not null,
-  status boolean default false, --ici 0 vaut postulation en attente/traitement et 1 accepté (si refus : suppression de postulation)
+  status boolean not null default false, --ici 0 vaut postulation en attente/traitement et 1 accepté (si refus : suppression de postulation)
 
   foreign key (citoyen) references citoyen(loginCitoyen) on delete cascade,
   foreign key (creneau) references creneau_mission(id) on delete cascade,

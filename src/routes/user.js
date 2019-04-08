@@ -91,7 +91,8 @@ export default function(db) {
             const c = await p.creneau.get();
             missions.push({
                 creneau: c,
-                mission: await c.mission.get()
+                mission: await c.mission.get(),
+                status : p.status
             });
         }
 
@@ -266,6 +267,16 @@ export default function(db) {
 
         res.redirect("/");
     }));
+
+    // Supprimer une postulation
+    router.post('/suppPostu/:creneau', utils.user_guard(async function(req, res, next) {
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        await Postulation.deletePostulation(db, user, req.params.creneau)
+
+        res.redirect("/user/candidatures");
+    }));
+
 
     // Connexion
     router.post('/connexion', function(req, res, next) {

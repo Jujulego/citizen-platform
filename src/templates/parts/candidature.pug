@@ -4,16 +4,21 @@ div(class="card m-3")
     div(class="card-header")
         div(class="row")
             div(class="col")
-                h5(class="card-title mb-0")= `${mission.mission.titre}, ${mission.mission.lieu}`
+                h5(class="mb-0")= `${mission.mission.titre}, ${mission.mission.lieu}`
+            
+            div(class="card-toolbar col-auto")
+                button(type="button" class="btn btn-danger btn-sm"
+                         data-toggle="modal" data-target="#suppPostu"
+                         data-id="" + mission.creneau.id)
+                    i(class="fas fa-times")
         
     div(class="card-body")
         p(class="card-text")= mission.mission.description
             
     block footer
-        div(class="card-footer text-right px-3 py-1")
-            small(class="font-italic")=  mission.creneau.debut
+        div(class="card-footer")
+            div(class="m-0")
+                small(class="font-italic")=  mission.status? "En Attente de traitement" : "Accepté"
+                div(class="float-right")
+                    small(class="font-italic")=  mission.creneau.debut_txt
     
-    
-    //div(class="card-footer")
-        i Date candidature
-        strong(class="float-right") Statut
