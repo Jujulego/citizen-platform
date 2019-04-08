@@ -46,6 +46,10 @@ app.use(sassMiddleware({
 // Init Database
 Promise.resolve()
     .then(() => sqlite.open("./db.sqlite", { Promise }))
+    .then(async function(db) {
+        await db.get("PRAGMA foreign_keys = ON");
+        return db
+    })
     .then(db => db.migrate())
     .then(function(db) {
         // - ressources

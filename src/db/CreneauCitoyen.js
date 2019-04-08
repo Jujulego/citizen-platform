@@ -50,6 +50,14 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
         );
     }
 
+    static async allBetweenForCitoyen(db: Database, start: Date, end: Date, citoyen: Citoyen): Promise<Array<CreneauCitoyen>> {
+        return await CreneauCitoyen.all(db,
+            "select id, debut, fin, repetitions, ecart, citoyen from creneau_citoyen where citoyen = ? and (? < coalesce(datetime(fin, '+' || (ecart * repetitions) || ' days'), fin) and ? > debut)",
+            [start.toISOString().slice(0,-1), end.toISOString().slice(0,-1), citoyen.login],
+            (data) => new CreneauCitoyen(db, data)
+        );
+    }
+
     // Méthodes
     async save(): Promise<void> {
         const debut = this.debut.toISOString().slice(0,-1);
