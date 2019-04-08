@@ -42,6 +42,13 @@ export default class Domaine extends Model<Domaine> {
         );
     }
 
+    static async getByNom(db: Database, nom: string): Promise<?Domaine> {
+        return await Domaine.get(db,
+            "select * from domaine where nom = ?", [nom],
+            (data) => new Domaine(db, data)
+        );
+    }
+
     static async allByMission(db: Database, mission: Mission): Promise<Array<Domaine>> {
         return await Domaine.all(db,
             "select distinct d.* from domaine d inner join domaine_mission dm on d.id = dm.domaine where dm.mission = ?", [mission.id],

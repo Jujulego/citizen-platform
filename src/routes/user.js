@@ -249,7 +249,8 @@ export default function(db) {
         if(typeof req.body.check === 'string'){
             let postu = await Postulation.create(db, {
                 citoyen : user,
-                creneau : await CreneauMission.getById(db, req.body.check)
+                creneau : await CreneauMission.getById(db, req.body.check),
+                status : false
             })
         }
         else{
@@ -257,7 +258,8 @@ export default function(db) {
                 console.log(idcreneauSel);
                 let postu = await Postulation.create(db, {
                     citoyen : user,
-                    creneau : await CreneauMission.getById(db, idcreneauSel)
+                    creneau : await CreneauMission.getById(db, idcreneauSel),
+                    status : false
                 })
             }
         }

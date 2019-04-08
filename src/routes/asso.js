@@ -5,6 +5,7 @@ import Mission from '../db/mission';
 import CreneauMission from '../db/CreneauMission';
 import utils from '../utils';
 import Association from "../db/Association";
+import Domaine from "../db/Domaine";
 
 // Router
 export default function(db) {
@@ -102,7 +103,7 @@ export default function(db) {
 
     router.post('/createMission', utils.asso_guard(async function(req, res, next) {
         // Récups nouv infos
-        const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions } = req.body;
+        const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions, domaine } = req.body;
         const asso = await Association.getLoggedInUser(db, req);
 
         // Validation
@@ -124,6 +125,17 @@ export default function(db) {
 
                 // Créneau
                 await CreneauMission.create(db, { debut, fin, repetitions, ecart, mission });
+
+                //Domaine d'intervention
+                if(domaine){
+                    //verif que ce dommaine existe pas
+                    let dodo = await Domaine.getByNom(db, domaine);
+                    if(dodo == null){
+                        dodo = await Domaine.create(db, {nom : domaine});
+                    }
+                    await dodo.linkMission(mission);
+                }
+
 
                 res.redirect("/asso/");
             } catch(err) {
