@@ -4,7 +4,6 @@ import Busboy from "busboy";
 import fs from "fs-extra";
 import path from "path";
 
-import Mission from "../db/Mission";
 import Postulation from '../db/Postulation';
 import Association from "../db/Association";
 import Citoyen from "../db/Citoyen";
@@ -18,6 +17,51 @@ const MEDIA_PATH = path.join(__dirname, "../../media");
 // Router
 export default function(db) {
     const router = Router();
+
+    // Connexion
+    router.post('/connexion', function(req, res, next) {
+        // Déjà connecté ?
+        if (req.session.connected) {
+            res.redirect("/");
+            return;
+        }
+
+        // Récupération des paramètres
+        switch (req.body.type) {
+            case "c": // => Citoyen
+                Citoyen.authenticate(db, req, req.body)
+                    .then(function(user) {
+                        if (user) {
+                            res.redirect("/");
+                        } else {
+                            req.session.connectionPopup = req.body.login;
+                            res.redirect("/");
+                        }
+                    }).catch(next);
+
+                break;
+
+            case "a": // => Association
+                Association.authenticate(db, req, req.body)
+                    .then(function(asso) {
+                        if (asso) {
+                            res.redirect("/asso");
+                        } else {
+                            req.session.connectionPopup = req.body.login;
+                            res.redirect("/");
+                        }
+                    }).catch(next);
+
+                break;
+        }
+    });
+    router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
+        // Déconnexion
+        Association.disconnect(req);
+        Citoyen.disconnect(req);
+
+        res.redirect("/");
+    }));
 
     // mon profil
     router.route('/')
@@ -81,7 +125,43 @@ export default function(db) {
             }
         }));
 
-    // mes candidatures
+    // Supprimer le profil citoyen
+    router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
+        const user = await Citoyen.getLoggedInUser(db, req);
+        await user.delete();
+
+        Citoyen.disconnect(req);
+
+        res.redirect("/");
+    }));
+
+    // Missions
+    router.post('/postuler', utils.user_guard(async function(req, res, next){
+        console.log("dans le postuler");
+
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        console.log(req.body.check);
+
+        if(typeof req.body.check === 'string'){
+            let postu = await Postulation.create(db, {
+                citoyen : user,
+                creneau : await CreneauMission.getById(db, req.body.check)
+            })
+        }
+        else{
+            for (let idcreneauSel of req.body.check ){
+                console.log(idcreneauSel);
+                let postu = await Postulation.create(db, {
+                    citoyen : user,
+                    creneau : await CreneauMission.getById(db, idcreneauSel)
+                })
+            }
+        }
+
+        res.redirect("/");
+    }));
+
     router.get('/candidatures', utils.user_guard(async function(req, res, next) { //route
         const user = await Citoyen.getLoggedInUser(db, req);
         const postulations = await user.getPostulations();
@@ -103,7 +183,7 @@ export default function(db) {
         });
     }));
 
-    // Ajout documents
+    // Documents
     function createDoc(res, titre, name, user) {
         Document.create(db, { titre: titre, fichier: name, citoyen: user })
             .then(function(doc) {
@@ -226,90 +306,6 @@ export default function(db) {
                 next(err);
             }
         }));
-
-    // Supprimer le profil citoyen
-    router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
-        const user = await Citoyen.getLoggedInUser(db, req);
-        await user.delete();
-
-        Citoyen.disconnect(req);
-
-        res.redirect("/");
-    }));
-
-
-    //missions
-    router.post('/postuler', utils.user_guard(async function(req, res, next){
-        console.log("dans le postuler");
-
-        const user = await Citoyen.getLoggedInUser(db, req);
-
-        console.log(req.body.check);
-
-        if(typeof req.body.check === 'string'){
-            let postu = await Postulation.create(db, {
-                citoyen : user,
-                creneau : await CreneauMission.getById(db, req.body.check)
-            })
-        }
-        else{
-            for (let idcreneauSel of req.body.check ){
-                console.log(idcreneauSel);
-                let postu = await Postulation.create(db, {
-                    citoyen : user,
-                    creneau : await CreneauMission.getById(db, idcreneauSel)
-                })
-            }
-        }
-
-        res.redirect("/");
-    }));
-
-    // Connexion
-    router.post('/connexion', function(req, res, next) {
-        // Déjà connecté ?
-        if (req.session.connected) {
-            res.redirect("/");
-            return;
-        }
-
-        // Récupération des paramètres
-        switch (req.body.type) {
-            case "c": // => Citoyen
-                Citoyen.authenticate(db, req, req.body)
-                    .then(function(user) {
-                        if (user) {
-                            res.redirect("/");
-                        } else {
-                            req.session.connectionPopup = req.body.login;
-                            res.redirect("/");
-                        }
-                    }).catch(next);
-
-                break;
-
-            case "a": // => Association
-                Association.authenticate(db, req, req.body)
-                    .then(function(asso) {
-                        if (asso) {
-                            res.redirect("/asso");
-                        } else {
-                            req.session.connectionPopup = req.body.login;
-                            res.redirect("/");
-                        }
-                    }).catch(next);
-
-                break;
-        }
-    });
-
-    router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
-        // Déconnexion
-        Association.disconnect(req);
-        Citoyen.disconnect(req);
-
-        res.redirect("/");
-    }));
 
     return router;
 };

@@ -18,6 +18,11 @@ describe("Domaine", function() {
         }
     });
 
+    test("getByNom", async function() {
+        const dom = await Domaine.getByNom(database, "hfeuinjkvednvke");
+        expect(dom).toBeNull();
+    });
+
     test("create/update/delete", async function() {
         // Create
         const dom = await Domaine.create(database, {

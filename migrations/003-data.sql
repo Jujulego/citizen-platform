@@ -13,9 +13,9 @@ INSERT INTO `association` (`loginAsso`, `mdpAsso`, `nom`, `adresse`, `mail`, `te
 -- Citoyen
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('charleslegrand@carolingiens.fr', 'jaiInventeLEcole', 'Carolingiens', 'Charlemagne', '28 boulevard d''Aix', '0606060606', '5', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('premierempire@jesuislemeilleur.fr', 'JeNeSuisPasPetit', 'Bonaparte', 'Napoleon', '1 boulevard des Italiens', '0611111111', '5', '1');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`,`adresse`, `tel`, `situation`, `permis`) VALUES ('someone@gmail.fr', 'noboby', 'someone', 'maybe', '2 Place de leglise', '0100000000', '2', '0');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('someone@gmail.fr', 'noboby', 'someone', 'maybe', '2 Place de leglise', '0100000000', '2', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('emmanuel.macron@hotmail.com', 'ViveLaFinance', 'MACRON', 'Emmanuel', 'Palais de l''Eysée', '01777777', '5', '0');
-INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`,`adresse`, `tel`, `situation`, `permis`) VALUES ('maybe.someone@gmail.com', 'nobobyseeme', 'someone', 'maybe2', '3 Place de l''église', '01000001', '6', '0');
+INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('maybe.someone@gmail.com', 'nobobyseeme', 'someone', 'maybe2', '3 Place de l''église', '01000001', '6', '0');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('gilbert-jaune@yolo.fr', 'FautToutBloquer', 'Jaune', 'Gilbert', '8 rue de la Bastille', '01010101', '3', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('jean-michel.toutlemonde@outlook.com', 'Normalman', 'ToutLeMonde', 'Jean-Michel', '14 rue de classique', '0155748778', '5', '1');
 INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`, `tel`, `situation`, `permis`) VALUES ('bulle-supernana@yolo.com', 'BluePower', 'SuperNana', 'Bulle', '11 rue des fées', '0654456677', '2', '0');
@@ -34,12 +34,7 @@ INSERT INTO `citoyen` (`loginCitoyen`, `mdpCitoyen`, `nom`, `prenom`, `adresse`,
 
 -- Compétence
 INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0001', 'Management', 'Gestion dune armée, dun pays, dun empire', 'premierempire@jesuislemeilleur.fr');
-INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0002', 'Manifester', 'Se plaindre - Foutre la merde - Faire les jolies pancarte - Chanter des slogan pourri', '006');
-INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0003', 'Leader', 'Admisnistrer, légiferer...', '001');
 INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0004', 'Clonage', 'Kage Bushin no jutsu', 'numeroneninja@gmail.com');
-INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0005', 'Leader', 'Admisnistrer, légiferer...', '004');
-INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0006', 'Leader', 'Admisnistrer, légiferer...', '002');
-INSERT INTO `competance` (`idCompetance`, `nom`, `description`, `loginCitoyen`) VALUES ('0007', 'Gestion', 'Admisnistrer, réguler...', '002');
 
 -- Dispo citoyen
 INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCitoyen`) VALUES ('1', 'après-midi', '2019-02-05', 'charleslegrand@carolingiens.fr');
@@ -60,7 +55,6 @@ INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCi
 INSERT INTO `disponibilitecitoyen` (`recursif`, `tranche`, `dateDispo`, `loginCitoyen`) VALUES ('0', 'après-midi', '2019-03-30', 'claude.dupond@gmail.com');
 
 -- Domaine d'intervention
-INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('01', 'Enseignement', '0001');
 INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('02', 'Enseignement', 'belle-supernana@yolo.com');
 INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('03', 'Enseignement', 'maybe.someone@gmail.com');
 INSERT INTO `domaineintervention` (`idDomaine`, `nom`, `loginCitoyen`) VALUES ('04', 'Manutention', 'gilbert-jaune@yolo.fr');

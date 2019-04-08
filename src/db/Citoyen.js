@@ -143,6 +143,10 @@ export default class Citoyen extends Model<Citoyen> {
         return await CreneauCitoyen.allByCitoyen(this.db, this);
     }
 
+    async getCreneauxBetween(start: Date, end: Date): Promise<Array<CreneauCitoyen>> {
+        return await CreneauCitoyen.allBetweenForCitoyen(this.db, start, end, this);
+    }
+
     async getDocuments(): Promise<Array<Document>> {
         return await Document.allByCitoyen(this.db, this);
     }
