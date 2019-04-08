@@ -40,7 +40,8 @@ export default function(db) {
             asso: asso,
             mission: mission,
             creneaux : await mission.getCreneaux(),
-            candidats: await mission.getPostulants()
+            candidats: await mission.getPostulants(),
+            domaines : await mission.getDomaines()
         });
     }));
 

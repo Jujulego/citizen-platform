@@ -12,9 +12,8 @@ div(class="card m-3")
                     else 
                         a(href="/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
 
-    a(href=`/user/mission/${mission.id}`)
-        div(class="card-body")
-            p(class="card-text")= mission.description
+    div(class="card-body")
+        p(class="card-text")= mission.description
 
     block footer
         div(class="card-footer text-right px-3 py-1")

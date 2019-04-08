@@ -71,7 +71,9 @@ block content
                         h4 Description de la mission :
                         p(class="ml-3")= mission.description
 
-                        h4 Domaine d'intervention
-                        p(class="ml-3")  A FAIRE !!
+                        unless domaines.length === 0
+                            h4 Domaine d'intervention
+                            each dom in domaines
+                                p(class="ml-3")= dom.nom
                         
                         
