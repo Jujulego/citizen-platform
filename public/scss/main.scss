@@ -28,6 +28,83 @@ select.placeholder {
   content: "Parcourir";
 }
 
+.editable-select {
+  position: relative;
+}
+
+.editable-select input {
+  padding-right: 1.75rem;
+}
+
+.editable-select input.actif {
+  padding-right: 1.75rem;
+
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.editable-select input:focus, .editable-select input.focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.075),0 0 5px rgba(128,189,255,.5);
+}
+
+.editable-select button {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  height: 100%;
+  width: 1.75rem;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 0 .25rem .25rem 0;
+  background: none;
+  cursor: pointer;
+}
+
+.editable-select button i {
+  transition: transform 250ms linear;
+}
+
+.editable-select button.actif i {
+  border: none;
+  transform: rotate(180deg);
+}
+
+.editable-select div {
+  position: absolute;
+  top: 100%;
+  left: 0;
+
+  display: none;
+  width: 100%;
+  z-index: 10;
+
+  border: solid 1px #a0a0a0;
+  background-color: white;
+}
+
+.editable-select div.actif {
+  display: block;
+}
+
+.editable-select div p {
+  margin: 0;
+  padding: 5px 8px;
+
+  font-size: .75rem;
+}
+
+.editable-select div p:hover {
+  color: white;
+  background-color: #0078d7;
+}
+
 // Cards
 .card-toolbar {
   margin-top: -.25rem;
