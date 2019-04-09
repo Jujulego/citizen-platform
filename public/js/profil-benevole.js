@@ -143,10 +143,20 @@ $(document).ready(function() {
 // Gestion des créneaux
 $(document).ready(function() {
     // Modal
+    const tab = $("#tab-dispo");
+
     const modal = $("#add-creneau");
+
     const form  = $("form", modal);
-    const dateD = $("#date-deb", modal); const timeD = $("#time-deb", modal);
-    const dateF = $("#date-fin", modal); const timeF = $("#time-fin", modal);
+    const dateD = $("#date-deb", form);
+    const timeD = $("#time-deb", form);
+    const dateF = $("#date-fin", form);
+    const timeF = $("#time-fin", form);
+    const recursif = $("#recursif", form);
+    const recurDeps = $(".need-recursif", form);
+    const repetitions = $("#repetitions", form);
+    const nbEcarts    = $("#nb-ecarts", form);
+    const typeEcart   = $("#type-ecart", form);
 
     // Functions
     function twodigits(i) {
@@ -156,20 +166,6 @@ $(document).ready(function() {
 
         return i.toString();
     }
-
-    // Events
-    form.submit(function(event) {
-        event.preventDefault();
-
-        if (form[0].checkValidity() === false) {
-            // Invalide
-            event.stopPropagation();
-            form.addClass("was-validated");
-        } else {
-            // Valide
-            form.removeClass("was-validated");
-        }
-    });
 
     // Full calendar
     const calendar = new FullCalendar.Calendar($('#calendar')[0], {
@@ -197,4 +193,56 @@ $(document).ready(function() {
     });
 
     calendar.render();
+
+    // Events
+    recursif.change(function() {
+        if (recursif.prop("checked")) {
+            recurDeps.prop("disabled", false);
+            recurDeps.prop("required", true);
+        } else {
+            recurDeps.prop("disabled", true);
+            recurDeps.prop("required", false);
+        }
+    });
+
+    form.submit(function(event) {
+        event.preventDefault();
+
+        if (form[0].checkValidity() === false) {
+            // Invalide
+            event.stopPropagation();
+            form.addClass("was-validated");
+        } else {
+            // Valide
+            form.removeClass("was-validated");
+
+            // Data
+            const data = {
+                debut: `${dateD.val()}T${timeD.val()}:00.000Z`,
+                fin:   `${dateF.val()}T${timeF.val()}:00.000Z`,
+                repetitions: 1,
+            };
+
+            if (recursif.prop("checked")) {
+                data.repetitions = repetitions.val();
+                data.ecart = nbEcarts.val() * typeEcart.val();
+            }
+
+            // Ajax
+            $.ajax({
+                method: 'put',
+                url: '/user/creneaux/add',
+                data: data,
+
+                success: function() {
+                    modal.modal('hide');
+                    calendar.refetchEvents();
+                }
+            })
+        }
+    });
+
+    tab.on('shown.bs.tab', function() {
+        calendar.refetchEvents();
+    })
 });

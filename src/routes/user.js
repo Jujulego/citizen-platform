@@ -10,6 +10,7 @@ import Citoyen from "../db/Citoyen";
 import CreneauMission from '../db/CreneauMission';
 import Document from "../db/Document";
 import utils from "../utils";
+import CreneauCitoyen from "../db/CreneauCitoyen";
 
 // Constante
 const MEDIA_PATH = path.join(__dirname, "../../media");
@@ -392,11 +393,17 @@ export default function(db) {
         }
     }));
 
-    router.post("/user/add-creneau", utils.user_guard(async function(req, res, next) {
+    router.put("/creneaux/add", utils.user_guard(async function(req, res, next) {
         try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+
             // Params
             const deb = new Date(req.body.debut);
             const fin = new Date(req.body.fin);
+
+            // Nouveau créneau !
+            await CreneauCitoyen.create(db, { ...req.body, debut: deb, fin: fin, citoyen: user });
+            res.json({});
         } catch(err) {
             console.log(err);
             next(err);
