@@ -78,47 +78,52 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-    static async nextMissions(db: Database, lieu: ?string = null, assos: ?string = null, dateDebut: ?Date, keyword: ?string = null, nb: number = 5): Promise<Array<Mission>> {
-        // Declaration des morceaux falcultatifs de requete sql (dépent des champs remplis)
-        const where = "  where ";
-        const wlieu = "  lieu like ?\n";
-        const wassos = " asso.nom like ?\n";
-        const wdateDebut = " dateMission >= ? \n";
-        const wkeyword = " description like ? \n";
-        const wkeyword2 = " OR titre like ? \n";
+    static async nextMissions(db: Database, lieu: ?string, assos: ?string, dateDebut: ?string, domaine: ?string, keyword: ?string, nb: number = 5): Promise<Array<Mission>> {
+        const where = [];
+        const params = [];
         
-        const params = [nb];
-        if (dateDebut) { params.unshift(`${dateDebut}`); }
-        if (keyword) { params.unshift(`%${keyword}%`); } 
-        if (keyword) { params.unshift(`%${keyword}%`); } 
-        if (assos) { params.unshift(`%${assos}%`); } 
-        if (lieu) { params.unshift(`%${lieu}%`); } 
+        if (lieu) {
+            where.push("lieu like ?");
+            params.push("%" + lieu + "%");
+        }
+
+        if (assos) {
+            where.push("a.nom like ?");
+            params.push(`%${assos}%`);
+        }
+
+        if (dateDebut) {
+            where.push("dateMission >= ?");
+            params.push(dateDebut);
+        }
+
+        if (keyword) {
+            where.push("(titre like ? or description like ?)");
+            params.push(`%${keyword}%`);
+            params.push(`%${keyword}%`);
+        }
+
+        if (domaine) {
+            where.push("dm.domaine = ?");
+            params.push(domaine)
+        }
         
         //console.log(keyword);
-        return await Mission.all(db,
-            //"select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
-            "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, cm.debut as dateMission\n" +
+        const sql = "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission \n" +
             " from mission as m\n" +
             " inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
-            " join  association  as asso on m.loginAsso = asso.loginAsso \n" +            
+            " inner join association as a on m.loginAsso = a.loginAsso \n" +
+            " left join domaine_mission as dm on m.idMission = dm.mission \n" +
             
-            //test/condition pour ajouter les morceau de requete
-            ((lieu || assos || keyword || dateDebut)? "where " : "") +
-            (lieu ? wlieu : "") +
             
-            ((lieu && assos)? " AND ": "") +
-            (assos ? wassos : "") +  
-             
-            (( (lieu || assos) && keyword)? " AND ": "") +
-            (keyword ? wkeyword : "") +
-            (keyword ? wkeyword2 : "") +
-
-            (((lieu || assos || keyword)&& dateDebut)? " AND ": "") +
-            (dateDebut ? wdateDebut : "") +  
-            
-            "  group by titre, lieu, description\n" +
+            "  group by idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso\n" +
+            (where.length > 0 ? " having " + where.join(" and ") : "") +
             "  order by dateMission\n" +
-            "  limit ?", params,
+            "  limit ?";
+
+        return await Mission.all(db,
+            //"select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
+            sql, [...params, nb],
             (data) => new Mission(db, data, { dateMission: data.dateMission })
         );
     }

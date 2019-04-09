@@ -1,5 +1,6 @@
 // Importations
 import { Router } from 'express';
+import Domaine from '../db/Domaine';
 import Mission from '../db/Mission';
 import Citoyen from "../db/Citoyen";
 
@@ -8,31 +9,25 @@ export default function(db) {
     const router = Router();
 
     /* GET home page. */
-    router.route('/')
-        .get(function (req, res, next) {
-            Mission.nextMissions(db)
-                .then(function (missions) {
-                    res.render('index', { //utilise un pug (affichage avec un pug)
-                        title: 'Express',
-                        missions: missions
-                    });
-                });
-        })
-        .post(function(req, res) {
+    router.get('/', async function (req, res, next) {
+        try {
             // Paramètres
-            const { lieu } = req.body;
-            const { assos } = req.body;
-            const { dateDebut } = req.body;     
-            const { keyword } = req.body;
+            const { lieu, assos, dateDebut, domaine, keyword } = req.query;
 
-            Mission.nextMissions(db, lieu, assos, dateDebut, keyword)
-                .then(function (missions) {
-                    res.render('index', { //utilise un pug (affichage avec un pug)
-                        title: 'Express',
-                        missions: missions
-                    });
-                });
-        });
+            const missions = await Mission.nextMissions(db, lieu, assos, dateDebut, domaine, keyword);
+            const domaines = await Domaine.allDomaines(db);
+            
+            res.render('index', { //utilise un pug (affichage avec un pug)
+                title: 'Express',
+                missions: missions,
+                domaines: domaines,
+                query: req.query,
+            });
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    });
 
     router.route('/inscription')
         .get(function(req, res, next) {
