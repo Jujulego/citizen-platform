@@ -1,5 +1,9 @@
 $(document).ready(function() {
-    $(".candidats").DataTable();
+    $(".candidats").DataTable({
+        "language": {
+            "url": "/datatable.lang"
+        }
+    });
 });
 
 //$('#supprMission').on('show.bs.modal', function (event) {
