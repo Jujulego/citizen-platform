@@ -109,13 +109,13 @@ export default class Mission extends Model<Mission> {
         }
 
         //console.log(keyword);
-        const sql = "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission \n" +
-            " from mission as m\n" +
-            " inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
-            " inner join association as a on m.loginAsso = a.loginAsso \n" +
-            " left join domaine_mission as dm on m.idMission = dm.mission \n" +
+        const sql = "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission\n" +
+            "  from mission as m\n" +
+            "    inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
+            "    inner join association as a on m.loginAsso = a.loginAsso\n" +
+            "    left join domaine_mission as dm on m.idMission = dm.mission\n" +
             "  group by idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso\n" +
-            (where.length > 0 ? " having " + where.join(" and ") : "") 
+            (where.length > 0 ? "  having " + where.join(" and ") : "") +
             "  order by dateMission\n" +
             "  limit ?";
 
