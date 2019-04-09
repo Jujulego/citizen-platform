@@ -37,12 +37,14 @@ export default function(db) {
         const asso = await Association.getLoggedInUser(db, req);
         const mission = await asso.getMission(req.params.id);
 
+        const creneaux = await mission.getCreneaux();
+
         res.render("edit-mission", {
             title: mission.titre,
 
             asso: asso,
             mission: mission,
-            creneaux : await mission.getCreneaux(),
+            creneaux : creneaux,
             candidats: await mission.getPostulants(),
             domaines : await mission.getDomaines()
         });

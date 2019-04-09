@@ -1,0 +1,49 @@
+extends base
+
+append css
+    //TOUT CE QUI CONCERNE LE PROFIL ASSO route : asso/profil
+    link(rel="stylesheet" href="/static/scss/profil.css")
+
+block content
+    //bootstrap
+    header(class="row")
+        div(class="col")
+            img(class="img-fluid" src="/static/images/profil.png")
+            h1(class="text-white")= asso.nom
+
+    section(class="row")
+        //bootstrap
+        aside(class="col-3")
+            div(class="card mb-3")
+                div(class="card-header")
+                    div(class="row")
+                        div(class="col")
+                            p(class="mb-0") Contacts
+
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        span
+                            a(href=`mailto:${asso.mail}`)= `Email : ${asso.mail}`
+
+                    li(class="list-group-item")
+                        span= `Adresse : ${asso.adresse}`
+
+                    li(class="list-group-item")
+                        span= `Téléphone : ${asso.tel}`
+
+                    li(class="list-group-item")
+                        span= `SiteWeb : ${asso.siteWeb}`
+                        
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        span= `SIRET : ${asso.siret}`
+                            
+
+        article(class="col")
+            div(class="card")
+                div(class="card-body")
+                    div(class="tab-content")                                
+                        div(class="row")
+                            h2 Présentation
+
+                        p= asso.presentation

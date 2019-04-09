@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import Mission from '../db/Mission';
 import Citoyen from "../db/Citoyen";
+import Association from "../db/Association";
 
 // Router
 export default function(db) {
@@ -12,6 +13,7 @@ export default function(db) {
         .get(function (req, res, next) {
             Mission.nextMissions(db)
                 .then(function (missions) {
+                    
                     res.render('index', { //utilise un pug (affichage avec un pug)
                         title: 'Express',
                         missions: missions
@@ -22,11 +24,12 @@ export default function(db) {
             // Paramètres
             const { lieu } = req.body;
             const { assos } = req.body;
-            const { dateDebut } = req.body;     
+            const { dateDebut } = req.body;
             const { keyword } = req.body;
 
             Mission.nextMissions(db, lieu, assos, dateDebut, keyword)
                 .then(function (missions) {
+
                     res.render('index', { //utilise un pug (affichage avec un pug)
                         title: 'Express',
                         missions: missions
@@ -87,13 +90,57 @@ export default function(db) {
     router.get('/mission/:id', async function(req, res, next) {
         const mission = await Mission.getById(db, req.params.id);
 
+        const creneauxMission = await mission.getCreneaux();
+        creneauxMission.forEach((cre) => cre.postule = false);
+
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        if (user != null) {
+            const postulations = await user.getPostulations();
+
+            creneauxMission.forEach((cre) => {
+                for (let i = 0; i < postulations.length; ++i) {
+                    const p = postulations[i];
+
+                    if (p.creneau.pk === cre.id) {
+                        cre.postule = true;
+                        cre.postulation = p;
+                        break;
+                    }
+                }
+            });
+        }
+
+
         res.render("read-mission", {
             title: mission.titre,
             asso: await mission.association.get(),
             mission: mission,
-            creneaux : await mission.getCreneaux(),
-            candidats: await mission.getPostulants(),
+            creneaux : creneauxMission,
             domaines : await mission.getDomaines()
+        });
+    });
+
+    //ProfilAssoRead
+    router.get('/profilAsso/:login', async function(req, res, next) {
+        const asso = await Association.getByLogin(db, req.params.login);
+
+        res.render('profil-asso-read', { //quel template utilisé : ici profil asso
+            title: "Association",
+            asso: asso,
+        });
+    });
+
+    //ProfilCitoyenRead
+    router.get('/profilCitoyen/:login', async function(req, res, next) {
+        const user = await Citoyen.getByLogin(db, req.params.login);
+
+        res.render('profil-benevole-read', { //quel template utilisé : ici profil asso
+            title: "Citoyen",
+
+            user: user,
+            documents:   await user.getDocuments(),
+            competances: await user.getCompetances(),
         });
     });
 

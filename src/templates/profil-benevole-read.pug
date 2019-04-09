@@ -1,0 +1,158 @@
+extends base
+
+append css
+    link(rel="stylesheet" href="/vendor/pg-calendar/dist/css/pignose.calendar.min.css")
+    
+    //TOUT CE QUI CONCERNE LE PROFIL DU BENEVOLE route : user/
+    link(rel="stylesheet" href="/static/scss/profil.css")
+    //lien avec le css
+
+block content
+    //bootstrap
+    header(class="row")
+        div(class="col")
+            img(class="img-fluid" src="/static/images/profil.png")
+            p(class="text-white")= `${user.nom} ${user.prenom}`
+
+    section(class="row")
+        //bootstrap
+        aside(class="col-3")
+            div(class="card mb-3")   
+                div(class="card-header")
+                    div(class="row")
+                        div(class="col")
+                            p(class="mb-0") Informations personnelles
+
+                ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        i(class="fas fa-at fa-fw mr-3")
+                        a(href=`mailto:${user.login}`)= user.login
+
+                    li(class="list-group-item")
+                        i(class="fas fa-address-card fa-fw mr-3")
+                        = user.adresse
+
+                    li(class="list-group-item")
+                        i(class="fas fa-phone fa-fw mr-3")
+                        = user.tel
+
+                    li(class="list-group-item")
+                        i(class="fas fa-briefcase fa-fw mr-3")
+                        = user.situation_txt
+
+                    li(class="list-group-item")= user.permis ? "Permis B" : "Sans le permis"
+
+        article(class="col")
+            div(class="card")
+                //bootstrap
+                div(class="card-header")
+                    ul(class="nav nav-tabs card-header-tabs" role="tablist")
+                        li(class="nav-item")
+                            a(class="nav-link active" data-toggle="tab" href="#infoComplementaires") Informations Complémentaires
+
+                        li(class="nav-item")
+                            a(class="nav-link" data-toggle="tab" href="#documents") Documents
+
+                        li(class="nav-item")
+                            a(class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
+
+                div(class="card-body")
+                    div(class="tab-content")
+                        div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
+                            unless competances.length === 0
+                                div(class="row")
+                                    h4 Savoir-Faire   
+                                each sf in competances
+                                    p= sf.nom + " : " + sf.description
+
+
+                        div(id="documents" class="tab-pane fade" role="tabpanel")
+                            div(class="container-fluid px-0")
+                                table(id="doc-table" class="table table-bordered table-hover mb-0")
+                                    thead(class="thead-light")
+                                        tr
+                                            th(scope="col") Titre
+                                            th(class="action-col" scope="col") Actions
+
+                                    tbody
+                                        tr(class="must-be-only")
+                                            td(class="text-center" colspan="2") Aucun documents
+
+                                        each doc in documents
+                                            tr(data-id=doc.id)
+                                                td
+                                                    a(class="doc-title" href=doc.fichier)= doc.titre
+
+                                                td(class="text-center action-col")
+                                                    div(class="btn-group btn-group-sm")
+                                                        a(class="btn btn-secondary doc-dl" href=doc.fichier download=doc.filename)
+                                                            i(class="fas fa-file-download fa-fw")
+
+                        div(class="tab-pane fade" id="dispo" role="tabpanel")                                 
+                            table(class="table table-bordered mt-4")
+                                thead
+                                    tr
+                                        th(scope="col") 
+                                        th(scope="col") Lundi
+                                        th(scope="col") Mardi
+                                        th(scope="col") Mercredi
+                                        th(scope="col") Jeudi
+                                        th(scope="col") Vendredi
+                                        th(scope="col") Samedi
+                                        th(scope="col") Dimanche
+                                tbody
+                                    tr
+                                        td
+                                            span Matin
+                                        td
+                                            a(href='#' title="Rendre Indisponible") Disponible
+                                                i(class="far fa-check-circle")
+                                        td
+                                            a(href='#') ...
+                                        td
+                                            a(href='#') Matin
+                                        td
+                                            a(href='#') Matin
+                                        td
+                                            a(href='#') Matin
+                                        td
+                                            a(href='#') Matin
+                                        td
+                                            a(href='#') Matin
+                                    tr
+                                        td
+                                            span Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                        td
+                                            a(href='#') Après-midi
+                                    tr
+                                        td
+                                            span Soirée
+                                        td
+                                            a(href='#') Soirée
+                                        td
+                                            a(href='#') Soirée
+                                        td
+                                            a(href='#') Soirée
+                                        td
+                                            a(href='#') Soirée
+                                        td
+                                            a(href='#') Soirée
+                                        td
+                                            a(href='#') Soirée
+                                        td
+                                            a(href='#') Soirée
+
+append js
+    script(src="/static/js/profil-benevole.js")

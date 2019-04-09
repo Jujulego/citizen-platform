@@ -40,7 +40,7 @@ block content
                             form(id="postulation-form" class="container-fluid" method="post" action="/user/postuler")
                                 each creneau in creneaux
                                     div(class="form-group form-check")
-                                        input(type="checkbox" class="form-check-input" name="check" value="" + creneau.id +  "" id="" + creneau.id +  "")
+                                        input(type="checkbox" class="form-check-input" name="check" value="" + creneau.id id="" + creneau.id  disabled = creneau.postule )
                                         label(class="form-check-label" for="" + creneau.id +  "")= creneau.debut_txt
                                 button(type="submit" class="btn btn-primary") Postuler
                         
@@ -57,6 +57,8 @@ block content
                 div(class="card-header") Contact
                     
                 ul(class="list-group list-group-flush")
+                    li(class="list-group-item")
+                        a(href="/profilAsso/" + asso.login)= "Profil : " + asso.nom
                     li(class="list-group-item")
                         a(href=`mailto:${asso.mail}`)= asso.mail
 

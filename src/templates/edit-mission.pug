@@ -95,8 +95,10 @@ block content
                                         each candidat in candidats
                                             if (candidat.creneau.id == cre.id)
                                                 tr
-                                                    td= candidat.postulant.nom
-                                                    td= candidat.postulant.prenom
+                                                    td
+                                                        a(href="/profilCitoyen/" + candidat.postulant.login )= candidat.postulant.nom
+                                                    td
+                                                        a(href="/profilCitoyen/" + candidat.postulant.login)= candidat.postulant.prenom
                                                     td
                                                         a(href=`mailto:${candidat.postulant.login}`)= candidat.postulant.login
                                                     td
