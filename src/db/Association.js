@@ -3,6 +3,8 @@
 import type { Database } from "sqlite";
 import type { $Request } from "express";
 
+import passwordHash from "password-hash";
+
 import Model from './Model';
 import Mission from "./Mission";
 
@@ -57,15 +59,12 @@ export default class Association extends Model<Association> {
 
     static async authenticate(db: Database, req: $Request, { login, mdp }: { login: string, mdp: string }): Promise<?Association> {
         const asso = await Association.get(db,
-            "select * from association where loginAsso = ? and mdpAsso = ?", [login, mdp],
+            "select * from association where loginAsso = ?", [login],
             (data) => new Association(db, data)
         );
 
-        if (asso) {
-            req.session.assoLogin = login;
-            req.session.connected = true;
-            req.asso = asso;
-
+        if (asso && asso.testMdp(mdp)) {
+            asso.authenticate(req);
             return asso;
         } else {
             return null;
@@ -94,6 +93,20 @@ export default class Association extends Model<Association> {
     }
 
     // Méthodes
+    testMdp(mdp: string): boolean {
+        if (passwordHash.isHashed(this.#mdp)) {
+            return passwordHash.verify(mdp, this.#mdp);
+        } else {
+            return mdp === this.#mdp;
+        }
+    }
+
+    authenticate(req: $Request) {
+        req.session.assoLogin = this.login;
+        req.session.connected = true;
+        req.asso = this;
+    }
+
     async save(): Promise<void> {
         await this.db.run(
             "update association set nom=?, presentation=?, adresse=?, mail=?, tel=?, siteWeb=?, siret=? where loginAsso=?",
