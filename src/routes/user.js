@@ -177,6 +177,15 @@ export default function(db) {
         }
     }));
 
+    // Supprimer une postulation
+    router.post('/suppPostu/:creneau', utils.user_guard(async function(req, res, next) {
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        await Postulation.deletePostulation(db, user, req.params.creneau)
+
+        res.redirect("/user/candidatures");
+    }));
+
     router.get('/candidatures', utils.user_guard(async function(req, res, next) { //route
         try {
             const user = await Citoyen.getLoggedInUser(db, req);

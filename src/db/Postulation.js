@@ -39,9 +39,10 @@ export default class Postulation extends Model<Postulation> {
         });
     }
 
-    async delete(): Promise<void> {
-        await this.db.run(
-            "delete from postulation where creneau=? and citoyen=?", [this.creneau, this.citoyen]
+    static async getByCitoyenAndCreneau(db: Database, citoyen: Citoyen, id_creneau: number): Promise<?Postulation>{
+        return await Postulation.get(db,
+            "select * from postulation where creneau=? and citoyen=?",
+            [id_creneau, citoyen.login], (data) => new Postulation(db, data)
         )
     }
 
@@ -64,5 +65,25 @@ export default class Postulation extends Model<Postulation> {
             "select creneau, citoyen, status from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", [mission.id],
             (data) => new Postulation(db, data)
         );
+    }
+
+    static async deletePostulation(db: Database, citoyen: Citoyen, id_creneau: number): Promise<void> {
+        await db.run(
+            "delete from postulation where creneau=? and citoyen=?", [id_creneau, citoyen.login]
+        )
+    }
+
+    // Méthodes
+    async delete(): Promise<void> {
+        await this.db.run(
+            "delete from postulation where creneau=? and citoyen=?", [this.creneau.pk, this.citoyen.pk]
+        )
+    }
+
+    async save(): Promise<void> {
+        await this.db.run(
+            "update postulation set status=? where creneau=? and citoyen=?",
+            [this.status, this.creneau.pk, this.citoyen.pk]
+        )
     }
 }

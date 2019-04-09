@@ -21,13 +21,14 @@ append js
 block content
     header(class="row")
         //titre
-        h1(id="page-top" class="text-center")= "Citizen Platform Services c'est super cool ! ;)"
+        h1(id="page-top" class="text-center")= "L'engagement citoyen à portée de tous !"
 
         //Le filtre de recherche pour les missions
         form(id="search-bar" method="post")
             input(class="form-control" name="lieu" type="text" placeholder="Lieu")
             input(class="form-control" name="assos" type="text" placeholder="Association")
-            
+            input(class="form-control" name="dateDebut" type="date")
+            //required
             //select(class="custom-select placeholder" name="opdate")
                 option(value selected hidden) Quand
                 option Aujourd'hui

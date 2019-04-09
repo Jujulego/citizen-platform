@@ -22,9 +22,10 @@ export default function(db) {
             // Paramètres
             const { lieu } = req.body;
             const { assos } = req.body;
+            const { dateDebut } = req.body;     
             const { keyword } = req.body;
 
-            Mission.nextMissions(db, lieu, assos, keyword)
+            Mission.nextMissions(db, lieu, assos, dateDebut, keyword)
                 .then(function (missions) {
                     res.render('index', { //utilise un pug (affichage avec un pug)
                         title: 'Express',

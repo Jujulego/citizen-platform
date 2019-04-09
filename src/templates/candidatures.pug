@@ -5,6 +5,8 @@ append css
     link(rel="stylesheet" href="/static/scss/candidatures.css")
 
 block content
+    include parts/suppPostu
+    
     section(class="row")
         //Block avec une image du citoyen et son 'mon profil'
         aside(class="col-auto")
@@ -23,3 +25,6 @@ block content
             //morceau de candidatures
             each mission in missions
                 include parts/candidature
+                
+append js
+    script(src="/static/js/candidature.js")
