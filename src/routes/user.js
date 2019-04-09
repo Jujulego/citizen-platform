@@ -13,6 +13,7 @@ import utils from "../utils";
 
 // Constante
 const MEDIA_PATH = path.join(__dirname, "../../media");
+const DAY = 24 * 60 * 60 * 1000; // en ms
 
 // Router
 export default function(db) {
@@ -306,6 +307,101 @@ export default function(db) {
                 next(err);
             }
         }));
+
+    // Créneaux
+    router.get('/creneaux', utils.user_guard(async function(req, res, next) {
+        try {
+            // Params
+            const start = new Date(req.query.start);
+            const end   = new Date(req.query.end);
+
+            // Get créneaux
+            const user = await Citoyen.getLoggedInUser(db, req);
+            const creneaux = await user.getCreneauxBetween(start, end);
+            const data = [];
+
+            for (let i = 0; i < creneaux.length; ++i) {
+                const cre = creneaux[i];
+
+                // 1er
+                data.push({
+                    id: cre.id,
+                    title: cre.debut_txt,
+                    allDay: false,
+                    start: cre.debut,
+                    end: cre.fin,
+                    editable: false,
+                });
+
+                if (cre.repetitions === 0) {
+                    // Répétitions
+                    let debut = cre.debut.getTime();
+                    let fin   = cre.fin.getTime();
+
+                    if (fin < start.getTime()) {
+                        let delta = (start.getTime() - debut);
+                        debut += delta - (delta % (DAY * cre.ecart));
+
+                        delta = (start.getTime() - fin);
+                        fin += delta - (delta % (DAY * cre.ecart));
+                    }
+
+                    while (end.getTime() > debut) {
+                        debut += DAY * cre.ecart;
+                        fin   += DAY * cre.ecart;
+
+                        if (end.getTime() > debut && start.getTime() < fin) {
+                            data.push({
+                                id: cre.id,
+                                title: `${cre.debut_txt} (rep inf)`,
+                                allDay: false,
+                                start: new Date(debut),
+                                end: new Date(fin),
+                                editable: false,
+                            });
+                        }
+                    }
+                } else {
+                    // Répétitions
+                    let debut = cre.debut.getTime();
+                    let fin   = cre.fin.getTime();
+
+                    for (let r = 1; r < cre.repetitions; ++r) {
+                        // nouvelles dates
+                        debut += DAY * cre.ecart;
+                        fin   += DAY * cre.ecart;
+
+                        if (end.getTime() > debut && start.getTime() < fin) {
+                            data.push({
+                                id: cre.id,
+                                title: `${cre.debut_txt} (rep ${r})`,
+                                allDay: false,
+                                start: debut,
+                                end: fin,
+                                editable: false,
+                            });
+                        }
+                    }
+                }
+            }
+
+            res.json(data);
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
+    router.post("/user/add-creneau", utils.user_guard(async function(req, res, next) {
+        try {
+            // Params
+            const deb = new Date(req.body.debut);
+            const fin = new Date(req.body.fin);
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
 
     return router;
 };

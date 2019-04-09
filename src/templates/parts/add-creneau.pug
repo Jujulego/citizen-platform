@@ -1,0 +1,42 @@
+// Popup pour supprimer son profil citoyen
+div(class="modal fade" id="add-creneau" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" novalidate)
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span Nouveau créneau
+
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+
+            div(class="modal-body")
+                div(class="form-row mb-3")
+                    div(class="col-2")
+                        label(class="my-1" for="date-deb") De
+
+                    div(class="col")
+                        div(class="input-group")
+                            input(id="date-deb" class="form-control" name="dateDeb" type="date" required)
+                            input(id="time-deb" class="form-control" name="timeDeb" type="time" required)
+
+                div(class="form-row")
+                    div(class="col-2")
+                        label(class="my-1" for="date-fin") A
+
+                    div(class="col")
+                        div(class="input-group")
+                            input(id="date-fin" class="form-control" name="dateFin" type="date" required)
+                            input(id="time-fin" class="form-control" name="timeFin" type="time" required)
+
+                div(class="form-row")
+                    div(class="col-2")
+                        label(class="my-1" for="date-fin") Pendants
+
+                    div(class="col")
+                        div(class="input-group")
+                            input(id="repetitions" class="form-control" name="repetitions" type="number" required)
+                            input(id="ecart"       class="form-control" name="ecart"       type="number" required)
+
+            div(class="modal-footer")
+                button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
+                button(class="btn btn-primary" type="submit") Ajouter

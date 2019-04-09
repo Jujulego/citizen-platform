@@ -1,3 +1,4 @@
+// Gestion des documents
 $(document).ready(function() {
     // Elements
     const docForm = $("#doc-form");
@@ -137,4 +138,63 @@ $(document).ready(function() {
             }
         }
     });
+});
+
+// Gestion des créneaux
+$(document).ready(function() {
+    // Modal
+    const modal = $("#add-creneau");
+    const form  = $("form", modal);
+    const dateD = $("#date-deb", modal); const timeD = $("#time-deb", modal);
+    const dateF = $("#date-fin", modal); const timeF = $("#time-fin", modal);
+
+    // Functions
+    function twodigits(i) {
+        if (i < 10) {
+            return `0${i}`;
+        }
+
+        return i.toString();
+    }
+
+    // Events
+    form.submit(function(event) {
+        event.preventDefault();
+
+        if (form[0].checkValidity() === false) {
+            // Invalide
+            event.stopPropagation();
+            form.addClass("was-validated");
+        } else {
+            // Valide
+            form.removeClass("was-validated");
+        }
+    });
+
+    // Full calendar
+    const calendar = new FullCalendar.Calendar($('#calendar')[0], {
+        locale: 'fr',
+        plugins: ['bootstrap', 'dayGrid', 'interaction'],
+        events: '/user/creneaux',
+
+        // style
+        themeSystem: 'bootstrap',
+        header: {
+            left: 'prev,next',
+            center: 'title',
+            right: 'today dayGridDay,dayGridWeek,dayGridMonth',
+        },
+
+        // events
+        dateClick: function(info) {
+            const h = new Date().getHours();
+
+            dateD.val(info.dateStr); timeD.val(`${twodigits((h + 1) % 24)}:00`);
+            dateF.val(info.dateStr); timeF.val(`${twodigits((h + 2) % 24)}:00`);
+
+            modal.modal('show');
+        }
+    });
+
+    calendar.render();
 });
