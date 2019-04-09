@@ -108,9 +108,13 @@ block content
                                                     td
                                                         if candidat.status
                                                             | Accepté
+                                                            a(href=`mailto:${candidat.postulant.login}`)= "Contact"
+                                                            
+                                                            
                                                         else
-                                                            a(href="/asso/acceptPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-success btn-sm mr-2") Acceper
-                                                            a(href="/asso/refusPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-danger btn-sm") Refuser         
+                                                            a(href="/asso/acceptPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-success btn-sm mr-2") Accepter
+                                                            a(href="/asso/refusPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-danger btn-sm") Refuser 
+                                                            a(href=`mailto:${candidat.postulant.login}`)= "Contact"  
 
 append js
     script(src="/static/js/edit-Mission.js")
