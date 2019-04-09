@@ -3,6 +3,8 @@
 import type { Database } from "sqlite";
 import type { $Request } from "express";
 
+import passwordHash from "password-hash";
+
 import Model from './Model';
 import Competance from "./Competance";
 import CreneauCitoyen from "./CreneauCitoyen";
@@ -63,6 +65,8 @@ export default class Citoyen extends Model<Citoyen> {
 
     // Méthodes statiques
     static async create(db: Database, data: { loginCitoyen: string, mdpCitoyen: string, nom: string, prenom: string, adresse: string, tel: string, situation: string, permis: boolean }): Promise<Citoyen> {
+        data.mdpCitoyen = passwordHash.generate(data.mdpCitoyen);
+
         await db.run(
             "insert into citoyen values (?, ?, ?, ?, ?, ?, ?, ?)",
             [data.loginCitoyen, data.mdpCitoyen, data.nom, data.prenom, data.adresse, data.tel, data.situation, data.permis]
@@ -82,11 +86,11 @@ export default class Citoyen extends Model<Citoyen> {
     static async authenticate(db: Database, req: $Request, { login, mdp }: { login: string, mdp: string }): Promise<?Citoyen> {
         // Récupération
         const user = await Citoyen.get(db,
-            "select * from citoyen where loginCitoyen = ? and mdpCitoyen = ?", [login, mdp],
+            "select * from citoyen where loginCitoyen = ?", [login],
             (data) => new Citoyen(db, data)
         );
 
-        if (user) {
+        if (user && user.testMdp(mdp)) {
             user.authenticate(req);
             return user;
         } else {
@@ -116,6 +120,14 @@ export default class Citoyen extends Model<Citoyen> {
     }
 
     // Méthodes
+    testMdp(mdp: string): boolean {
+        if (passwordHash.isHashed(this.#mdp)) {
+            return passwordHash.verify(mdp, this.#mdp);
+        } else {
+            return mdp === this.#mdp;
+        }
+    }
+
     authenticate(req: $Request) {
         req.session.userLogin = this.login;
         req.session.connected = true;
