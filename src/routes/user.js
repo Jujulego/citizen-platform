@@ -57,7 +57,7 @@ export default function(db) {
                 break;
         }
     });
-    router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
+    router.get('/deconnexion', utils.login_guard(function(req, res) {
         // Déconnexion
         Association.disconnect(req);
         Citoyen.disconnect(req);
@@ -68,141 +68,158 @@ export default function(db) {
     // mon profil
     router.route('/')
         .get(utils.user_guard(async function(req, res, next) { //route
-            const user = await Citoyen.getLoggedInUser(db, req);
+            try {
+                const user = await Citoyen.getLoggedInUser(db, req);
 
-            res.render('profil-benevole', { //lien entre la route et le pug profil
-                title: "Mon Profil",
+                res.render('profil-benevole', { //lien entre la route et le pug profil
+                    title: "Mon Profil",
 
-                user: user,
-                documents:   await user.getDocuments(),
-                competances: await user.getCompetances(),
-            });
+                    user: user,
+                    documents: await user.getDocuments(),
+                    competances: await user.getCompetances(),
+                });
+
+            } catch(err) {
+                console.log(err);
+                next(err);
+            }
         }))
         // Modification Informations citoyen
         .post(utils.user_guard(async function(req, res, next) {
-            // Récups nouv infos
-            const { nom, prenom, adresse, tel, situation, permis } = req.body;
+            try {
+                // Récups nouv infos
+                const { nom, prenom, adresse, tel, situation, permis } = req.body;
 
-            // Modif user
-            const user = await Citoyen.getLoggedInUser(db, req);
+                // Modif user
+                const user = await Citoyen.getLoggedInUser(db, req);
 
-            let needSave = false;
+                let needSave = false;
 
+                if (nom !== user.nom) {
+                    user.nom = nom;
+                    needSave = true;
+                }
 
-            if (nom !== user.nom) {
-                user.nom = nom;
-                needSave = true;
-            }
+                if (prenom !== user.prenom){
+                    user.prenom = prenom;
+                    needSave = true;
+                }
 
-            if(prenom !== user.prenom){
-                user.prenom = prenom;
-                needSave = true;
-            }
+                if (adresse !== user.adresse){
+                    user.adresse = adresse;
+                    needSave = true;
+                }
 
-            if(adresse !== user.adresse){
-                user.adresse = adresse;
-                needSave = true;
-            }
+                if (tel !== user.tel){
+                    user.tel = tel;
+                    needSave = true;
+                }
 
-            if(tel !== user.tel){
-                user.tel = tel;
-                needSave = true;
-            }
+                if (situation !== user.situation){
+                    user.situation = situation;
+                    needSave = true;
+                }
 
-            if(situation !== user.situation){
-                user.situation = situation;
-                needSave = true;
-            }
+                if (permis !== user.permis){
+                    user.permis = permis;
+                    needSave = true;
+                }
 
-            if(permis !== user.permis){
-                user.permis = permis;
-                needSave = true;
-            }
+                if (needSave) {
+                    await user.save();
+                    res.redirect("/user");
+                }
 
-            if (needSave) {
-                user.save()
-                    .then(function() {
-                        res.redirect("/user");
-                    });
+            } catch(err) {
+                console.log(err);
+                next(err);
             }
         }));
 
     // Supprimer le profil citoyen
     router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
-        const user = await Citoyen.getLoggedInUser(db, req);
-        await user.delete();
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+            await user.delete();
 
-        Citoyen.disconnect(req);
+            Citoyen.disconnect(req);
+            res.redirect("/");
 
-        res.redirect("/");
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     // Missions
     router.post('/postuler', utils.user_guard(async function(req, res, next){
-        console.log("dans le postuler");
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
 
-        const user = await Citoyen.getLoggedInUser(db, req);
-
-        console.log(req.body.check);
-
-        if(typeof req.body.check === 'string'){
-            let postu = await Postulation.create(db, {
-                citoyen : user,
-                creneau : await CreneauMission.getById(db, req.body.check)
-            })
-        }
-        else{
-            for (let idcreneauSel of req.body.check ){
-                console.log(idcreneauSel);
-                let postu = await Postulation.create(db, {
-                    citoyen : user,
-                    creneau : await CreneauMission.getById(db, idcreneauSel)
-                })
+            if (typeof req.body.check === 'string') {
+                await Postulation.create(db, {
+                    citoyen: user,
+                    creneau: await CreneauMission.getById(db, req.body.check)
+                });
+            } else {
+                for (let idcreneauSel of req.body.check) {
+                    await Postulation.create(db, {
+                        citoyen: user,
+                        creneau: await CreneauMission.getById(db, idcreneauSel)
+                    });
+                }
             }
-        }
 
-        res.redirect("/");
+            res.redirect("/");
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     router.get('/candidatures', utils.user_guard(async function(req, res, next) { //route
-        const user = await Citoyen.getLoggedInUser(db, req);
-        const postulations = await user.getPostulations();
-        const missions = [];
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+            const postulations = await user.getPostulations();
+            const missions = [];
 
-        for (let p of postulations) {
-            const c = await p.creneau.get();
-            missions.push({
-                creneau: c,
-                mission: await c.mission.get()
+            for (let p of postulations) {
+                const c = await p.creneau.get();
+                missions.push({
+                    creneau: c,
+                    mission: await c.mission.get()
+                });
+            }
+
+            res.render("candidatures", { // lien entre la route et le pug candidature
+                title: "Mes Candidatures",
+                missions: missions
             });
+
+        } catch(err) {
+            console.log(err);
+            next(err);
         }
-
-        console.log(missions);
-
-        res.render("candidatures", { //lien entre la route et le pug candidature
-            title: "Mes Candidatures",
-            missions: missions
-        });
     }));
 
     // Documents
-    function createDoc(res, titre, name, user) {
-        Document.create(db, { titre: titre, fichier: name, citoyen: user })
-            .then(function(doc) {
+    router.post('/document/add', utils.user_guard(async function(req, res, next) {
+        async function createDoc(res, titre, name, user) {
+            try {
+                const doc = await Document.create(db, { titre: titre, fichier: name, citoyen: user });
+
                 res.json({
                     id: doc.id,
                     titre: doc.titre,
                     fichier: doc.fichier,
                     filename: doc.filename,
                 });
-            })
-            .catch(function(err) {
+            }  catch(err) {
                 console.error(err);
                 next(err);
-            });
-    }
+            }
+        }
 
-    router.post('/document/add', utils.user_guard(async function(req, res, next) {
         try {
             // Get user
             const user = await Citoyen.getLoggedInUser(db, req);
@@ -221,7 +238,7 @@ export default function(db) {
                 }
             });
 
-            busboy.on('file', function(field, file, filename, encoding, mime) {
+            busboy.on('file', function(field, file, filename) {
                 // Check field
                 if (field !== "file") return;
 
@@ -244,6 +261,7 @@ export default function(db) {
             });
 
             req.pipe(busboy);
+
         } catch(err) {
             console.error(err);
             next(err);
