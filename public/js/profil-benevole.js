@@ -192,9 +192,21 @@ $(document).ready(function() {
         }
     });
 
-    calendar.render();
-
     // Events
+    tab.on('shown.bs.tab', function() {
+        calendar.render();
+    });
+
+    modal.on('show.bs.tab', function() {
+        if (recursif.prop("checked")) {
+            recurDeps.prop("disabled", false);
+            recurDeps.prop("required", true);
+        } else {
+            recurDeps.prop("disabled", true);
+            recurDeps.prop("required", false);
+        }
+    });
+
     recursif.change(function() {
         if (recursif.prop("checked")) {
             recurDeps.prop("disabled", false);
@@ -238,11 +250,13 @@ $(document).ready(function() {
                     modal.modal('hide');
                     calendar.refetchEvents();
                 }
-            })
+            });
+
+            // Reset
+            recursif.prop("checked", false);
+            recurDeps.val("");
+            recurDeps.prop("disabled", true);
+            recurDeps.prop("required", false);
         }
     });
-
-    tab.on('shown.bs.tab', function() {
-        calendar.refetchEvents();
-    })
 });
