@@ -26,21 +26,25 @@ block content
 
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        span
-                            a(href=`mailto:${asso.mail}`)= `Email : ${asso.mail}`
+                        i(class="fas fa-at fa-fw mr-3")
+                        a(href=`mailto:${asso.mail}`)= `${asso.mail}`
 
                     li(class="list-group-item")
-                        span= `Adresse : ${asso.adresse}`
+                        i(class="fas fa-address-card fa-fw mr-3")
+                        =asso.adresse
 
                     li(class="list-group-item")
-                        span= `Téléphone : ${asso.tel}`
+                        i(class="fas fa-phone fa-fw mr-3")
+                        =asso.tel
 
                     li(class="list-group-item")
-                        span= `SiteWeb : ${asso.siteWeb}`
+                        i(class="fas fa-laptop fa-fw mr-3")
+                        a(href="http://"+asso.siteWeb)= `${asso.siteWeb}`
                         
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")
-                        span= `SIRET : ${asso.siret}`
+                        i(class="fas fa-scroll fa-fw mr-3")
+                        = `SIRET : ${asso.siret}`
                             
 
         article(class="col")

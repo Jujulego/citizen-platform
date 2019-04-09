@@ -6,3 +6,24 @@
     width: 150px;
   }
 }
+
+header div {
+  display: flex;
+  height: 300px;
+
+  align-items: center;
+  flex-direction: column;
+
+  background: url("/static/images/Deauville3.jpg") no-repeat center;
+  background-size: cover;
+
+  img {
+    width: 100px;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    border: solid 5px white;
+    border-radius: 50%;
+  }
+}
