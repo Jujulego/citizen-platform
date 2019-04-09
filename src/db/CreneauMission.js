@@ -6,6 +6,7 @@ import Creneau from "./Creneau";
 import Mission from "./Mission";
 import Postulation from "./Postulation";
 import ForeignKey from "./ForeignKey";
+import Association from "./Association";
 
 // Classe
 export default class CreneauMission extends Creneau<CreneauMission> {
@@ -50,6 +51,22 @@ export default class CreneauMission extends Creneau<CreneauMission> {
     static async allByMission(db: Database, mission: Mission): Promise<Array<CreneauMission>> {
         return await CreneauMission.all(db,
             "select * from creneau_mission where mission = ? order by debut", [mission.id],
+            (data) => new CreneauMission(db, data)
+        );
+    }
+
+    static async allBetweenForMission(db: Database, start: Date, end: Date, mission: Mission): Promise<Array<CreneauMission>> {
+        return await CreneauMission.all(db,
+            "select * from creneau_mission where mission = ? and (? > debut and (repetitions = 0 or ? < coalesce(datetime(fin, '+' || (ecart * (repetitions - 1)) || ' days'), fin)))",
+            [mission.id, end.toISOString().slice(0,-1), start.toISOString().slice(0,-1)],
+            (data) => new CreneauMission(db, data)
+        );
+    }
+
+    static async allBetweenForAssociation(db: Database, start: Date, end: Date, association: Association): Promise<Array<CreneauMission>> {
+        return await CreneauMission.all(db,
+            "select cm.* from creneau_mission as cm inner join mission as m on m.idMission = cm.mission where m.loginAsso = ? and (? > debut and (repetitions = 0 or ? < coalesce(datetime(fin, '+' || (ecart * (repetitions - 1)) || ' days'), fin)))",
+            [association.login, end.toISOString().slice(0,-1), start.toISOString().slice(0,-1)],
             (data) => new CreneauMission(db, data)
         );
     }

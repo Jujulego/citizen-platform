@@ -14,7 +14,6 @@ import CreneauCitoyen from "../db/CreneauCitoyen";
 
 // Constante
 const MEDIA_PATH = path.join(__dirname, "../../media");
-const DAY = 24 * 60 * 60 * 1000; // en ms
 
 // Router
 export default function(db) {
@@ -184,11 +183,15 @@ export default function(db) {
 
     // Supprimer une postulation
     router.post('/suppPostu/:creneau', utils.user_guard(async function(req, res, next) {
-        const user = await Citoyen.getLoggedInUser(db, req);
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+            await Postulation.deletePostulation(db, user, req.params.creneau);
 
-        await Postulation.deletePostulation(db, user, req.params.creneau)
-
-        res.redirect("/user/candidatures");
+            res.redirect("/user/candidatures");
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     router.get('/candidatures', utils.user_guard(async function(req, res, next) { //route
@@ -361,65 +364,16 @@ export default function(db) {
                 const cre = creneaux[i];
 
                 // 1er
-                data.push({
-                    id: cre.id,
-                    title: cre.debut_txt,
-                    allDay: false,
-                    start: cre.debut,
-                    end: cre.fin,
-                    editable: false,
+                cre.generateRepetitions(start, end, (deb, fin) => {
+                    data.push({
+                        id: cre.id,
+                        title: cre.debut_txt,
+                        allDay: false,
+                        start: deb,
+                        end: fin,
+                        editable: false
+                    });
                 });
-
-                if (cre.repetitions === 0) {
-                    // Répétitions
-                    let debut = cre.debut.getTime();
-                    let fin   = cre.fin.getTime();
-
-                    if (fin < start.getTime()) {
-                        let delta = (start.getTime() - debut);
-                        debut += delta - (delta % (DAY * cre.ecart));
-
-                        delta = (start.getTime() - fin);
-                        fin += delta - (delta % (DAY * cre.ecart));
-                    }
-
-                    while (end.getTime() > debut) {
-                        debut += DAY * cre.ecart;
-                        fin   += DAY * cre.ecart;
-
-                        if (end.getTime() > debut && start.getTime() < fin) {
-                            data.push({
-                                id: cre.id,
-                                title: `${cre.debut_txt} (rep inf)`,
-                                allDay: false,
-                                start: new Date(debut),
-                                end: new Date(fin),
-                                editable: false,
-                            });
-                        }
-                    }
-                } else {
-                    // Répétitions
-                    let debut = cre.debut.getTime();
-                    let fin   = cre.fin.getTime();
-
-                    for (let r = 1; r < cre.repetitions; ++r) {
-                        // nouvelles dates
-                        debut += DAY * cre.ecart;
-                        fin   += DAY * cre.ecart;
-
-                        if (end.getTime() > debut && start.getTime() < fin) {
-                            data.push({
-                                id: cre.id,
-                                title: `${cre.debut_txt} (rep ${r})`,
-                                allDay: false,
-                                start: debut,
-                                end: fin,
-                                editable: false,
-                            });
-                        }
-                    }
-                }
             }
 
             res.json(data);

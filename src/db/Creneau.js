@@ -4,6 +4,7 @@ import type { Database } from "sqlite";
 import Model from './Model';
 
 // Utils
+const JOUR  = 24 * 60 * 60 * 1000; // en ms
 const JOURS = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
 function jour_txt(date: Date): string {
@@ -62,5 +63,51 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
         this.fin   = new Date(data.fin);
         this.repetitions = data.repetitions;
         this.ecart = data.ecart;
+    }
+
+    // Méthode
+    generateRepetitions(start: Date, end: Date, cb: (debut: Date, end: Date) => void): void {
+        // 1ere
+        if (end > this.debut && start < this.fin) {
+            cb(this.debut, this.fin);
+        }
+
+        if (this.repetitions === 0) {
+            // Répétitions infines
+            let debut = this.debut.getTime();
+            let fin   = this.fin.getTime();
+
+            // => 1ère date affichable
+            if (fin < start.getTime()) {
+                let delta = (start.getTime() - debut);
+                debut += delta - (delta % (JOUR * this.ecart));
+
+                delta = (start.getTime() - fin);
+                fin += delta - (delta % (JOUR * this.ecart));
+            }
+
+            while (end.getTime() > debut) {
+                debut += JOUR * this.ecart;
+                fin   += JOUR * this.ecart;
+
+                if (end.getTime() > debut && start.getTime() < fin) {
+                    cb(new Date(debut), new Date(fin));
+                }
+            }
+        } else {
+            // Répétitions
+            let debut = this.debut.getTime();
+            let fin   = this.fin.getTime();
+
+            for (let r = 1; r < this.repetitions; ++r) {
+                // nouvelles dates
+                debut += JOUR * this.ecart;
+                fin   += JOUR * this.ecart;
+
+                if (end.getTime() > debut && start.getTime() < fin) {
+                    cb(new Date(debut), new Date(fin));
+                }
+            }
+        }
     }
 }

@@ -182,14 +182,14 @@ $(document).ready(function() {
         },
 
         // events
-        dateClick: function(info) {
+        dateClick(info) {
             const h = new Date().getHours();
 
             dateD.val(info.dateStr); timeD.val(`${twodigits((h + 1) % 24)}:00`);
             dateF.val(info.dateStr); timeF.val(`${twodigits((h + 2) % 24)}:00`);
 
             modal.modal('show');
-        }
+        },
     });
 
     // Events
@@ -254,6 +254,7 @@ $(document).ready(function() {
 
             // Reset
             recursif.prop("checked", false);
+
             recurDeps.val("");
             recurDeps.prop("disabled", true);
             recurDeps.prop("required", false);
