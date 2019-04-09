@@ -214,6 +214,38 @@ export default function(db) {
     }));
 
 
+    router.post('/ajoutDomMission/:id', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+        const mission = await asso.getMission(req.params.id);
+        const creneaux = await mission.getCreneaux();
+
+        // Récups nouv infos
+        const { domaine } = req.body;
+
+        let needSave = false;
+
+        //Domaine d'intervention
+        if(domaine){
+            //verif que ce dommaine existe pas
+            let dodo = await Domaine.getByNom(db, domaine);
+            if(dodo == null){
+                dodo = await Domaine.create(db, {nom : domaine});
+            }
+            await dodo.linkMission(mission);
+        }
+
+        res.render("edit-mission", {
+            title: mission.titre,
+
+            asso: asso,
+            mission: mission,
+            creneaux : creneaux,
+            candidats: await mission.getPostulants(),
+            domaines : await mission.getDomaines()
+        });
+    }));
+
+
     //accepter postulation
     router.get('/acceptPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
         const asso = await Association.getLoggedInUser(db, req);

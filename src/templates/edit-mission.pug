@@ -15,6 +15,7 @@ block content
     //TOUT CE QUI CONCERNE LA MISSION
     include parts/supprMission
     include parts/modifMission
+    include parts/add-domaine
     
     //PAGE MISSION : MISSION (en dessous de résultat)
     header(class="row ") 
@@ -78,7 +79,9 @@ block content
                             p(class="ml-3")= mission.description
 
                             unless domaines.length === 0
-                                h4 Domaine d'intervention
+                                h4(class="mb-0") Domaine d'intervention
+                                    button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-id=""+ mission.id +"" data-target="#ajoutDI")
+                                        i(class="fas fa-folder-plus")
                                 each dom in domaines
                                     p(class="ml-3")= dom.nom
                         

@@ -1,0 +1,42 @@
+// Popup pour add une mission
+div(class="modal fade" id="ajoutDI" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" method="post" action="/asso/ajoutDomMission/" + mission.id)
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span   Ajouter un Domaine d'intervention
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+            
+            div(class="modal-body") 
+                label(for="domInt-field") Domaine d'intervention
+                div(class="editable-select")
+                    input(id="domInt-field" class="form-control" name="domaine" type="text" placeholder="Choisir un Domaine d'intervention" required)
+                    button(type="button")
+                        i(class="fas fa-caret-down")
+                
+                    div
+                        p(tabindex="0") Action sociale
+                        p(tabindex="0") Agriculture
+                        p(tabindex="0") Alimentation 
+                        p(tabindex="0") Aide publique
+                        p(tabindex="0") Commerce équitable
+                        p(tabindex="0") Culture
+                        p(tabindex="0") Communication
+                        p(tabindex="0") Développement économique et local
+                        p(tabindex="0") Droits
+                        p(tabindex="0") Eau et l’assainissement
+                        p(tabindex="0") Education et la formation
+                        p(tabindex="0") Education au développement
+                        p(tabindex="0") Environnement et le climat
+                        p(tabindex="0") Le Genre (approche fondée sur l’étude des rapports sociaux entre les femmes et les hommes)
+                        p(tabindex="0") Habitat 
+                        p(tabindex="0") Loisir
+                        p(tabindex="0") Microcrédit
+                        p(tabindex="0") Santé
+                        p(tabindex="0") Sport
+                        p(tabindex="0") Volontariat
+
+            div(class="modal-footer")
+                button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
+                button(class="btn btn-success" type="submit") Ajouter
