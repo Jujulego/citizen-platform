@@ -11,18 +11,28 @@ append jslib
     script(src="/vendor/datatables.net/js/jquery.dataTables.min.js")
     script(src="/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js")
 
+
 block content
     //hérite de base (la structure avec navbar et les trucs qu'on veut partout)
     //balise
     //Page d'accueil Associations après connexion
+
+
+    //bootstrap
+    header(class="row")
+        div(class="col")
+            img(class="img-fluid" src="/static/images/calendrier.png")
+            h1(class="text-white") Missions proposées
+
     section(class="row mb-3")
         //Bootstrap, Bloc de présentation à gauche de l'écran
         aside(class="col-auto")
             div(id="profil" class="card")
                 div(class="card-body")
-                    img(src="/static/images/resto.jpg" class="img-fluid rounded" alt="logo resto")
+                    img(src="/static/images/profil.png" class="img-fluid rounded" alt="logo resto")
                     h5(class="card-title")
-                        a(href="/asso/profil") Mon Association
+                        a(href="/asso/profil") Profil association
+                        
 
         //Bootstrap, colonne de droite
         article(class="col")
@@ -38,18 +48,21 @@ block content
                         thead
                             tr
                                 th(scope="col") Titre
-                                th(scope="col") Postulants
-                                th(scope="col") Consultations
-                                th(scope="col") Status
+                                th(scope="col") Lieu
+                                th(scope="col") Nombre
+                                th(scope="col") Description
 
                         tbody
                             each mission in missions
                                 tr
                                     td
                                         a(href=`/asso/mission/${mission.id}`)= mission.titre
-                                    td 0
-                                    td 0
-                                    td en attente
+                                    td 
+                                        a(href=`/asso/mission/${mission.id}`)= mission.lieu
+                                    td 
+                                        a(href=`/asso/mission/${mission.id}`)= mission.nbPersAtteindre
+                                    td 
+                                        a(href=`/asso/mission/${mission.id}`)= mission.description
 
 append js
     script(src="/static/js/accueil-assos.js")
