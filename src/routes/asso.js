@@ -6,6 +6,8 @@ import CreneauMission from '../db/CreneauMission';
 import utils from '../utils';
 import Association from "../db/Association";
 import Domaine from "../db/Domaine";
+import Citoyen from "../db/Citoyen";
+import Postulation from '../db/Postulation';
 
 // Router
 export default function(db) {
@@ -35,12 +37,14 @@ export default function(db) {
         const asso = await Association.getLoggedInUser(db, req);
         const mission = await asso.getMission(req.params.id);
 
+        const creneaux = await mission.getCreneaux();
+
         res.render("edit-mission", {
             title: mission.titre,
 
             asso: asso,
             mission: mission,
-            creneaux : await mission.getCreneaux(),
+            creneaux : creneaux,
             candidats: await mission.getPostulants(),
             domaines : await mission.getDomaines()
         });
@@ -155,6 +159,38 @@ export default function(db) {
             title: "accueil association",
             missions: await asso.getMissions()
         });
+    }));
+
+
+    //accepter postulation
+    router.get('/acceptPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+
+        //changer le status de cette postulation a 1
+        const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
+        const postu = await Postulation.getByCitoyenAndCreneau(db, user, req.params.idcreneau);
+        if (postu == null) {
+            return res.status(404);
+        }
+
+        postu.status = true;
+        postu.save();
+
+        res.redirect("/asso/mission/" + req.params.idmission);
+
+    }));
+
+    //refuser postulation
+    router.get('/refusPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+
+        //supp cette postulation
+        const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
+        await Postulation.deletePostulation(db, user, req.params.idcreneau);
+
+
+        res.redirect("/asso/mission/" + req.params.idmission);
+
     }));
 
     return router;

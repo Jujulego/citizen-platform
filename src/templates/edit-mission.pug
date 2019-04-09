@@ -90,15 +90,23 @@ block content
                                             th(scope="col") Nom
                                             th(scope="col") Prénom
                                             th(scope="col") Mail
+                                            th(scope="col") Candidature
                                     tbody
-                                        each canditat in candidats
-                                            if(canditat.creneau.id == cre.id)
+                                        each candidat in candidats
+                                            if (candidat.creneau.id == cre.id)
                                                 tr
-                                                    td= canditat.postulant.nom
-                                                    td= canditat.postulant.prenom
                                                     td
-                                                        a(href=`mailto:${canditat.postulant.login}`)= canditat.postulant.login
-
+                                                        a(href="/profilCitoyen/" + candidat.postulant.login )= candidat.postulant.nom
+                                                    td
+                                                        a(href="/profilCitoyen/" + candidat.postulant.login)= candidat.postulant.prenom
+                                                    td
+                                                        a(href=`mailto:${candidat.postulant.login}`)= candidat.postulant.login
+                                                    td
+                                                        if candidat.status
+                                                            | Accepté
+                                                        else
+                                                            a(href="/asso/acceptPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-success btn-sm mr-2") Acceper
+                                                            a(href="/asso/refusPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-danger btn-sm") Refuser         
 
 append js
     script(src="/static/js/edit-Mission.js")

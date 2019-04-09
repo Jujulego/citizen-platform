@@ -107,17 +107,15 @@ export default class Mission extends Model<Mission> {
             where.push("dm.domaine = ?");
             params.push(domaine)
         }
-        
+
         //console.log(keyword);
         const sql = "select idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso, min(cm.debut) as dateMission \n" +
             " from mission as m\n" +
             " inner join creneau_mission as cm on m.idMission = cm.mission and cm.debut >= date('now')\n" +
             " inner join association as a on m.loginAsso = a.loginAsso \n" +
             " left join domaine_mission as dm on m.idMission = dm.mission \n" +
-            
-            
             "  group by idMission, titre, lieu, description, nbPersAtteindre, m.loginAsso\n" +
-            (where.length > 0 ? " having " + where.join(" and ") : "") +
+            (where.length > 0 ? " having " + where.join(" and ") : "") 
             "  order by dateMission\n" +
             "  limit ?";
 
@@ -164,14 +162,15 @@ export default class Mission extends Model<Mission> {
     async getPostulations(): Promise<Array<Postulation>> {
         return await Postulation.allByMission(this.db, this);
     }
-    async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission }>> {
+    async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission, status: boolean }>> {
         const postulations: Array<Postulation> = await this.getPostulations();
 
         const result = [];
         for (const p of postulations) {
             result.push({
                 postulant: await p.citoyen.get(),
-                creneau:   await p.creneau.get()
+                creneau:   await p.creneau.get(),
+                status:    p.status,
             });
         }
 

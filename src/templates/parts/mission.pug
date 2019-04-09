@@ -16,5 +16,9 @@ div(class="card m-3")
         p(class="card-text")= mission.description
 
     block footer
-        div(class="card-footer text-right px-3 py-1")
-            small(class="font-italic")= mission.fields.dateMission
+        div(class="card-footer")
+            div(class="m-0")
+                //ici
+                a(href="/profilAsso/" + mission.association.pk ) //mission.asso.nom
+                div(class="float-right")
+                    small(class="font-italic")= mission.fields.dateMission

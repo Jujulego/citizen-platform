@@ -1,16 +1,25 @@
 extends base
 
 append css
-    link(rel="stylesheet" href="/vendor/pg-calendar/dist/css/pignose.calendar.min.css")
-    
+    link(rel="stylesheet" href="/vendor/@fullcalendar/core/main.min.css")
+    link(rel="stylesheet" href="/vendor/@fullcalendar/daygrid/main.min.css")
+    link(rel="stylesheet" href="/vendor/@fullcalendar/bootstrap/main.min.css")
+
     //TOUT CE QUI CONCERNE LE PROFIL DU BENEVOLE route : user/
     link(rel="stylesheet" href="/static/scss/profil.css")
     //lien avec le css
 
+append jslib
+    script(src="/vendor/@fullcalendar/core/main.min.js")
+    script(src="/vendor/@fullcalendar/core/locales/fr.js")
+    script(src="/vendor/@fullcalendar/daygrid/main.min.js")
+    script(src="/vendor/@fullcalendar/bootstrap/main.min.js")
+    script(src="/vendor/@fullcalendar/interaction/main.min.js")
+
 block content
-    include parts/disponibilite-popup 
     include parts/modifCitoyen
     include parts/supprCitoyen
+    include parts/add-creneau
 
     div(id="doc-dialog" class="modal fade" tabindex="-1" role="dialog")
         div(class="modal-dialog" role="document")
@@ -91,7 +100,7 @@ block content
                             a(class="nav-link" data-toggle="tab" href="#documents") Documents
 
                         li(class="nav-item")
-                            a(class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
+                            a(id="tab-dispo" class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
 
                 div(class="card-body")
                     div(class="tab-content")
@@ -152,74 +161,8 @@ block content
                                                 i(class="fas fa-file-upload mr-2")
                                                 | Envoyer
 
-                        div(class="tab-pane fade" id="dispo" role="tabpanel") 
-                            button(type="button" class="btn btn-primary" data-toggle="modal" data-target="#disponibilitePopup")
-                                i(class="fas fa-plus-circle")  Ajouter Disponibilité
-                                
-                            table(class="table table-bordered mt-4")
-                                thead
-                                    tr
-                                        th(scope="col") 
-                                        th(scope="col") Lundi
-                                        th(scope="col") Mardi
-                                        th(scope="col") Mercredi
-                                        th(scope="col") Jeudi
-                                        th(scope="col") Vendredi
-                                        th(scope="col") Samedi
-                                        th(scope="col") Dimanche
-                                tbody
-                                    tr
-                                        td
-                                            span Matin
-                                        td
-                                            a(href='#' title="Rendre Indisponible") Disponible
-                                                i(class="far fa-check-circle")
-                                        td
-                                            a(href='#') ...
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                    tr
-                                        td
-                                            span Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                    tr
-                                        td
-                                            span Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
+                        div(class="tab-pane fade" id="dispo" role="tabpanel")
+                            div(id="calendar")
 
 append js
     script(src="/static/js/profil-benevole.js")
