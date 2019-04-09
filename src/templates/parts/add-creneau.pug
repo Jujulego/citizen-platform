@@ -1,0 +1,58 @@
+// Popup pour supprimer son profil citoyen
+div(class="modal fade" id="add-creneau" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" novalidate)
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span Nouveau créneau
+
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+
+            div(class="modal-body")
+                div(class="form-row mb-3")
+                    div(class="col-3")
+                        label(class="my-1" for="date-deb") De
+
+                    div(class="col")
+                        div(class="input-group")
+                            input(id="date-deb" class="form-control" name="dateDeb" type="date" required)
+                            input(id="time-deb" class="form-control" name="timeDeb" type="time" required)
+
+                div(class="form-row mb-3")
+                    div(class="col-3")
+                        label(class="my-1" for="date-fin") A
+
+                    div(class="col")
+                        div(class="input-group")
+                            input(id="date-fin" class="form-control" name="dateFin" type="date" required)
+                            input(id="time-fin" class="form-control" name="timeFin" type="time" required)
+
+                div(class="form-row mb-3")
+                    div(class="col-3")
+                        label(for="recursif") Récursif
+
+                    div(class="col")
+                        input(id="recursif" type="checkbox")
+
+                div(class="form-row mb-3")
+                    div(class="col-3")
+                        label(class="my-1" for="repetitions") Répétitions
+
+                    div(class="col")
+                        input(id="repetitions" class="form-control need-recursif" name="repetitions" type="number" min="1" disabled)
+
+                div(class="form-row")
+                    div(class="col-3")
+                        label(class="my-1" for="nb-ecarts") Tous les
+
+                    div(class="col")
+                        div(class="input-group")
+                            input(id="nb-ecarts" class="form-control need-recursif" name="repetitions" type="number" min="1" value="1" disabled)
+                            select(id="type-ecart" class="form-control need-recursif" name="ecart" disabled)
+                                option(value="1") Jour(s)
+                                option(value="7") Semaine(s)
+
+            div(class="modal-footer")
+                button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
+                button(class="btn btn-primary" type="submit") Ajouter

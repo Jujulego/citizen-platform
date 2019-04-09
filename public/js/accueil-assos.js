@@ -1,3 +1,7 @@
 $(document).ready(function() {
-    $("#missions").DataTable()
+    $("#missions").DataTable({
+        "language": {
+            "url": "/datatable.lang"
+        }
+    })
 });

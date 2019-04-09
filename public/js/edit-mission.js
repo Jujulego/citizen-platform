@@ -1,3 +1,7 @@
 $(document).ready(function() {
-    $(".candidats").DataTable();
+    $(".candidats").DataTable({
+        "language": {
+            "url": "/datatable.lang"
+        }
+    });
 });

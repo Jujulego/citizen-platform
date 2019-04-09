@@ -10,9 +10,11 @@ import Citoyen from "../db/Citoyen";
 import CreneauMission from '../db/CreneauMission';
 import Document from "../db/Document";
 import utils from "../utils";
+import CreneauCitoyen from "../db/CreneauCitoyen";
 
 // Constante
 const MEDIA_PATH = path.join(__dirname, "../../media");
+const DAY = 24 * 60 * 60 * 1000; // en ms
 
 // Router
 export default function(db) {
@@ -55,7 +57,7 @@ export default function(db) {
                 break;
         }
     });
-    router.get('/deconnexion', utils.login_guard(async function(req, res, next) {
+    router.get('/deconnexion', utils.login_guard(function(req, res) {
         // Déconnexion
         Association.disconnect(req);
         Citoyen.disconnect(req);
@@ -66,102 +68,118 @@ export default function(db) {
     // mon profil
     router.route('/')
         .get(utils.user_guard(async function(req, res, next) { //route
-            const user = await Citoyen.getLoggedInUser(db, req);
+            try {
+                const user = await Citoyen.getLoggedInUser(db, req);
 
-            res.render('profil-benevole', { //lien entre la route et le pug profil
-                title: "Mon Profil",
+                res.render('profil-benevole', { //lien entre la route et le pug profil
+                    title: "Mon Profil",
 
-                user: user,
-                documents:   await user.getDocuments(),
-                competances: await user.getCompetances(),
-            });
+                    user: user,
+                    documents: await user.getDocuments(),
+                    competances: await user.getCompetances(),
+                });
+
+            } catch(err) {
+                console.log(err);
+                next(err);
+            }
         }))
         // Modification Informations citoyen
         .post(utils.user_guard(async function(req, res, next) {
-            // Récups nouv infos
-            const { nom, prenom, adresse, tel, situation, permis } = req.body;
+            try {
+                // Récups nouv infos
+                const { nom, prenom, adresse, tel, situation, permis } = req.body;
 
-            // Modif user
-            const user = await Citoyen.getLoggedInUser(db, req);
+                // Modif user
+                const user = await Citoyen.getLoggedInUser(db, req);
 
-            let needSave = false;
+                let needSave = false;
 
+                if (nom !== user.nom) {
+                    user.nom = nom;
+                    needSave = true;
+                }
 
-            if (nom !== user.nom) {
-                user.nom = nom;
-                needSave = true;
-            }
+                if (prenom !== user.prenom){
+                    user.prenom = prenom;
+                    needSave = true;
+                }
 
-            if(prenom !== user.prenom){
-                user.prenom = prenom;
-                needSave = true;
-            }
+                if (adresse !== user.adresse){
+                    user.adresse = adresse;
+                    needSave = true;
+                }
 
-            if(adresse !== user.adresse){
-                user.adresse = adresse;
-                needSave = true;
-            }
+                if (tel !== user.tel){
+                    user.tel = tel;
+                    needSave = true;
+                }
 
-            if(tel !== user.tel){
-                user.tel = tel;
-                needSave = true;
-            }
+                if (situation !== user.situation){
+                    user.situation = situation;
+                    needSave = true;
+                }
 
-            if(situation !== user.situation){
-                user.situation = situation;
-                needSave = true;
-            }
+                if (permis !== user.permis){
+                    user.permis = permis;
+                    needSave = true;
+                }
 
-            if(permis !== user.permis){
-                user.permis = permis;
-                needSave = true;
-            }
+                if (needSave) {
+                    await user.save();
+                    res.redirect("/user");
+                }
 
-            if (needSave) {
-                user.save()
-                    .then(function() {
-                        res.redirect("/user");
-                    });
+            } catch(err) {
+                console.log(err);
+                next(err);
             }
         }));
 
     // Supprimer le profil citoyen
     router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
-        const user = await Citoyen.getLoggedInUser(db, req);
-        await user.delete();
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+            await user.delete();
 
-        Citoyen.disconnect(req);
+            Citoyen.disconnect(req);
+            res.redirect("/");
 
-        res.redirect("/");
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     // Missions
     router.post('/postuler', utils.user_guard(async function(req, res, next){
-        console.log("dans le postuler");
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
 
-        const user = await Citoyen.getLoggedInUser(db, req);
-
-        console.log(req.body.check);
-
-        if(typeof req.body.check === 'string'){
-            let postu = await Postulation.create(db, {
-                citoyen : user,
-                creneau : await CreneauMission.getById(db, req.body.check),
-                status : false
-            })
-        }
-        else{
-            for (let idcreneauSel of req.body.check ){
-                console.log(idcreneauSel);
-                let postu = await Postulation.create(db, {
+            if(typeof req.body.check === 'string') {
+                await Postulation.create(db, {
                     citoyen : user,
-                    creneau : await CreneauMission.getById(db, idcreneauSel),
+                    creneau : await CreneauMission.getById(db, req.body.check),
                     status : false
-                })
+                });
             }
-        }
+            else
+            {
+                for (let idcreneauSel of req.body.check)
+                {
+                    await Postulation.create(db, {
+                        citoyen : user,
+                        creneau : await CreneauMission.getById(db, idcreneauSel),
+                        status : false
+                    });
+                }
+            }
 
-        res.redirect("/");
+            res.redirect("/");
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     // Supprimer une postulation
@@ -174,47 +192,52 @@ export default function(db) {
     }));
 
     router.get('/candidatures', utils.user_guard(async function(req, res, next) { //route
-        const user = await Citoyen.getLoggedInUser(db, req);
-        const postulations = await user.getPostulations();
-        const missions = [];
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+            const postulations = await user.getPostulations();
+            const missions = [];
 
-        for (let p of postulations) {
-            const c = await p.creneau.get();
-            const miss = await c.mission.get()
-            missions.push({
-                creneau: c,
-                mission: miss,
-                status : p.status,
-                asso : await Association.getByLogin(db, miss.association.pk) 
+            for (let p of postulations) {
+                const c = await p.creneau.get();
+                const miss = await c.mission.get();
+
+                missions.push({
+                    creneau: c,
+                    mission: miss,
+                    status : p.status,
+                    asso : await Association.getByLogin(db, miss.association.pk)
+                });
+            }
+
+            res.render("candidatures", { // lien entre la route et le pug candidature
+                title: "Mes Candidatures",
+                missions: missions
             });
+
+        } catch(err) {
+            console.log(err);
+            next(err);
         }
-
-        console.log(missions);
-
-        res.render("candidatures", { //lien entre la route et le pug candidature
-            title: "Mes Candidatures",
-            missions: missions
-        });
     }));
 
     // Documents
-    function createDoc(res, titre, name, user) {
-        Document.create(db, { titre: titre, fichier: name, citoyen: user })
-            .then(function(doc) {
+    router.post('/document/add', utils.user_guard(async function(req, res, next) {
+        async function createDoc(res, titre, name, user) {
+            try {
+                const doc = await Document.create(db, { titre: titre, fichier: name, citoyen: user });
+
                 res.json({
                     id: doc.id,
                     titre: doc.titre,
                     fichier: doc.fichier,
                     filename: doc.filename,
                 });
-            })
-            .catch(function(err) {
+            }  catch(err) {
                 console.error(err);
                 next(err);
-            });
-    }
+            }
+        }
 
-    router.post('/document/add', utils.user_guard(async function(req, res, next) {
         try {
             // Get user
             const user = await Citoyen.getLoggedInUser(db, req);
@@ -233,7 +256,7 @@ export default function(db) {
                 }
             });
 
-            busboy.on('file', function(field, file, filename, encoding, mime) {
+            busboy.on('file', function(field, file, filename) {
                 // Check field
                 if (field !== "file") return;
 
@@ -256,6 +279,7 @@ export default function(db) {
             });
 
             req.pipe(busboy);
+
         } catch(err) {
             console.error(err);
             next(err);
@@ -320,5 +344,107 @@ export default function(db) {
                 next(err);
             }
         }));
+
+    // Créneaux
+    router.get('/creneaux', utils.user_guard(async function(req, res, next) {
+        try {
+            // Params
+            const start = new Date(req.query.start);
+            const end   = new Date(req.query.end);
+
+            // Get créneaux
+            const user = await Citoyen.getLoggedInUser(db, req);
+            const creneaux = await user.getCreneauxBetween(start, end);
+            const data = [];
+
+            for (let i = 0; i < creneaux.length; ++i) {
+                const cre = creneaux[i];
+
+                // 1er
+                data.push({
+                    id: cre.id,
+                    title: cre.debut_txt,
+                    allDay: false,
+                    start: cre.debut,
+                    end: cre.fin,
+                    editable: false,
+                });
+
+                if (cre.repetitions === 0) {
+                    // Répétitions
+                    let debut = cre.debut.getTime();
+                    let fin   = cre.fin.getTime();
+
+                    if (fin < start.getTime()) {
+                        let delta = (start.getTime() - debut);
+                        debut += delta - (delta % (DAY * cre.ecart));
+
+                        delta = (start.getTime() - fin);
+                        fin += delta - (delta % (DAY * cre.ecart));
+                    }
+
+                    while (end.getTime() > debut) {
+                        debut += DAY * cre.ecart;
+                        fin   += DAY * cre.ecart;
+
+                        if (end.getTime() > debut && start.getTime() < fin) {
+                            data.push({
+                                id: cre.id,
+                                title: `${cre.debut_txt} (rep inf)`,
+                                allDay: false,
+                                start: new Date(debut),
+                                end: new Date(fin),
+                                editable: false,
+                            });
+                        }
+                    }
+                } else {
+                    // Répétitions
+                    let debut = cre.debut.getTime();
+                    let fin   = cre.fin.getTime();
+
+                    for (let r = 1; r < cre.repetitions; ++r) {
+                        // nouvelles dates
+                        debut += DAY * cre.ecart;
+                        fin   += DAY * cre.ecart;
+
+                        if (end.getTime() > debut && start.getTime() < fin) {
+                            data.push({
+                                id: cre.id,
+                                title: `${cre.debut_txt} (rep ${r})`,
+                                allDay: false,
+                                start: debut,
+                                end: fin,
+                                editable: false,
+                            });
+                        }
+                    }
+                }
+            }
+
+            res.json(data);
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
+    router.put("/creneaux/add", utils.user_guard(async function(req, res, next) {
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+
+            // Params
+            const deb = new Date(req.body.debut);
+            const fin = new Date(req.body.fin);
+
+            // Nouveau créneau !
+            await CreneauCitoyen.create(db, { ...req.body, debut: deb, fin: fin, citoyen: user });
+            res.json({});
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
     return router;
 };
