@@ -40,7 +40,9 @@ block content
                         i(class="fas fa-briefcase fa-fw mr-3")
                         = user.situation_txt
 
-                    li(class="list-group-item")= user.permis ? "Permis B" : "Sans le permis"
+                    li(class="list-group-item")
+                        i(class="fas fa-car fa-fw mr-3")
+                        = user.permis ? "Permis B" : "Sans le permis"
 
         article(class="col")
             div(class="card")

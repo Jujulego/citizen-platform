@@ -78,6 +78,29 @@ export default function(db) {
         }
     }));
 
+    router.post('/modifPresentation', utils.asso_guard(async function(req, res, next) {
+        const { presentation } = req.body;
+
+        // Modif user
+        const asso = await Association.getLoggedInUser(db, req);
+
+        let needSave = false;
+
+
+        if (presentation !== asso.presentation) {
+            asso.presentation = presentation;
+            needSave = true;
+        }
+
+        if (needSave) {
+            asso.save()
+                .then(function() {
+                    res.redirect("/asso/Profil");
+                });
+        }
+    }));
+
+
     router.post('/mission/:id', utils.asso_guard(async function(req, res, next) {
 
         // Récups nouv infos

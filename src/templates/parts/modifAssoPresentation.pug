@@ -1,0 +1,18 @@
+// Popup de Modif Citoyen
+div(class="modal fade" id="modifAssoPresentation" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" method="post" action="/asso/modifPresentation/")
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span   Modifier la description de mon Association
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+            
+            div(class="modal-body") 
+                div(class="form-group")
+                    label(for="inputPres") Présentation :
+                    textarea(id="inputPres" name="presentation" class="form-control" type="text")= asso.presentation
+                
+                
+            div(class="modal-footer")
+                button(class="btn btn-primary" type="submit") OK
