@@ -14,6 +14,7 @@ append jslib
 block content
     //TOUT CE QUI CONCERNE LA MISSION
     include parts/supprMission
+    include parts/modifMission
     
     //PAGE MISSION : MISSION (en dessous de résultat)
     header(class="row ") 
@@ -30,7 +31,7 @@ block content
                             
                         div(class="card-toolbar col-auto")
                             div(class="btn-group")
-                                button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#")
+                                button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifMission")
                                     i(class="fas fa-pen")
                                 button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-id=""+ mission.id +"" data-target="#supprMission")
                                     i(class="fas fa-eraser")
