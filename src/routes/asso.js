@@ -33,23 +33,6 @@ export default function(db) {
         });
     }));
 
-    router.get('/mission/:id', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
-
-        const creneaux = await mission.getCreneaux();
-
-        res.render("edit-mission", {
-            title: mission.titre,
-
-            asso: asso,
-            mission: mission,
-            creneaux : creneaux,
-            candidats: await mission.getPostulants(),
-            domaines : await mission.getDomaines()
-        });
-    }));
-
     //modifications Informations citoyen
     router.post('/', utils.asso_guard(async function(req, res, next) {
         // Récups nouv infos
@@ -93,6 +76,75 @@ export default function(db) {
                     res.redirect("/asso/Profil");
                 });
         }
+    }));
+
+    router.post('/mission/:id', utils.asso_guard(async function(req, res, next) {
+
+        // Récups nouv infos
+        const { titre, lieu, description, nbPers } = req.body;
+
+        const asso = await Association.getLoggedInUser(db, req);
+        const mission = await asso.getMission(req.params.id);
+
+        let needSave = false;
+
+        if(titre !== mission.titre){
+            mission.titre = titre;
+            needSave = true;
+        }
+
+        if(lieu !== mission.lieu){
+            mission.lieu = lieu;
+            needSave = true;
+        }
+
+        if(description !== mission.description){
+            mission.description = description;
+            needSave = true;
+        }
+
+        if(+nbPers !== mission.nbPersAtteindre){
+            mission.nbPersAtteindre = nbPers;
+            needSave = true;
+        }
+
+        const creneaux = await mission.getCreneaux();
+
+        if (needSave) {
+            mission.save()
+                .then(async function() {
+                    res.render("edit-mission", {
+                        title: mission.titre,
+
+                        asso: asso,
+                        mission: mission,
+                        creneaux : creneaux,
+                        candidats: await mission.getPostulants(),
+                        domaines : await mission.getDomaines()
+                    });
+                });
+        }
+
+
+    }));
+
+    router.get('/mission/:id', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+        const mission = await asso.getMission(req.params.id);
+
+        const creneaux = await mission.getCreneaux();
+
+
+        res.render("edit-mission", {
+            title: mission.titre,
+
+            asso: asso,
+            mission: mission,
+            creneaux : creneaux,
+            candidats: await mission.getPostulants(),
+            domaines : await mission.getDomaines()
+        });
+
     }));
 
     //Création de missions
@@ -158,6 +210,38 @@ export default function(db) {
         res.render('accueil-assos', { //quel template utilisé : ici accueil asso
             title: "accueil association",
             missions: await asso.getMissions()
+        });
+    }));
+
+
+    router.post('/ajoutDomMission/:id', utils.asso_guard(async function(req, res, next) {
+        const asso = await Association.getLoggedInUser(db, req);
+        const mission = await asso.getMission(req.params.id);
+        const creneaux = await mission.getCreneaux();
+
+        // Récups nouv infos
+        const { domaine } = req.body;
+
+        let needSave = false;
+
+        //Domaine d'intervention
+        if(domaine){
+            //verif que ce dommaine existe pas
+            let dodo = await Domaine.getByNom(db, domaine);
+            if(dodo == null){
+                dodo = await Domaine.create(db, {nom : domaine});
+            }
+            await dodo.linkMission(mission);
+        }
+
+        res.render("edit-mission", {
+            title: mission.titre,
+
+            asso: asso,
+            mission: mission,
+            creneaux : creneaux,
+            candidats: await mission.getPostulants(),
+            domaines : await mission.getDomaines()
         });
     }));
 

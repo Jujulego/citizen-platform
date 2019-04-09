@@ -19,6 +19,6 @@ div(class="card m-3")
         div(class="card-footer")
             div(class="m-0")
                 //ici
-                a(href="/profilAsso/" + mission.association.pk ) //mission.asso.nom
+                a(href="/profilAsso/" + mission.association.pk )= mission.asso.nom
                 div(class="float-right")
                     small(class="font-italic")= mission.fields.dateMission

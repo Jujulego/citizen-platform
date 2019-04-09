@@ -16,8 +16,16 @@ export default function(db) {
             const { lieu, assos, dateDebut, domaine, keyword } = req.query;
 
             const missions = await Mission.nextMissions(db, lieu, assos, dateDebut, domaine, keyword);
+
+            for (let i = 0; i < missions.length; ++i) {
+                const m = missions[i];
+                m.asso = await Association.getByLogin(db, m.association.pk);
+
+                console.log("Mission : " + m.titre + " Asso : " + m.asso.nom);
+            };
+
             const domaines = await Domaine.allDomaines(db);
-            
+
             res.render('index', { //utilise un pug (affichage avec un pug)
                 title: 'Express',
                 missions: missions,

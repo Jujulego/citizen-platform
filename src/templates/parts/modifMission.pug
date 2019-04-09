@@ -1,0 +1,33 @@
+// Popup de Modif Citoyen
+div(class="modal fade" id="modifMission" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" method="post" action="/asso/mission/" + mission.id)
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span   Modifier la Mission
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+            
+            div(class="modal-body") 
+                div(class="form-group")
+                    label(for="title-field") Titre :
+                    input(id="title-field" class="form-control" name="titre" type="text" placeholder="Titre" value=mission.titre)
+
+                div(class="form-group")
+                    label(for="lieu-field") Lieu :
+                    input(id="lieu-field" class="form-control"
+                          name="lieu" type="text" placeholder="Lieu" value =mission.lieu )
+
+                div(class="form-group")
+                    label(for="description-field") Description :
+                    textarea(id="description-field" class="form-control"
+                            type="textarea" placeholder="Description"  name="description" )= mission.description
+
+                div(class="form-group")
+                    label(for="nbPers-field") Nombre de Personne :
+                    input(id="nbPers-field" class="form-control"
+                            type="number" name="nbPers" placeholder="Nombre de Personne" value=mission.nbPersAtteindre)
+
+                
+            div(class="modal-footer")
+                button(class="btn btn-primary" type="submit") OK
