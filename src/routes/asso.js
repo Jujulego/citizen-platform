@@ -17,140 +17,162 @@ export default function(db) {
 
     // Mon accueil
     router.get('/', utils.asso_guard(async function(req, res, next) { // définit la route pour accéder à la page accueil de l'association
-        const asso = await Association.getLoggedInUser(db, req);
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
 
-        res.render('accueil-assos', { //quel template utilisé : ici accueil asso
-            title: "accueil association",
-            missions: await asso.getMissions()
-        });
+            res.render('accueil-assos', { //quel template utilisé : ici accueil asso
+                title: "accueil association",
+                missions: await asso.getMissions()
+            });
+        } catch(err) {
+            console.error(err);
+            next(err);
+        }
     }));
 
     // Mon profil
     router.get('/profil', utils.asso_guard(async function(req, res, next) { //définit la route pour accéder à la page profil de l'association
-        const asso = await Association.getLoggedInUser(db, req);
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
 
-        res.render('profil-association', { //quel template utilisé : ici profil asso
-            title: "Mon association",
-            asso: asso,
-        });
+            res.render('profil-association', { //quel template utilisé : ici profil asso
+                title: "Mon association",
+                asso: asso,
+            });
+        } catch(err) {
+            console.error(err);
+            next(err);
+        }
     }));
 
     //modifications Informations citoyen
     router.post('/', utils.asso_guard(async function(req, res, next) {
-        // Récups nouv infos
-        const { nom, adresse, tel, siteWeb, siret } = req.body;
+        try {
+            // Récups nouv infos
+            const { nom, adresse, tel, siteWeb, siret } = req.body;
 
-        // Modif user
-        const asso = await Association.getLoggedInUser(db, req);
+            // Modif user
+            const asso = await Association.getLoggedInUser(db, req);
 
-        let needSave = false;
-
-
-        if (nom !== asso.nom) {
-            asso.nom = nom;
-            needSave = true;
-        }
+            let needSave = false;
 
 
-        if(adresse !== asso.adresse){
-            asso.adresse = adresse;
-            needSave = true;
-        }
+            if (nom !== asso.nom) {
+                asso.nom = nom;
+                needSave = true;
+            }
 
-        if(tel !== asso.tel){
-            asso.tel = tel;
-            needSave = true;
-        }
 
-        if(siteWeb !== asso.siteWeb){
-            asso.siteWeb = siteWeb;
-            needSave = true;
-        }
+            if(adresse !== asso.adresse){
+                asso.adresse = adresse;
+                needSave = true;
+            }
 
-        if(siret !== asso.siret){
-            asso.siret = siret;
-            needSave = true;
-        }
+            if(tel !== asso.tel){
+                asso.tel = tel;
+                needSave = true;
+            }
 
-        if (needSave) {
-            asso.save()
-                .then(function() {
-                    res.redirect("/asso/Profil");
-                });
+            if(siteWeb !== asso.siteWeb){
+                asso.siteWeb = siteWeb;
+                needSave = true;
+            }
+
+            if(siret !== asso.siret){
+                asso.siret = siret;
+                needSave = true;
+            }
+
+            if (needSave) {
+                asso.save()
+                    .then(function() {
+                        res.redirect("/asso/Profil");
+                    });
+            }
+        } catch(err) {
+            console.error(err);
+            next(err);
         }
     }));
 
     router.post('/modifPresentation', utils.asso_guard(async function(req, res, next) {
-        const { presentation } = req.body;
+        try {
+            const { presentation } = req.body;
 
-        // Modif user
-        const asso = await Association.getLoggedInUser(db, req);
+            // Modif user
+            const asso = await Association.getLoggedInUser(db, req);
 
-        let needSave = false;
+            let needSave = false;
 
 
-        if (presentation !== asso.presentation) {
-            asso.presentation = presentation;
-            needSave = true;
-        }
+            if (presentation !== asso.presentation) {
+                asso.presentation = presentation;
+                needSave = true;
+            }
 
-        if (needSave) {
-            asso.save()
-                .then(function() {
-                    res.redirect("/asso/Profil");
-                });
+            if (needSave) {
+                asso.save()
+                    .then(function () {
+                        res.redirect("/asso/Profil");
+                    });
+            }
+        } catch(err) {
+            console.error(err);
+            next(err);
         }
     }));
 
 
     router.post('/mission/:id', utils.asso_guard(async function(req, res, next) {
+        try {
+            // Récups nouv infos
+            const { titre, lieu, description, nbPers } = req.body;
 
-        // Récups nouv infos
-        const { titre, lieu, description, nbPers } = req.body;
+            const asso = await Association.getLoggedInUser(db, req);
+            const mission = await asso.getMission(req.params.id);
 
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
+            let needSave = false;
 
-        let needSave = false;
+            if (titre !== mission.titre) {
+                mission.titre = titre;
+                needSave = true;
+            }
 
-        if(titre !== mission.titre){
-            mission.titre = titre;
-            needSave = true;
-        }
+            if (lieu !== mission.lieu) {
+                mission.lieu = lieu;
+                needSave = true;
+            }
 
-        if(lieu !== mission.lieu){
-            mission.lieu = lieu;
-            needSave = true;
-        }
+            if (description !== mission.description) {
+                mission.description = description;
+                needSave = true;
+            }
 
-        if(description !== mission.description){
-            mission.description = description;
-            needSave = true;
-        }
+            if (+nbPers !== mission.nbPersAtteindre) {
+                mission.nbPersAtteindre = nbPers;
+                needSave = true;
+            }
 
-        if(+nbPers !== mission.nbPersAtteindre){
-            mission.nbPersAtteindre = nbPers;
-            needSave = true;
-        }
+            const creneaux = await mission.getCreneaux();
 
-        const creneaux = await mission.getCreneaux();
+            if (needSave) {
+                mission.save()
+                    .then(async function () {
+                        res.render("edit-mission", {
+                            title: mission.titre,
 
-        if (needSave) {
-            mission.save()
-                .then(async function() {
-                    res.render("edit-mission", {
-                        title: mission.titre,
-
-                        asso: asso,
-                        mission: mission,
-                        creneaux : creneaux,
-                        candidats: await mission.getPostulants(),
-                        domaines : await mission.getDomaines()
+                            asso: asso,
+                            mission: mission,
+                            creneaux: creneaux,
+                            candidats: await mission.getPostulants(),
+                            domaines: await mission.getDomaines()
+                        });
                     });
-                });
+            }
+        } catch(err) {
+            console.error(err);
+            next(err);
         }
-
-
     }));
 
     router.get('/mission/:id', utils.asso_guard(async function(req, res, next) {
@@ -210,27 +232,32 @@ export default function(db) {
 
     //Création de missions
     router.get('/createMission', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
 
-        res.render('createMission', {
-            title: "Creation Mission",
-            asso: asso,
-        });
-    }));
-
-    router.post('/createMission', utils.asso_guard(async function(req, res, next) {
-        // Récups nouv infos
-        const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions, domaine } = req.body;
-        const asso = await Association.getLoggedInUser(db, req);
-
-        // Validation
-        if (!titre || !lieu || !description || !dateDebut || !timeDebut || !dateFin || !timeFin) {
             res.render('createMission', {
                 title: "Creation Mission",
                 asso: asso,
             });
-        } else {
-            try {
+        } catch(err) {
+            console.error(err);
+            next(err);
+        }
+    }));
+
+    router.post('/createMission', utils.asso_guard(async function(req, res, next) {
+        try {
+            // Récups nouv infos
+            const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions, domaine } = req.body;
+            const asso = await Association.getLoggedInUser(db, req);
+
+            // Validation
+            if (!titre || !lieu || !description || !dateDebut || !timeDebut || !dateFin || !timeFin) {
+                res.render('createMission', {
+                    title: "Creation Mission",
+                    asso: asso,
+                });
+            } else {
                 //mission
                 const mission = await Mission.create(db,
                     { titre, lieu, description, asso, nbPersAtteindre: nbPers || 0}
@@ -255,66 +282,78 @@ export default function(db) {
 
 
                 res.redirect("/asso/");
-            } catch(err) {
-                console.error(err);
-                next(err);
             }
+        } catch(err) {
+            console.error(err);
+            next(err);
         }
     }));
 
     router.post('/supprMission/:id', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
+            const mission = await asso.getMission(req.params.id);
 
-        await mission.delete();
+            await mission.delete();
 
-        res.render('accueil-assos', { //quel template utilisé : ici accueil asso
-            title: "accueil association",
-            missions: await asso.getMissions()
-        });
+            res.render('accueil-assos', { //quel template utilisé : ici accueil asso
+                title: "accueil association",
+                missions: await asso.getMissions()
+            });
+        } catch (err) {
+            console.error(err);
+            next(err);
+        }
     }));
 
-
     router.post('/ajoutDomMission/:id', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
-        const creneaux = await mission.getCreneaux();
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
+            const mission = await asso.getMission(req.params.id);
+            const creneaux = await mission.getCreneaux();
 
-        // Récups nouv infos
-        const { domaine } = req.body;
+            // Récups nouv infos
+            const { domaine } = req.body;
 
-        let needSave = false;
+            let needSave = false;
 
-        //Domaine d'intervention
-        if(domaine){
-            //verif que ce dommaine existe pas
-            let dodo = await Domaine.getByNom(db, domaine);
-            if(dodo == null){
-                dodo = await Domaine.create(db, {nom : domaine});
+            //Domaine d'intervention
+            if (domaine) {
+                //verif que ce dommaine existe pas
+                let dodo = await Domaine.getByNom(db, domaine);
+                if (dodo == null) {
+                    dodo = await Domaine.create(db, { nom: domaine });
+                }
+                await dodo.linkMission(mission);
             }
-            await dodo.linkMission(mission);
+
+            res.render("edit-mission", {
+                title: mission.titre,
+
+                asso: asso,
+                mission: mission,
+                creneaux: creneaux,
+                candidats: await mission.getPostulants(),
+                domaines: await mission.getDomaines()
+            });
+        } catch (err) {
+            console.error(err);
+            next(err);
         }
-
-        res.render("edit-mission", {
-            title: mission.titre,
-
-            asso: asso,
-            mission: mission,
-            creneaux : creneaux,
-            candidats: await mission.getPostulants(),
-            domaines : await mission.getDomaines()
-        });
     }));
 
 
     //accepter postulation
-    router.get('/acceptPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
+    router.get('/acceptPostulation/:idCitoyen/:idrep/:idmission', utils.asso_guard(async function(req, res, next) {
         try {
             const asso = await Association.getLoggedInUser(db, req);
 
             //changer le status de cette postulation a 1
+            const { idrep } = req.params;
+            const [ idcreneau, r ] = idrep.split('-');
+
             const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
-            const postu = await Postulation.getByCitoyenAndCreneau(db, user, req.params.idcreneau);
+            const postu = await Postulation.getByCitoyenAndCreneau(db, user, idcreneau, r);
             const mission = await Mission.getById(db, req.params.idmission);
 
             if (postu == null) {
@@ -327,7 +366,7 @@ export default function(db) {
                 from: 'no-reply@csp.net',
                 to: user.login,
                 subject: 'CITIZEN-SERVICES-PLATFORM : Votre candidature a été retenue !',
-                html: 'Félicitation, votre candidature pour "' +mission.titre +'" à "'+mission.lieu+ '" a été retenue ! A bientôt sur notre plateforme ! CITIZEN SERVICES PLATFORM ',
+                html: `Félicitation, votre candidature pour "${mission.titre}" à "${mission.lieu}" a été retenue ! A bientôt sur notre plateforme ! CITIZEN SERVICES PLATFORM`,
             }, function(err, reply) {
                 console.log(err && err.stack);
                 //console.dir(reply);
@@ -342,16 +381,23 @@ export default function(db) {
     }));
 
     //refuser postulation
-    router.get('/refusPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
+    router.get('/refusPostulation/:idCitoyen/:idrep/:idmission', utils.asso_guard(async function(req, res, next) {
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
 
-        //supp cette postulation
-        const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
-        await Postulation.deletePostulation(db, user, req.params.idcreneau);
+            //supp cette postulation
+            const { idrep } = req.params;
+            const [idcreneau, r] = idrep.split('-');
+
+            const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
+            await Postulation.deletePostulation(db, user, idcreneau, r);
 
 
-        res.redirect("/asso/mission/" + req.params.idmission);
-
+            res.redirect("/asso/mission/" + req.params.idmission);
+        } catch (err) {
+            console.error(err);
+            next(err);
+        }
     }));
 
     return router;
