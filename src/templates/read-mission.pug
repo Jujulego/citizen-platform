@@ -24,36 +24,42 @@ block content
                 div(class="card-header") Informations
 
                 ul(class="list-group list-group-flush")
-                    li(class="list-group-item")
-                        span= `Lieu : ` + mission.lieu
+                    li(class="list-group-item")= `Lieu : ${mission.lieu}`
+                    li(class="list-group-item") Prochaine date :
+                        span(class="date-fmt ml-1")= first.debut
 
-                    li(class="list-group-item")
-                        span= "Temps estimé de la mission : " + creneaux[0].tempsMission + " minutes"
-                    
-                    li(class="list-group-item")
-                        span Créneau : 
-                    
-                        //pour l'instant : si on est connecté : checkbox + possibilité de Postuler
-                        //sinon : ul + pas de postulation
-                        
-                        if session.userLogin !== undefined
-                            form(id="postulation-form" class="container-fluid" method="post" action="/user/postuler")
-                                each creneau in creneaux
-                                    div(class="form-group form-check")
-                                        input(type="checkbox" class="form-check-input" name="check" value="" + creneau.id id="" + creneau.id  disabled = creneau.postule )
-                                        label(class="form-check-label" for="" + creneau.id +  "")= creneau.debut_txt
-                                button(type="submit" class="btn btn-primary") Postuler
-                        
-                            
-                        
-                        else
-                            ul
-                                each creneau in creneaux
-                                    li= creneau.debut_txt
-                    
-                            small(class="font-italic") Veuillez vous connecter pour postuler !
-                    
-                    
+                    li(class="list-group-item")= `Durée de la mission : ${first.duree} minutes`
+
+                    if (mission.nbPersAtteindre !== 0)
+                        li(class="list-group-item")= `Nombre de personnes nécessaire : ${mission.nbPersAtteindre}`
+
+                //ul(class="list-group list-group-flush")
+                //    li(class="list-group-item")
+                //        span= `Lieu : ${mission.lieu}`
+
+                //    li(class="list-group-item")
+                //        span= "Temps estimé de la mission : minutes"
+                //
+                //    li(class="list-group-item")
+                //        span Créneau :
+                //
+                //        //pour l'instant : si on est connecté : checkbox + possibilité de Postuler
+                //        //sinon : ul + pas de postulation
+                //
+                //        if user != null
+                //            form(id="postulation-form" class="container-fluid" method="post" action="/user/postuler")
+                //                each creneau in creneaux
+                //                    div(class="form-group form-check")
+                //                        input(type="checkbox" class="form-check-input" name="check" value="" + creneau.id id="" + creneau.id  disabled = creneau.postule )
+                //                        label(class="form-check-label" for="" + creneau.id +  "")= creneau.debut_txt
+                //                button(type="submit" class="btn btn-primary") Postuler
+
+                //        else
+                //            ul
+                //                each creneau in creneaux
+                //                    li= creneau.debut_txt
+
+                //            small(class="font-italic") Veuillez vous connecter pour postuler !
 
             div(class="card mb-3")
                 div(class="card-header") Contact
@@ -67,17 +73,53 @@ block content
         article(class="col")
             div(class="card")
                 div(class="card-header")
-                    h2 Informations complémentaires
+                    ul(class="nav nav-tabs card-header-tabs" role="tablist")
+                        li(class="nav-item")
+                            a(class="nav-link active" data-toggle="tab" href="#competences") Informations complémentaires
 
+                        li(class="nav-item")
+                            a(class="nav-link" data-toggle="tab" href="#dates") Dates
 
-                div(class="card-body")
+                div(class="card-body p-0")
                     div(class="tab-content")
-                        h4 Description de la mission :
-                        p(class="ml-3")= mission.description
+                        div(class="tab-pane fade show active" id="competences" role="tabpanel")
+                            div(class="p-3")
+                                h4 Description de la mission :
+                                p(class="ml-3")= mission.description
 
-                        unless domaines.length === 0
-                            h4 Domaine d'intervention
-                            each dom in domaines
-                                p(class="ml-3")= dom.nom
-                        
-                        
+                            hr(class="m-0")
+
+                            div(class="p-3")
+                                h4(class="mb-3") Domaine d'intervention
+
+                                each dom in domaines
+                                    p(class="ml-3")= dom.nom
+
+                        form(id="dates" class="tab-pane fade p-3" role="tabpanel" method="post" action="/user/postuler")
+                            if user == null
+                                div(class="alert alert-danger text-center" role="alert")
+                                    span Vous devez être connecté pour pouvoir postuler !
+                                    a(class="ml-1" tabindex=0 data-toggle="modal" data-target="#connectionPopup") se connecter
+                                    a(class="ml-2" href="/inscription") s'inscrire
+
+                            table(class="table table-bordered mb-0")
+                                thead
+                                    tr
+                                        th
+                                        th Début
+                                        th Fin
+
+                                tbody
+                                    each date, i in [...dates.values()].sort((a, b) => a.repetition.debut.getTime() - b.repetition.debut.getTime())
+                                        tr
+                                            td(class="text-center")
+                                                input(type="checkbox" name="repetition" value=date.id checked=date.postule
+                                                      disabled=((user == null) || date.postule))
+
+                                            td(class="datetime-fmt mr-1")= date.repetition.debut
+                                            td(class="datetime-fmt ml-1")= date.repetition.fin
+
+                                tfoot
+                                    tr
+                                        td(class="text-center py-2" colspan=3)
+                                            button(class="btn btn-primary btn-sm w-25" type="submit" disabled=(user == null)) Postuler

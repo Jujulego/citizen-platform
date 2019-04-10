@@ -170,22 +170,25 @@ export default function(db) {
     router.post('/postuler', utils.user_guard(async function(req, res, next){
         try {
             const user = await Citoyen.getLoggedInUser(db, req);
+            const { repetition } = req.body;
 
-            if(typeof req.body.check === 'string') {
+            if (typeof repetition === 'string') {
+                const [ creneau, r ] = repetition.split('-');
+
                 await Postulation.create(db, {
-                    citoyen : user,
-                    creneau : await CreneauMission.getById(db, req.body.check),
-                    status : false
+                    citoyen: user,
+                    creneau: await CreneauMission.getById(db, creneau),
+                    status: false, r
                 });
-            }
-            else
-            {
-                for (let idcreneauSel of req.body.check)
-                {
+            } else {
+                for (let i = 0; i < repetition.length; ++i) {
+                    const rep = repetition[i];
+                    const [ creneau, r ] = rep.split('-');
+
                     await Postulation.create(db, {
-                        citoyen : user,
-                        creneau : await CreneauMission.getById(db, idcreneauSel),
-                        status : false
+                        citoyen: user,
+                        creneau: await CreneauMission.getById(db, creneau),
+                        status: false, r
                     });
                 }
             }

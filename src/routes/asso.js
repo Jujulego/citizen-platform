@@ -190,7 +190,7 @@ export default function(db) {
 
             // Toutes les répétitions dans le prochain mois
             creneaux.forEach(c => {
-                c.generateRepetitions(now, mp1, ((r, debut, fin) => {
+                c.generateRepetitions(now, mp1, (r, debut, fin) => {
                     if (debut < first.debut) {
                         first.debut = debut;
                         first.duree = c.tempsMission;
@@ -201,8 +201,8 @@ export default function(db) {
                         creneau: c,
                         repetition: { r, debut, fin },
                         postulants: []
-                    })
-                }))
+                    });
+                });
             });
 
             // Toutes les postulations
@@ -353,7 +353,7 @@ export default function(db) {
             const [ idcreneau, r ] = idrep.split('-');
 
             const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
-            const postu = await Postulation.getByCitoyenAndCreneau(db, user, idcreneau, r);
+            const postu = await Postulation.getByCitoyenAndCreneauR(db, user, idcreneau, r);
             const mission = await Mission.getById(db, req.params.idmission);
 
             if (postu == null) {

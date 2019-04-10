@@ -42,7 +42,7 @@ export default class Postulation extends Model<Postulation> {
         });
     }
 
-    static async getByCitoyenAndCreneau(db: Database, citoyen: Citoyen, id_creneau: number, r: number): Promise<?Postulation>{
+    static async getByCitoyenAndCreneauR(db: Database, citoyen: Citoyen, id_creneau: number, r: number): Promise<?Postulation>{
         return await Postulation.get(db,
             "select * from postulation where creneau=? and citoyen=? and r=?",
             [id_creneau, citoyen.login, r], (data) => new Postulation(db, data)
@@ -90,7 +90,7 @@ export default class Postulation extends Model<Postulation> {
         )
     }
 
-    async getRepetition(): Promise<?{ debut: Date, fin: Date, creneau: CreneauMission }> {
+    async getRepetition(): Promise<?{ r: number, debut: Date, fin: Date, creneau: CreneauMission }> {
         // Créneau
         const cre = await this.creneau.get();
         if (cre == null) return null;

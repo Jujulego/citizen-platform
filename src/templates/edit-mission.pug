@@ -37,15 +37,14 @@ block content
                                 button(type="button" class="btn btn-danger btn-sm right" data-toggle="modal" data-id=""+ mission.id +"" data-target="#supprMission")
                                     i(class="fas fa-eraser")
 
-
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")= `Lieu : ${mission.lieu}`
                     li(class="list-group-item") Prochaine date :
-                        span(class="date-fmt")= first.debut.toLocaleDateString()
+                        span(class="date-fmt ml-1")= first.debut
 
                     li(class="list-group-item")= `Durée de la mission : ${first.duree} minutes`
 
-                    if(mission.nbPersAtteindre !== 0)
+                    if (mission.nbPersAtteindre !== 0)
                         li(class="list-group-item")= `Nombre de personnes nécessaire : ${mission.nbPersAtteindre}`
 
 
