@@ -57,6 +57,14 @@ export default class Association extends Model<Association> {
         );
     }
 
+
+    static async getAllAsso(db: Database): Promise<Array<Association>> {
+        return await Association.all(db,
+            "select * from association", [],
+            (data) => new Association(db, data)
+        );
+    }
+
     static async authenticate(db: Database, req: $Request, { login, mdp }: { login: string, mdp: string }): Promise<?Association> {
         const asso = await Association.get(db,
             "select * from association where loginAsso = ?", [login],
