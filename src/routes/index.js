@@ -90,36 +90,55 @@ export default function(db) {
 
     //missions
     router.get('/mission/:id', async function(req, res, next) {
-        const mission = await Mission.getById(db, req.params.id);
+        const user     = await Citoyen.getLoggedInUser(db, req);
+        const mission  = await Mission.getById(db, req.params.id);
+        const creneaux = await mission.getCreneaux();
 
-        const creneauxMission = await mission.getCreneaux();
-        creneauxMission.forEach((cre) => cre.postule = false);
+        const now = new Date();
+        const mp1 = new Date(new Date().setMonth(now.getMonth() + 1));
 
-        const user = await Citoyen.getLoggedInUser(db, req);
+        const dates = new Map();
+        const first = { debut: mp1, duree: 0 };
+
+        creneaux.forEach(c => {
+            c.generateRepetitions(now, mp1, (r, debut, fin) => {
+                if (debut < first.debut) {
+                    first.debut = debut;
+                    first.duree = c.tempsMission;
+                }
+
+                dates.set(`${c.id}-${r}`, {
+                    id: `${c.id}-${r}`,
+                    creneau: c,
+                    repetition: { r, debut, fin },
+                    postule: false
+                });
+            });
+        });
 
         if (user != null) {
             const postulations = await user.getPostulations();
 
-            creneauxMission.forEach((cre) => {
-                for (let i = 0; i < postulations.length; ++i) {
-                    const p = postulations[i];
+            for (let i = 0; i < postulations.length; ++i) {
+                const p = postulations[i];
+                const rep = await p.getRepetition();
 
-                    if (p.creneau.pk === cre.id) {
-                        cre.postule = true;
-                        cre.postulation = p;
-                        break;
+                if (rep != null) {
+                    const id = `${rep.creneau.id}-${rep.r}`;
+
+                    if (dates.has(id)) {
+                        dates.get(id).postule = true;
                     }
                 }
-            });
+            }
         }
-
 
         res.render("read-mission", {
             title: mission.titre,
             asso: await mission.association.get(),
-            mission: mission,
-            creneaux : creneauxMission,
-            domaines : await mission.getDomaines()
+
+            first, user, mission, dates,
+            domaines: await mission.getDomaines()
         });
     });
 
