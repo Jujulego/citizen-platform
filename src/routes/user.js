@@ -402,6 +402,44 @@ export default function(db) {
         }
     }));
 
+    router.get('/creneaux/missions', utils.user_guard(async function(req, res, next) {
+        try {
+            // Params
+            const start = new Date(req.query.start);
+            const end   = new Date(req.query.end);
+
+            // Get postulations
+            const user = await Citoyen.getLoggedInUser(db, req);
+            const postulations = await user.getPostulations();
+            const data = [];
+
+            for (let i = 0; i < postulations.length; ++i) {
+                const p = postulations[i];
+                const rep = await p.getRepetition();
+                const mission = await rep.creneau.mission.get();
+
+                if (end > rep.debut && start < rep.fin) {
+                    data.push({
+                        id: `${rep.creneau.id}-${rep.r}`,
+                        title: mission.titre,
+                        allDay: false,
+                        start: rep.debut,
+                        end: rep.fin,
+                        editable: false,
+                        url: `/mission/${mission.id}/`,
+                        borderColor: p.status ? 'red' : 'orange',
+                        backgroundColor: p.status ? 'red' : 'orange',
+                    });
+                }
+            }
+
+            res.json(data);
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
     router.put("/creneaux/add", utils.user_guard(async function(req, res, next) {
         try {
             const user = await Citoyen.getLoggedInUser(db, req);

@@ -171,7 +171,15 @@ $(document).ready(function() {
     const calendar = new FullCalendar.Calendar($('#calendar')[0], {
         locale: 'fr',
         plugins: ['bootstrap', 'dayGrid', 'interaction'],
-        events: '/user/creneaux',
+        eventSources: [
+            {
+                url: '/user/creneaux'
+            },
+            {
+                url: '/user/creneaux/missions',
+                color: 'red'
+            },
+        ],
 
         // style
         themeSystem: 'bootstrap',

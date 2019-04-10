@@ -328,7 +328,6 @@ export default function(db) {
         try {
             const asso = await Association.getLoggedInUser(db, req);
 
-            //changer le status de cette postulation a 1
             const { idrep } = req.params;
             const [ idcreneau, r ] = idrep.split('-');
 
@@ -340,18 +339,16 @@ export default function(db) {
                 return res.status(404);
             }
 
+            //changer le status de cette postulation a 1
             postu.status = true;
-            postu.save();
+            await postu.save();
+
             SendMail({
                 from: 'no-reply@csp.net',
                 to: user.login,
                 subject: 'CITIZEN-SERVICES-PLATFORM : Votre candidature a été retenue !',
                 html: `Félicitation, votre candidature pour "${mission.titre}" à "${mission.lieu}" a été retenue ! A bientôt sur notre plateforme ! CITIZEN SERVICES PLATFORM`,
-            }, function(err, reply) {
-                console.log(err && err.stack);
-                //console.dir(reply);
-            });
-            //href=`mailto:${candidat.postulant.login} ?subject=Votre candidature a été retenue&body=Félicitation, votre candidature pour `+mission.titre +' à '+mission.lieu+ ' a été retenue ! ';
+            }, (err, reply) => console.log(err && err.stack));
 
             res.redirect("/asso/mission/" + req.params.idmission);
         } catch(err) {
@@ -371,7 +368,6 @@ export default function(db) {
 
             const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
             await Postulation.deletePostulation(db, user, idcreneau, r);
-
 
             res.redirect("/asso/mission/" + req.params.idmission);
         } catch (err) {

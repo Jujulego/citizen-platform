@@ -41,8 +41,7 @@ block content
                     li(class="list-group-item")
                         i(class="fas fa-laptop fa-fw mr-3")
                         a(href="http://"+asso.siteWeb)= `${asso.siteWeb}`
-                        
-                ul(class="list-group list-group-flush")
+
                     li(class="list-group-item")
                         i(class="fas fa-scroll fa-fw mr-3")
                         = `SIRET : ${asso.siret}`
@@ -50,12 +49,13 @@ block content
 
         article(class="col")
             div(class="card")
-                div(class="card-body")
-                    div(class="tab-content")
-                        button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#modifAssoPresentation") 
-                            i(class="fas fa-pen")
-                                
-                        div(class="row")
-                            h2 Présentation
+                div(class="card-header")
+                    div(class="row")
+                        div(class="col") Présentation
 
-                        p= asso.presentation
+                        div(class="card-toolbar col-auto")
+                            button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modifAssoPresentation")
+                                i(class="fas fa-pen")
+
+                div(class="card-body")
+                    p= asso.presentation
