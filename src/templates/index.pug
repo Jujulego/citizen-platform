@@ -17,6 +17,7 @@ append jslib
 append js
     //lien avec le javascript
     script!= `const allMission = ${JSON.stringify(missions.map(m => ({ id: m.id, lieu: m.lieu, titre: m.titre })))};`
+    script!= `const allAsso = ${JSON.stringify(allAsso.map(a => ({ id: a.login, lieu: a.adresse, titre: a.nom })))};`
     
     script(src="/static/js/accueil.js")
 

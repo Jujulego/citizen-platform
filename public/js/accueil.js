@@ -46,9 +46,6 @@ $(document).ready(function() {
             },
             success(res) {
                 if(res.length != 0){
-                    var myIcon = L.icon({
-                        iconUrl: 'icon_bleu.png'
-                    });
                     var marker = L.marker([res[0].lat, res[0].lon]).addTo(map);
                     marker.bindPopup("<a href='"+lienMission+"'>"+titre+" </a>").openPopup();
                 }
@@ -57,13 +54,12 @@ $(document).ready(function() {
     }
 
 
-    //getlatlng(missions[0].lieu, missions[0].titre);
-
-    console.log(allMission.length);
-
     for(let i = 0; i<allMission.length; i++) {
-        console.log(i);
         getlatlng(allMission[i].lieu, allMission[i].titre, "/mission/" + allMission[i].id, );
+    }
+
+    for(let i = 0; i<allAsso.length; i++) {
+        getlatlng(allAsso[i].lieu, allAsso[i].titre, "/profilAsso/" + allAsso[i].id, );
     }
 
 });

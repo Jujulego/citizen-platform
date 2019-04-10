@@ -29,6 +29,7 @@ export default function(db) {
             res.render('index', { //utilise un pug (affichage avec un pug)
                 title: 'Express',
                 missions: missions,
+                allAsso: await Association.getAllAsso(db),
                 domaines: domaines,
                 query: req.query,
             });
