@@ -10,6 +10,7 @@ import Competance from "./Competance";
 import CreneauCitoyen from "./CreneauCitoyen";
 import Document from "./Document";
 import Postulation from "./Postulation";
+import CreneauMission from "./CreneauMission";
 
 // Classe
 export default class Citoyen extends Model<Citoyen> {
