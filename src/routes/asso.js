@@ -9,6 +9,8 @@ import Domaine from "../db/Domaine";
 import Citoyen from "../db/Citoyen";
 import Postulation from '../db/Postulation';
 
+const SendMail = require("sendmail")();
+
 // Router
 export default function(db) {
     const router = Router();
@@ -152,22 +154,58 @@ export default function(db) {
     }));
 
     router.get('/mission/:id', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
+        try {
+            const asso     = await Association.getLoggedInUser(db, req);
+            const mission  = await asso.getMission(req.params.id);
+            const creneaux = await mission.getCreneaux();
+            const postulations = await mission.getPostulants();
 
-        const creneaux = await mission.getCreneaux();
+            const now = new Date();
+            const mp1 = new Date(new Date().setMonth(now.getMonth() + 1));
 
+            const dates = new Map();
+            const first = { debut: mp1, duree: 0 };
 
-        res.render("edit-mission", {
-            title: mission.titre,
+            // Toutes les répétitions dans le prochain mois
+            creneaux.forEach(c => {
+                c.generateRepetitions(now, mp1, ((r, debut, fin) => {
+                    if (debut < first.debut) {
+                        first.debut = debut;
+                        first.duree = c.tempsMission;
+                    }
 
-            asso: asso,
-            mission: mission,
-            creneaux : creneaux,
-            candidats: await mission.getPostulants(),
-            domaines : await mission.getDomaines()
-        });
+                    dates.set(`${c.id}-${r}`, {
+                        id: `${c.id}-${r}`,
+                        creneau: c,
+                        repetition: { r, debut, fin },
+                        postulants: []
+                    })
+                }))
+            });
 
+            // Toutes les postulations
+            postulations.forEach(p => {
+                const id = `${p.creneau.id}-${p.postulation.r}`;
+
+                if (dates.has(id)) {
+                    dates.get(id).postulants.push({
+                        postulant: p.postulant,
+                        postulation: p.postulation
+                    });
+                }
+            });
+
+            res.render("edit-mission", {
+                title: mission.titre,
+                asso, mission,
+
+                first, dates,
+                domaines: await mission.getDomaines()
+            });
+        } catch (err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     //Création de missions
@@ -271,20 +309,36 @@ export default function(db) {
 
     //accepter postulation
     router.get('/acceptPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
 
-        //changer le status de cette postulation a 1
-        const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
-        const postu = await Postulation.getByCitoyenAndCreneau(db, user, req.params.idcreneau);
-        if (postu == null) {
-            return res.status(404);
+            //changer le status de cette postulation a 1
+            const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
+            const postu = await Postulation.getByCitoyenAndCreneau(db, user, req.params.idcreneau);
+            const mission = await Mission.getById(db, req.params.idmission);
+
+            if (postu == null) {
+                return res.status(404);
+            }
+
+            postu.status = true;
+            postu.save();
+            SendMail({
+                from: 'no-reply@csp.net',
+                to: user.login,
+                subject: 'CITIZEN-SERVICES-PLATFORM : Votre candidature a été retenue !',
+                html: 'Félicitation, votre candidature pour "' +mission.titre +'" à "'+mission.lieu+ '" a été retenue ! A bientôt sur notre plateforme ! CITIZEN SERVICES PLATFORM ',
+            }, function(err, reply) {
+                console.log(err && err.stack);
+                //console.dir(reply);
+            });
+            //href=`mailto:${candidat.postulant.login} ?subject=Votre candidature a été retenue&body=Félicitation, votre candidature pour `+mission.titre +' à '+mission.lieu+ ' a été retenue ! ';
+
+            res.redirect("/asso/mission/" + req.params.idmission);
+        } catch(err) {
+            console.log(err);
+            next(err);
         }
-
-        postu.status = true;
-        postu.save();
-
-        res.redirect("/asso/mission/" + req.params.idmission);
-
     }));
 
     //refuser postulation

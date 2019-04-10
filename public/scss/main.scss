@@ -116,3 +116,16 @@ select.placeholder {
 .must-be-only:not(:only-child) {
   display: none;
 }
+
+.expandable {
+  i {
+    transform: rotate(180deg);
+    transition: transform 250ms ease;
+  }
+
+  &.collapsed {
+    i {
+      transform: rotate(0deg);
+    }
+  }
+}

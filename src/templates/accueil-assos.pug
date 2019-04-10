@@ -53,6 +53,7 @@ block content
                                 th(scope="col") Description
 
                         tbody
+                        
                             each mission in missions
                                 tr
                                     td
@@ -62,7 +63,9 @@ block content
                                     td 
                                         a(href=`/asso/mission/${mission.id}`)= mission.nbPersAtteindre
                                     td 
-                                        a(href=`/asso/mission/${mission.id}`)= mission.description
+
+                                            a(href=`/asso/mission/${mission.id}`)= mission.shortDescription()
+                                            
 
 append js
     script(src="/static/js/accueil-assos.js")

@@ -14,28 +14,31 @@ export default class Postulation extends Model<Postulation> {
     citoyen: ForeignKey<Citoyen>;
     creneau: ForeignKey<CreneauMission>;
     status : boolean;
+    r: number;
 
     // Constructeur
-    constructor(db: Database, data: { creneau: number, citoyen: string, status: boolean }, fields: any = {}) {
+    constructor(db: Database, data: { creneau: number, citoyen: string, status: boolean, r: number }, fields: any = {}) {
         super(db, null, fields);
 
         // Remplissage
         this.citoyen = new ForeignKey<Citoyen>(data.citoyen, (pk) => Citoyen.getByLogin(db, pk));
         this.creneau = new ForeignKey<CreneauMission>(data.creneau, (pk) => CreneauMission.getById(db, pk));
         this.status = data.status;
+        this.r = data.r;
     }
 
     // Méthodes statiques
-    static async create(db: Database, data: {citoyen: Citoyen, creneau: CreneauMission, status: boolean }): Promise<Postulation> {
+    static async create(db: Database, data: { citoyen: Citoyen, creneau: CreneauMission, status: boolean, r: number }): Promise<Postulation> {
         const res = await db.run(
-            "insert into postulation(creneau, citoyen, status) values (?, ?, ?)",
-            [data.creneau.id, data.citoyen.login, data.status]
+            "insert into postulation(creneau, citoyen, status, r) values (?, ?, ?, ?)",
+            [data.creneau.id, data.citoyen.login, data.status, data.r]
         );
 
         return new Postulation(db, {
-            loginCitoyen: data.citoyen.login,
-            idCreneau: data.creneau.id,
+            citoyen: data.citoyen.login,
+            creneau: data.creneau.id,
             status: data.status,
+            r: data.r
         });
     }
 
@@ -62,7 +65,7 @@ export default class Postulation extends Model<Postulation> {
 
     static async allByMission(db: Database, mission: Mission): Promise<Array<Postulation>> {
         return await Postulation.all(db,
-            "select creneau, citoyen, status from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", [mission.id],
+            "select * from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", [mission.id],
             (data) => new Postulation(db, data)
         );
     }
@@ -85,5 +88,17 @@ export default class Postulation extends Model<Postulation> {
             "update postulation set status=? where creneau=? and citoyen=?",
             [this.status, this.creneau.pk, this.citoyen.pk]
         )
+    }
+
+    async getRepetition(): Promise<?{ debut: Date, fin: Date, creneau: CreneauMission }> {
+        // Créneau
+        const cre = await this.creneau.get();
+        if (cre == null) return null;
+
+        // Répétition
+        const rep = cre.getRepetition(this.r);
+        if (rep == null) return null;
+
+        return { ...rep, creneau: cre }
     }
 }
