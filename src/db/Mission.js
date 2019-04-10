@@ -78,10 +78,10 @@ export default class Mission extends Model<Mission> {
         );
     }
 
-    static async nextMissions(db: Database, lieu: ?string, assos: ?string, dateDebut: ?string, domaine: ?string, keyword: ?string, nb: number = 5): Promise<Array<Mission>> {
+    static async nextMissions(db: Database, lieu: ?string, assos: ?string, dateDebut: ?string, domaine: ?string, keyword: ?string, nb: number = 50): Promise<Array<Mission>> {
         const where = [];
         const params = [];
-        
+
         if (lieu) {
             where.push("lieu like ?");
             params.push("%" + lieu + "%");

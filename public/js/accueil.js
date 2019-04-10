@@ -36,7 +36,7 @@ $(document).ready(function() {
         maxZoom: 20
     }).addTo(map);
 
-    function getlatlng(addr, titre) {
+    function getlatlng(addr, titre, lienMission) {
         $.get({
             url: "https://nominatim.openstreetmap.org/search",
             data: {
@@ -46,8 +46,11 @@ $(document).ready(function() {
             },
             success(res) {
                 if(res.length != 0){
+                    var myIcon = L.icon({
+                        iconUrl: 'icon_bleu.png'
+                    });
                     var marker = L.marker([res[0].lat, res[0].lon]).addTo(map);
-                    marker.bindPopup("<b>"+titre+"</b>").openPopup();
+                    marker.bindPopup("<a href='"+lienMission+"'>"+titre+" </a>").openPopup();
                 }
             }
         });
@@ -56,10 +59,11 @@ $(document).ready(function() {
 
     //getlatlng(missions[0].lieu, missions[0].titre);
 
-    console.log(missions.length);
-    for(let i = 0; i<missions.length; i++) {
+    console.log(allMission.length);
+
+    for(let i = 0; i<allMission.length; i++) {
         console.log(i);
-        getlatlng(missions[i].lieu, missions[i].titre);
+        getlatlng(allMission[i].lieu, allMission[i].titre, "/mission/" + allMission[i].id, );
     }
 
 });
