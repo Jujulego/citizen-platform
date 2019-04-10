@@ -20,6 +20,7 @@ block content
     include parts/modifCitoyen
     include parts/supprCitoyen
     include parts/add-creneau
+    include parts/add-competences
 
     div(id="doc-dialog" class="modal fade" tabindex="-1" role="dialog")
         div(class="modal-dialog" role="document")
@@ -107,11 +108,13 @@ block content
                 div(class="card-body")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
-                            unless competances.length === 0
-                                div(class="row")
-                                    h4 Savoir-Faire   
-                                each sf in competances
-                                    p= sf.nom + " : " + sf.description
+                            div(class="col")
+                                h4 Competances
+                                    button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#ajoutComp")
+                                        i(class="far fa-lightbulb")
+                                unless competances.length === 0  
+                                    each sf in competances
+                                        p= sf.nom + " : " + sf.description
 
 
                         div(id="documents" class="tab-pane fade" role="tabpanel")

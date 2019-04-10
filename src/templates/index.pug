@@ -16,6 +16,8 @@ append jslib
 
 append js
     //lien avec le javascript
+    script!= `const missions = ${JSON.stringify(missions)};`
+    
     script(src="/static/js/accueil.js")
 
 block content

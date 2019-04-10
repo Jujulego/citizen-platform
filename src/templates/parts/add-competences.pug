@@ -1,0 +1,23 @@
+// Popup pour add une mission
+div(class="modal fade" id="ajoutComp" tabindex="-1" role="dialog")
+    div(class="modal-dialog modal-dialog-centered" role="document")
+        form(class="modal-content" method="post" action="/user/ajoutComp")
+            div(class="modal-header")
+                h5(class="modal-title")
+                    span   Ajouter une Compétances
+                button(class="close" type="button" data-dismiss="modal")
+                    i(class="fas fa-times")
+            
+            div(class="modal-body") 
+                div(class="form-group")
+                    label(for="inputNom") Nom :
+                    input(id="inputNom" name="nom" class="form-control" type="text" required)
+                div(class="form-group")
+                    label(for="inputDesc") Description :
+                    input(id="inputDesc" name="description" class="form-control" type="text")
+                
+                        
+
+            div(class="modal-footer")
+                button(class="btn btn-secondary" type="button" data-dismiss="modal") Annuler
+                button(class="btn btn-success" type="submit") Ajouter

@@ -11,6 +11,7 @@ import CreneauMission from '../db/CreneauMission';
 import Document from "../db/Document";
 import utils from "../utils";
 import CreneauCitoyen from "../db/CreneauCitoyen";
+import Competance from "../db/Competance";
 
 // Constante
 const MEDIA_PATH = path.join(__dirname, "../../media");
@@ -134,6 +135,21 @@ export default function(db) {
                 next(err);
             }
         }));
+
+    router.post('/ajoutComp', utils.user_guard(async function(req, res, next) {
+        const user = await Citoyen.getLoggedInUser(db, req);
+
+        const { nom, description } = req.body;
+
+        //add competance
+        const comp = await Competance.create(db, { nom, description, citoyen: user});
+
+        res.redirect("/user");
+
+
+    }));
+
+
 
     // Supprimer le profil citoyen
     router.post('/supprCitoyen',utils.user_guard(async function(req, res, next) {
