@@ -98,7 +98,7 @@ INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `l
 INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `loginAsso`, 'titre') VALUES ('0028', '1', 'Réunir assez de fond pour aider à la rénovation du chassis des Gazelles','1 Chemin de l''Aumône, 14800 Deauville, France', 'gazellesdeauville@yahoo.com', 'Collecte de Fond');
 
 
-INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `loginAsso`, 'titre') VALUES ('0029', '3', 'Nous recherchons plusieurs bénévoles pour soutenir une personne âgées habitant à Deauville et qui rend visite chaque jour à son fils handicapé moteur accueilli dans un établissement spécialisé. Les bénévoles soutiendront la mère dans ses visites, lectures, sorties en fauteuil roulant. Ces visites permettent de stimuler le fils afin de mobiliser au maximum ses capacités. ','15 Chemin de l''Aumône, 14800 Deauville, France', 'lyceemaurois@yahoo.com', 'Aide à personne handicapée');
+INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `loginAsso`, 'titre') VALUES ('0029', '9', 'Nous recherchons plusieurs bénévoles pour soutenir une personne âgées habitant à Deauville et qui rend visite chaque jour à son fils handicapé moteur accueilli dans un établissement spécialisé. Les bénévoles soutiendront la mère dans ses visites, lectures, sorties en fauteuil roulant. Ces visites permettent de stimuler le fils afin de mobiliser au maximum ses capacités. ','15 Chemin de l''Aumône, 14800 Deauville, France', 'lyceemaurois@yahoo.com', 'Aide à personne handicapée');
 INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `loginAsso`, 'titre') VALUES ('0030', '4', 'La mission consiste à accompagner nos aînés dans leurs déplacements de proximité (une balade dans le quartier, une sortie au musée, un rendez-vous médical...). Les accompagnements peuvent avoir lieu du lundi au dimanche, dans tout Deauville.','1 Rue du Moulin Saint-Laurent, 14800 Deauville, France', 'actioncontrelafaim@hotmail.com', 'Aide aux personnes agées');
 INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `loginAsso`, 'titre') VALUES ('0031', '5', '1 dimanche matin par mois (hors vacances scolaires),au sein de l''équipe de bénévoles, vous participerez à l''accueil et à l''information des personnes avec et sans handicap au cinéma Majestic. Pendant le film, les bénévoles sont répartis dans la salle, afin de pouvoir anticiper et accompagner les réactions des spectateurs.','10 Rue du Moulin Saint-Laurent, 14800 Deauville, France', 'deauvillefestival@gmail.com', 'Collecte de Fond');
 INSERT INTO `mission` (`idMission`, `nbPersAtteindre`, `description`, `lieu`, `loginAsso`, 'titre') VALUES ('0032', '3', 'Visite des déficients visuels (aveugles, malvoyants...) à leur domicile pour passer un moment avec eux et les aider dans diverses tâches : lecture, aide pour leurs courriers administratifs...(pas d''aide ménagère).','2 Rue Jean Jaurès, 14800 Deauville, France', 'greenpeace@hotmail.com', 'Distribution de produit dhygiène');
@@ -190,6 +190,11 @@ insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES 
 insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (54,'2019-04-12 12:30:00', '2019-04-12 16:00:00', 14, 7, 29);
 insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (55,'2019-04-12 12:30:00', '2019-04-12 16:00:00', 14, 7, 30);
 insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (56,'2019-04-12 12:30:00', '2019-04-12 16:00:00', 14, 7, 31);
+insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (57,'2019-04-14 09:00:00', '2019-04-14 11:00:00', 1, 7, 29);
+insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (58,'2019-04-18 13:30:00', '2019-04-18 17:00:00', 1, 7, 29);
+insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (59,'2019-04-25 16:00:00', '2019-04-25 18:00:00', 1, 7, 29);
+insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (60,'2019-04-12 16:00:00', '2019-04-12 19:00:00', 1, 7, 30);
+insert into creneau_mission(id, debut, fin, repetitions, ecart, mission) VALUES (61,'2019-04-15 14:00:00', '2019-04-15 17:00:00', 1, 7, 30);
 
 
 
@@ -247,6 +252,23 @@ insert into postulation(creneau, citoyen) values (10, 'alicebouchez@gmail.com');
 insert into postulation(creneau, citoyen) values (11, 'martinmontou@gmail.com');
 insert into postulation(creneau, citoyen) values (12, 'solenedu93@gmail.com');
 insert into postulation(creneau, citoyen) values (13, 'solenedu93@gmail.com');
+
+insert into postulation(creneau, citoyen) values (48, 'samcaudwel@gmail.com');
+insert into postulation(creneau, citoyen) values (49, 'ninondeauville@gmail.com');
+insert into postulation(creneau, citoyen) values (50, 'martinmontou@gmail.com');
+insert into postulation(creneau, citoyen) values (51, 'aurore.audin@gmail.com');
+insert into postulation(creneau, citoyen) values (57, 'christinedujet@gmail.com');
+insert into postulation(creneau, citoyen) values (59, 'alicebouchez@gmail.com');
+insert into postulation(creneau, citoyen) values (59, 'solenedu93@gmail.com');
+insert into postulation(creneau, citoyen) values (59, 'auritesla@gmail.com');
+insert into postulation(creneau, citoyen) values (59, 'mariannedelachaud@gmail.com');
+insert into postulation(creneau, citoyen) values (60, 'solenedu93@gmail.com');
+insert into postulation(creneau, citoyen) values (60, 'auritesla@gmail.com');
+insert into postulation(creneau, citoyen) values (60, 'mariannedelachaud@gmail.com');
+insert into postulation(creneau, citoyen) values (61, 'christinedujet@gmail.com');
+insert into postulation(creneau, citoyen) values (61, 'auritesla@gmail.com');
+insert into postulation(creneau, citoyen) values (61, 'mariannedelachaud@gmail.com');
+
 
 
 
