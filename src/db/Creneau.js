@@ -66,10 +66,10 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
     }
 
     // Méthode
-    generateRepetitions(start: Date, end: Date, cb: (debut: Date, end: Date) => void): void {
+    generateRepetitions(start: Date, end: Date, cb: (r: number, debut: Date, fin: Date) => void): void {
         // 1ere
         if (end > this.debut && start < this.fin) {
-            cb(this.debut, this.fin);
+            cb(0, this.debut, this.fin);
         }
 
         if (this.repetitions === 0) {
@@ -86,12 +86,14 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
                 fin += delta - (delta % (JOUR * this.ecart));
             }
 
+            let r = (debut - this.debut.getTime()) / (JOUR * this.ecart);
             while (end.getTime() > debut) {
                 debut += JOUR * this.ecart;
                 fin   += JOUR * this.ecart;
+                ++r;
 
                 if (end.getTime() > debut && start.getTime() < fin) {
-                    cb(new Date(debut), new Date(fin));
+                    cb(r, new Date(debut), new Date(fin));
                 }
             }
         } else {
@@ -105,9 +107,22 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
                 fin   += JOUR * this.ecart;
 
                 if (end.getTime() > debut && start.getTime() < fin) {
-                    cb(new Date(debut), new Date(fin));
+                    cb(r, new Date(debut), new Date(fin));
                 }
             }
+        }
+    }
+
+    getRepetition(r: number): ?{ r: number, debut: Date, fin: Date } {
+        // Gardien
+        if (this.repetitions !== 0 && r >= this.repetitions) {
+            return null;
+        }
+
+        // Calcul
+        return { r,
+            debut: new Date(this.debut.getTime() + r * this.ecart * JOUR),
+            fin:   new Date(this.fin.getTime()   + r * this.ecart * JOUR)
         }
     }
 }

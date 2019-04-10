@@ -22,7 +22,7 @@ block content
         div(class="col justify-content-end") 
             h1(class="text-white")= mission.titre
 
-    section(class="row")
+    section(class="row mb-3")
         aside(class="col-3")
             div(class="card mb-3")
                 div(class="card-header") 
@@ -39,25 +39,14 @@ block content
 
 
                 ul(class="list-group list-group-flush")
-                    li(class="list-group-item")
-                        span= `Lieu : ` + mission.lieu
+                    li(class="list-group-item")= `Lieu : ${mission.lieu}`
+                    li(class="list-group-item") Prochaine date :
+                        span(class="date-fmt")= first.debut.toLocaleDateString()
 
-                    li(class="list-group-item")
-                        span Créneau : 
-                    
-                        ul
-                            each creneau in creneaux
-                                li= creneau.debut_txt
-                        //ici faire en sorte que l'on recupere tout les créneau de cette MISSION
-                        //on affiche seulement les 10 plus d'actualité 
-                    
-                    li(class="list-group-item")
-                        span= "Temps estimé de la mission : " + creneaux[0].tempsMission + " minutes"
-                    
-                        
-                    if(mission.nbPersAtteindre != 0)
-                        li(class="list-group-item")
-                            span= "Nombre de personnes necessaire : " + mission.nbPersAtteindre
+                    li(class="list-group-item")= `Durée de la mission : ${first.duree} minutes`
+
+                    if(mission.nbPersAtteindre !== 0)
+                        li(class="list-group-item")= `Nombre de personnes nécessaire : ${mission.nbPersAtteindre}`
 
 
         article(class="col")
@@ -66,53 +55,69 @@ block content
                     ul(class="nav nav-tabs card-header-tabs" role="tablist")
                         li(class="nav-item")
                             a(class="nav-link active" data-toggle="tab" href="#competences") Informations complémentaires
-                            
-                        each creneau in creneaux
-                            li(class="nav-item")
-                                a(class="nav-link" data-toggle="tab" href="#creneau"+ creneau.id +"")= creneau.debut_date_txt
-                        
 
-                div(class="card-body")
+                        li(class="nav-item")
+                            a(class="nav-link" data-toggle="tab" href="#dates") Dates
+
+                div(class="card-body p-0")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="competences" role="tabpanel")
-                            h4 Description de la mission :
-                            p(class="ml-3")= mission.description
+                            div(class="p-3")
+                                h4 Description de la mission :
+                                p(class="ml-3")= mission.description
 
-                            unless domaines.length === 0
-                                h4(class="mb-0") Domaine d'intervention
-                                    button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-id=""+ mission.id +"" data-target="#ajoutDI")
-                                        i(class="fas fa-folder-plus")
+                            hr(class="m-0")
+
+                            div(class="p-3")
+                                div(class="row mb-3")
+                                    div(class="col")
+                                        h4(class="mb-0") Domaine d'intervention
+
+                                    div(class="col-auto")
+                                        button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-id=mission.id data-target="#ajoutDI")
+                                            i(class="fas fa-folder-plus")
+
                                 each dom in domaines
                                     p(class="ml-3")= dom.nom
-                        
-                        
-                        each cre in creneaux
-                            div(class="tab-pane fade" id="creneau"+ cre.id +"" role="tabpanel")
-                                table(class="candidats" class="table table-bordered table-hover" cellspacing="0")
-                                    thead
-                                        tr
-                                            th(scope="col") Nom
-                                            th(scope="col") Prénom
-                                            th(scope="col") Mail
-                                            th(scope="col") Candidature
-                                    tbody
-                                        each candidat in candidats
-                                            if (candidat.creneau.id == cre.id)
+
+                        div(id="dates" class="tab-pane fade accordion" role="tabpanel")
+                            each date, i in [...dates.values()].sort((a, b) => a.repetition.debut.getTime() - b.repetition.debut.getTime())
+                                h6(class="bg-light expandable collapsed mb-0 px-3 py-2" data-toggle="collapse" data-target=`#date-${date.id}`)
+                                    i(class="fas fa-angle-down mr-2")
+                                    span(class="datetime-fmt mr-1")= date.repetition.debut
+                                    | -
+                                    span(class="datetime-fmt ml-1")= date.repetition.fin
+
+                                    unless date.postulants.length === 0
+                                        span(class="badge badge-secondary ml-3")= date.postulants.length
+
+                                div(id=`date-${date.id}` class="collapse p-3" data-parent="#dates")
+                                    table(class="candidats table table-bordered table-hover" cellspacing="0")
+                                        thead
+                                            tr
+                                                th(scope="col") Nom
+                                                th(scope="col") Prénom
+                                                th(scope="col") Mail
+                                                th(scope="col") Candidature
+
+                                        tbody
+                                            each p in date.postulants
                                                 tr
                                                     td
-                                                        a(href="/profilCitoyen/" + candidat.postulant.login )= candidat.postulant.nom
+                                                        a(href=`/profilCitoyen/${p.postulant.login}`)= p.postulant.nom
+
+                                                    td= p.postulant.prenom
                                                     td
-                                                        a(href="/profilCitoyen/" + candidat.postulant.login)= candidat.postulant.prenom
+                                                        a(href=`mailto:${p.postulant.login}`)= p.postulant.login
                                                     td
-                                                        a(href=`mailto:${candidat.postulant.login}`)= candidat.postulant.login
-                                                    td
-                                                        if candidat.status
+                                                        if p.postulation.status
                                                             | Accepté
-                                                            
-                                                            
                                                         else
-                                                            a(href= "/asso/acceptPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-success btn-sm mr-2") Accepter
-                                                            a(href="/asso/refusPostulation/"+ candidat.postulant.login +"/"+ candidat.creneau.id +"/" +  mission.id class="btn btn-danger btn-sm") Refuser 
+                                                            a(class="btn btn-success btn-sm mr-2" href=`/asso/acceptPostulation/${p.postulant.login}/${date.creneau.id}/${mission.id}`) Acceper
+                                                            a(class="btn btn-danger btn-sm"       href=`/asso/refusPostulation/${p.postulant.login}/${date.creneau.id}/${mission.id}`) Refuser
+
+                                unless i === dates.length-1
+                                    hr(class="m-0")
 
 append js
     script(src="/static/js/edit-Mission.js")

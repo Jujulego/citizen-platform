@@ -154,22 +154,58 @@ export default function(db) {
     }));
 
     router.get('/mission/:id', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
-        const mission = await asso.getMission(req.params.id);
+        try {
+            const asso     = await Association.getLoggedInUser(db, req);
+            const mission  = await asso.getMission(req.params.id);
+            const creneaux = await mission.getCreneaux();
+            const postulations = await mission.getPostulants();
 
-        const creneaux = await mission.getCreneaux();
+            const now = new Date();
+            const mp1 = new Date(new Date().setMonth(now.getMonth() + 1));
 
+            const dates = new Map();
+            const first = { debut: mp1, duree: 0 };
 
-        res.render("edit-mission", {
-            title: mission.titre,
+            // Toutes les répétitions dans le prochain mois
+            creneaux.forEach(c => {
+                c.generateRepetitions(now, mp1, ((r, debut, fin) => {
+                    if (debut < first.debut) {
+                        first.debut = debut;
+                        first.duree = c.tempsMission;
+                    }
 
-            asso: asso,
-            mission: mission,
-            creneaux : creneaux,
-            candidats: await mission.getPostulants(),
-            domaines : await mission.getDomaines()
-        });
+                    dates.set(`${c.id}-${r}`, {
+                        id: `${c.id}-${r}`,
+                        creneau: c,
+                        repetition: { r, debut, fin },
+                        postulants: []
+                    })
+                }))
+            });
 
+            // Toutes les postulations
+            postulations.forEach(p => {
+                const id = `${p.creneau.id}-${p.postulation.r}`;
+
+                if (dates.has(id)) {
+                    dates.get(id).postulants.push({
+                        postulant: p.postulant,
+                        postulation: p.postulation
+                    });
+                }
+            });
+
+            res.render("edit-mission", {
+                title: mission.titre,
+                asso, mission,
+
+                first, dates,
+                domaines: await mission.getDomaines()
+            });
+        } catch (err) {
+            console.log(err);
+            next(err);
+        }
     }));
 
     //Création de missions

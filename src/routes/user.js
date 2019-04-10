@@ -380,9 +380,9 @@ export default function(db) {
                 const cre = creneaux[i];
 
                 // 1er
-                cre.generateRepetitions(start, end, (deb, fin) => {
+                cre.generateRepetitions(start, end, (r, deb, fin) => {
                     data.push({
-                        id: cre.id,
+                        id: `${cre.id}-${r}`,
                         title: cre.debut_txt,
                         allDay: false,
                         start: deb,

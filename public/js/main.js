@@ -102,4 +102,25 @@
         return this;
     };
     $(".editable-select").editableselect();
+
+    // Dates
+    $.fn.datetimefmt = function() {
+        this.each(function() {
+            const elem = $(this);
+            const date = new Date(elem.text());
+
+            elem.text(date.toLocaleString());
+        });
+    };
+    $(".datetime-fmt").datetimefmt();
+
+    $.fn.datefmt = function() {
+        this.each(function() {
+            const elem = $(this);
+            const date = new Date(elem.text());
+
+            elem.text(date.toLocaleDateString());
+        });
+    };
+    $(".date-fmt").datefmt();
 })();
