@@ -176,4 +176,40 @@ export default class Mission extends Model<Mission> {
 
         return result;
     }
+
+    shortDescription(): string 
+    {
+        var long = this.description.length ;
+        if (long>=50)
+        {
+            this.description = this.description.substring(0,50);
+            //iLongueurRestante = 0;
+            var descr =  this.description.substring(0,50) + "..."
+            return descr ;
+        }
+
+        else 
+        {
+            //iLongueurRestante = 180 - iLongueur;
+            return this.description;
+        }
+    }
+
+    shortDescriptionAccueil(): string 
+    {
+        var long = this.description.length ;
+        if (long>=220)
+        {
+            this.description = this.description.substring(0,220);
+            //iLongueurRestante = 0;
+            var descr =  this.description.substring(0,220) + "..."
+            return descr ;
+        }
+
+        else 
+        {
+            //iLongueurRestante = 180 - iLongueur;
+            return this.description;
+        }
+    }
 }
