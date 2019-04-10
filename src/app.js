@@ -50,7 +50,7 @@ Promise.resolve()
         await db.get("PRAGMA foreign_keys = ON");
         return db
     })
-    .then(db => db.migrate())
+    .then(db => db.migrate({ force: 'last' }))
     .then(function(db) {
         // - ressources
         app.use('/vendor', express.static(path.join(__dirname, '../node_modules')));
