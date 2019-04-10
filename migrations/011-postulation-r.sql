@@ -8,7 +8,7 @@ create table postulation2(
    foreign key (citoyen) references citoyen(loginCitoyen) on delete cascade,
    foreign key (creneau) references creneau_mission(id)   on delete cascade,
 
-   primary key (creneau, citoyen)
+   primary key (creneau, citoyen, r)
 );
 
 insert into postulation2(creneau, citoyen, status) select creneau, citoyen, status from postulation;

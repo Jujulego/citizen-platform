@@ -13,7 +13,7 @@ div(class="card m-3")
                         a(href="/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
 
     div(class="card-body")
-        p(class="card-text")= mission.description
+        p(class="card-text")= mission.shortDescriptionAccueil()
 
     block footer
         div(class="card-footer")

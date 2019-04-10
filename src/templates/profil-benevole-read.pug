@@ -40,7 +40,9 @@ block content
                         i(class="fas fa-briefcase fa-fw mr-3")
                         = user.situation_txt
 
-                    li(class="list-group-item")= user.permis ? "Permis B" : "Sans le permis"
+                    li(class="list-group-item")
+                        i(class="fas fa-car fa-fw mr-3")
+                        = user.permis ? "Permis B" : "Sans le permis"
 
         article(class="col")
             div(class="card")
@@ -53,8 +55,6 @@ block content
                         li(class="nav-item")
                             a(class="nav-link" data-toggle="tab" href="#documents") Documents
 
-                        li(class="nav-item")
-                            a(class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
 
                 div(class="card-body")
                     div(class="tab-content")
@@ -87,72 +87,6 @@ block content
                                                     div(class="btn-group btn-group-sm")
                                                         a(class="btn btn-secondary doc-dl" href=doc.fichier download=doc.filename)
                                                             i(class="fas fa-file-download fa-fw")
-
-                        div(class="tab-pane fade" id="dispo" role="tabpanel")                                 
-                            table(class="table table-bordered mt-4")
-                                thead
-                                    tr
-                                        th(scope="col") 
-                                        th(scope="col") Lundi
-                                        th(scope="col") Mardi
-                                        th(scope="col") Mercredi
-                                        th(scope="col") Jeudi
-                                        th(scope="col") Vendredi
-                                        th(scope="col") Samedi
-                                        th(scope="col") Dimanche
-                                tbody
-                                    tr
-                                        td
-                                            span Matin
-                                        td
-                                            a(href='#' title="Rendre Indisponible") Disponible
-                                                i(class="far fa-check-circle")
-                                        td
-                                            a(href='#') ...
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                        td
-                                            a(href='#') Matin
-                                    tr
-                                        td
-                                            span Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                        td
-                                            a(href='#') Après-midi
-                                    tr
-                                        td
-                                            span Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
-                                        td
-                                            a(href='#') Soirée
 
 append js
     script(src="/static/js/profil-benevole.js")
