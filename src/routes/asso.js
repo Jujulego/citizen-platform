@@ -9,6 +9,8 @@ import Domaine from "../db/Domaine";
 import Citoyen from "../db/Citoyen";
 import Postulation from '../db/Postulation';
 
+const SendMail = require("sendmail")();
+
 // Router
 export default function(db) {
     const router = Router();
@@ -271,20 +273,36 @@ export default function(db) {
 
     //accepter postulation
     router.get('/acceptPostulation/:idCitoyen/:idcreneau/:idmission', utils.asso_guard(async function(req, res, next) {
-        const asso = await Association.getLoggedInUser(db, req);
+        try {
+            const asso = await Association.getLoggedInUser(db, req);
 
-        //changer le status de cette postulation a 1
-        const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
-        const postu = await Postulation.getByCitoyenAndCreneau(db, user, req.params.idcreneau);
-        if (postu == null) {
-            return res.status(404);
+            //changer le status de cette postulation a 1
+            const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
+            const postu = await Postulation.getByCitoyenAndCreneau(db, user, req.params.idcreneau);
+            const mission = await Mission.getById(db, req.params.idmission);
+
+            if (postu == null) {
+                return res.status(404);
+            }
+
+            postu.status = true;
+            postu.save();
+            SendMail({
+                from: 'no-reply@csp.net',
+                to: user.login,
+                subject: 'CITIZEN-SERVICES-PLATFORM : Votre candidature a été retenue !',
+                html: 'Félicitation, votre candidature pour "' +mission.titre +'" à "'+mission.lieu+ '" a été retenue ! A bientôt sur notre plateforme ! CITIZEN SERVICES PLATFORM ',
+            }, function(err, reply) {
+                console.log(err && err.stack);
+                //console.dir(reply);
+            });
+            //href=`mailto:${candidat.postulant.login} ?subject=Votre candidature a été retenue&body=Félicitation, votre candidature pour `+mission.titre +' à '+mission.lieu+ ' a été retenue ! ';
+
+            res.redirect("/asso/mission/" + req.params.idmission);
+        } catch(err) {
+            console.log(err);
+            next(err);
         }
-
-        postu.status = true;
-        postu.save();
-
-        res.redirect("/asso/mission/" + req.params.idmission);
-
     }));
 
     //refuser postulation
