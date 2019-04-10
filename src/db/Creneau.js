@@ -66,7 +66,7 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
     }
 
     // Méthode
-    generateRepetitions(start: Date, end: Date, cb: (r: number, debut: Date, end: Date) => void): void {
+    generateRepetitions(start: Date, end: Date, cb: (r: number, debut: Date, fin: Date) => void): void {
         // 1ere
         if (end > this.debut && start < this.fin) {
             cb(0, this.debut, this.fin);
@@ -113,14 +113,14 @@ export default class Creneau<T: Creneau<*>> extends Model<T> {
         }
     }
 
-    getRepetition(r: number): ?{ debut: Date, fin: Date } {
+    getRepetition(r: number): ?{ r: number, debut: Date, fin: Date } {
         // Gardien
         if (this.repetitions !== 0 && r >= this.repetitions) {
             return null;
         }
 
         // Calcul
-        return {
+        return { r,
             debut: new Date(this.debut.getTime() + r * this.ecart * JOUR),
             fin:   new Date(this.fin.getTime()   + r * this.ecart * JOUR)
         }

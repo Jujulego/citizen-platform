@@ -22,7 +22,7 @@ block content
         div(class="col justify-content-end") 
             h1(class="text-white")= mission.titre
 
-    section(class="row")
+    section(class="row mb-3")
         aside(class="col-3")
             div(class="card mb-3")
                 div(class="card-header") 
@@ -41,12 +41,10 @@ block content
                 ul(class="list-group list-group-flush")
                     li(class="list-group-item")= `Lieu : ${mission.lieu}`
                     li(class="list-group-item") Prochaine date :
-                        br
-                        = creneaux[0].debut_txt
+                        span(class="date-fmt")= first.debut.toLocaleDateString()
 
-                    li(class="list-group-item")= `Durée de la mission : ${creneaux[0].tempsMission} minutes`
-                    
-                        
+                    li(class="list-group-item")= `Durée de la mission : ${first.duree} minutes`
+
                     if(mission.nbPersAtteindre !== 0)
                         li(class="list-group-item")= `Nombre de personnes nécessaire : ${mission.nbPersAtteindre}`
 
@@ -83,13 +81,17 @@ block content
                                     p(class="ml-3")= dom.nom
 
                         div(id="dates" class="tab-pane fade accordion" role="tabpanel")
-                            each cre, i in creneaux
-                                h5(class="bg-light mb-0")
-                                    button(class="expandable btn btn-link collapsed" type="button" data-toggle="collapse" data-target=`#creneau-${cre.id}`)
-                                        i(class="fas fa-angle-down mr-2")
-                                        = cre.debut_txt
+                            each date, i in [...dates.values()].sort((a, b) => a.repetition.debut.getTime() - b.repetition.debut.getTime())
+                                h6(class="bg-light expandable collapsed mb-0 px-3 py-2" data-toggle="collapse" data-target=`#date-${date.id}`)
+                                    i(class="fas fa-angle-down mr-2")
+                                    span(class="datetime-fmt mr-1")= date.repetition.debut
+                                    | -
+                                    span(class="datetime-fmt ml-1")= date.repetition.fin
 
-                                div(id=`creneau-${cre.id}` class="collapse p-3" data-parent="#dates")
+                                    unless date.postulants.length === 0
+                                        span(class="badge badge-secondary ml-3")= date.postulants.length
+
+                                div(id=`date-${date.id}` class="collapse p-3" data-parent="#dates")
                                     table(class="candidats table table-bordered table-hover" cellspacing="0")
                                         thead
                                             tr
@@ -97,24 +99,24 @@ block content
                                                 th(scope="col") Prénom
                                                 th(scope="col") Mail
                                                 th(scope="col") Candidature
+
                                         tbody
-                                            each candidat in candidats
-                                                if (candidat.creneau.id === cre.id)
-                                                    tr
-                                                        td
-                                                            a(href=`/profilCitoyen/${candidat.postulant.login}`)= candidat.postulant.nom
+                                            each p in date.postulants
+                                                tr
+                                                    td
+                                                        a(href=`/profilCitoyen/${p.postulant.login}`)= p.postulant.nom
 
-                                                        td= candidat.postulant.prenom
-                                                        td
-                                                            a(href=`mailto:${candidat.postulant.login}`)= candidat.postulant.login
-                                                        td
-                                                            if candidat.status
-                                                                | Accepté
-                                                            else
-                                                                a(class="btn btn-success btn-sm mr-2" href=`/asso/acceptPostulation/${candidat.postulant.login}/${candidat.creneau.id}/${mission.id}`) Acceper
-                                                                a(class="btn btn-danger btn-sm"       href=`/asso/refusPostulation/${candidat.postulant.login}/${candidat.creneau.id}/${mission.id}`) Refuser
+                                                    td= p.postulant.prenom
+                                                    td
+                                                        a(href=`mailto:${p.postulant.login}`)= p.postulant.login
+                                                    td
+                                                        if p.postulation.status
+                                                            | Accepté
+                                                        else
+                                                            a(class="btn btn-success btn-sm mr-2" href=`/asso/acceptPostulation/${p.postulant.login}/${date.creneau.id}/${mission.id}`) Acceper
+                                                            a(class="btn btn-danger btn-sm"       href=`/asso/refusPostulation/${p.postulant.login}/${date.creneau.id}/${mission.id}`) Refuser
 
-                                unless i === creneaux.length-1
+                                unless i === dates.length-1
                                     hr(class="m-0")
 
 append js

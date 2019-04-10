@@ -162,7 +162,7 @@ export default class Mission extends Model<Mission> {
     async getPostulations(): Promise<Array<Postulation>> {
         return await Postulation.allByMission(this.db, this);
     }
-    async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission, status: boolean }>> {
+    async getPostulants(): Promise<Array<{ postulant: ?Citoyen, creneau: ?CreneauMission, postulation: Postulation }>> {
         const postulations: Array<Postulation> = await this.getPostulations();
 
         const result = [];
@@ -170,7 +170,7 @@ export default class Mission extends Model<Mission> {
             result.push({
                 postulant: await p.citoyen.get(),
                 creneau:   await p.creneau.get(),
-                status:    p.status,
+                postulation: p,
             });
         }
 

@@ -65,7 +65,7 @@ export default class Postulation extends Model<Postulation> {
 
     static async allByMission(db: Database, mission: Mission): Promise<Array<Postulation>> {
         return await Postulation.all(db,
-            "select creneau, citoyen, status from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", [mission.id],
+            "select * from postulation p inner join creneau_mission cm on p.creneau = cm.id where cm.mission = ?", [mission.id],
             (data) => new Postulation(db, data)
         );
     }
