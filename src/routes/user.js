@@ -461,5 +461,23 @@ export default function(db) {
         }
     }));
 
+    router.post("/creneaux/:idrep/remove", utils.user_guard(async function(req, res, next) {
+        try {
+            const user = await Citoyen.getLoggedInUser(db, req);
+
+            const { idrep } = req.params;
+            const idcreneau = idrep.split('-')[0];
+
+            // suppression !
+            const cre = await CreneauCitoyen.getById(db, idcreneau);
+            cre.delete();
+
+            res.redirect('/user');
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
     return router;
 };

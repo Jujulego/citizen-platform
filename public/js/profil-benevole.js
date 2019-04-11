@@ -145,9 +145,10 @@ $(document).ready(function() {
     // Modal
     const tab = $("#tab-dispo");
 
-    const modal = $("#add-creneau");
+    const addmodal = $("#add-creneau");
+    const remmodal = $("#rem-creneau");
 
-    const form  = $("form", modal);
+    const form  = $("form", addmodal);
     const dateD = $("#date-deb", form);
     const timeD = $("#time-deb", form);
     const dateF = $("#date-fin", form);
@@ -196,7 +197,13 @@ $(document).ready(function() {
             dateD.val(info.dateStr); timeD.val(`${twodigits((h + 1) % 24)}:00`);
             dateF.val(info.dateStr); timeF.val(`${twodigits((h + 2) % 24)}:00`);
 
-            modal.modal('show');
+            addmodal.modal('show');
+        },
+
+        eventClick(info) {
+            $("form", remmodal).attr('action', `/user/creneaux/${info.event.id}/remove`);
+
+            remmodal.modal('show');
         },
     });
 
@@ -205,7 +212,7 @@ $(document).ready(function() {
         calendar.render();
     });
 
-    modal.on('show.bs.tab', function() {
+    addmodal.on('show.bs.tab', function() {
         if (recursif.prop("checked")) {
             recurDeps.prop("disabled", false);
             recurDeps.prop("required", true);
@@ -255,7 +262,7 @@ $(document).ready(function() {
                 data: data,
 
                 success: function() {
-                    modal.modal('hide');
+                    addmodal.modal('hide');
                     calendar.refetchEvents();
                 }
             });

@@ -71,3 +71,4 @@ flow-typed
 \.idea/
 db\.sqlite
 media
+test\.js
