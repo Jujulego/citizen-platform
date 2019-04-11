@@ -4,12 +4,25 @@ append css
     // Datatable
     link(rel="stylesheet" href="/vendor/datatables.net-bs4/css/dataTables.bootstrap4.min.css")
 
+    // FullCalendar
+    link(rel="stylesheet" href="/vendor/@fullcalendar/core/main.min.css")
+    link(rel="stylesheet" href="/vendor/@fullcalendar/daygrid/main.min.css")
+    link(rel="stylesheet" href="/vendor/@fullcalendar/bootstrap/main.min.css")
+
     //lien avec le css
     link(rel="stylesheet" href="/static/scss/profil.css")
 
 append jslib
+    // Datatable
     script(src="/vendor/datatables.net/js/jquery.dataTables.min.js")
     script(src="/vendor/datatables.net-bs4/js/dataTables.bootstrap4.min.js")
+
+    // Fullcalendar
+    script(src="/vendor/@fullcalendar/core/main.min.js")
+    script(src="/vendor/@fullcalendar/core/locales/fr.js")
+    script(src="/vendor/@fullcalendar/daygrid/main.min.js")
+    script(src="/vendor/@fullcalendar/bootstrap/main.min.js")
+    script(src="/vendor/@fullcalendar/interaction/main.min.js")
 
 block content
     //TOUT CE QUI CONCERNE LA MISSION
@@ -57,6 +70,9 @@ block content
 
                         li(class="nav-item")
                             a(class="nav-link" data-toggle="tab" href="#dates") Dates
+
+                        li(class="nav-item")
+                            a(id="tab-calendrier" class="nav-link" data-toggle="tab" href="#calendrier") Calendrier
 
                 div(class="card-body p-0")
                     div(class="tab-content")
@@ -117,6 +133,9 @@ block content
 
                                 unless i === dates.length-1
                                     hr(class="m-0")
+
+                        div(class="tab-pane fade p-3" id="calendrier" role="tabpanel")
+                            div(id="calendar")
 
 append js
     script(src="/static/js/edit-Mission.js")

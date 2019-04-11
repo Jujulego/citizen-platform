@@ -374,7 +374,7 @@ export default function(db) {
         }
     }));
 
-    // Calendrier
+    // Calendriers
     router.get('/calendrier', utils.asso_guard(async function(req, res, next) {
         try {
             // Params
@@ -405,6 +405,40 @@ export default function(db) {
                     });
                 });
             }
+
+            res.send(data);
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
+    router.get('/mission/:id/calendrier', utils.asso_guard(async function(req, res, next) {
+        try {
+            // Params
+            const start = new Date(req.query.start);
+            const end   = new Date(req.query.end);
+
+            // Get mission
+            const asso = await Association.getLoggedInUser(db, req);
+            const m = await asso.getMission(req.params.id);
+            const data = [];
+
+            // Get créneaux
+            const creneaux = await m.getCreneaux();
+
+            creneaux.forEach(c => {
+                c.generateRepetitions(start, end, (r, deb, fin) => {
+                    data.push({
+                        id: `${c.id}-${r}`,
+                        title: m.titre,
+                        allDay: false,
+                        start: deb,
+                        end: fin,
+                        editable: false,
+                    });
+                });
+            });
 
             res.send(data);
         } catch(err) {
