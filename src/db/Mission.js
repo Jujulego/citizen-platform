@@ -125,6 +125,7 @@ export default class Mission extends Model<Mission> {
             (data) => new Mission(db, data, { dateMission: data.dateMission })
         );
     }
+    
 
     // Méthodes
     async save(): Promise<void> {
