@@ -396,29 +396,49 @@ export default function(db) {
             postu.status = true;
             await postu.save();
 
+            const rep = await postu.getRepetition();
+            // rep.debut
+
             SendMail({
                 from: 'no-reply@csp.net',
                 to: user.login,
                 subject: 'CITIZEN-SERVICES-PLATFORM : Votre candidature a été retenue !',
-                html: `Félicitation, votre candidature pour "${mission.titre}" à "${mission.lieu}" a été retenue ! A bientôt sur notre plateforme ! CITIZEN SERVICES PLATFORM`,
+                html: `Bonjour ! Félicitation, votre candidature pour "${mission.titre}" à "${mission.lieu}" (démarrant le : " ${rep.debut}" et terminant le : "${rep.fin} ") a été retenue ! A bientôt sur notre plateforme ! Bien Cordialement, CITIZEN SERVICES PLATFORM`,
             }, (err, reply) => console.log(err && err.stack));
 
-            res.redirect("/asso/mission/" + req.params.idmission);
-        } catch(err) {
-            console.log(err);
-            next(err);
+                res.redirect("/asso/mission/" + req.params.idmission);
+            } catch(err) {
+                console.log(err);
+                next(err);
         }
     }));
 
     //refuser postulation
     router.get('/refusPostulation/:idCitoyen/:idrep/:idmission', utils.asso_guard(async function(req, res, next) {
         try {
+            const asso = await Association.getLoggedInUser(db, req);
+            const mission = await Mission.getById(db, req.params.idmission);
+
             //supp cette postulation
+            
             const { idrep } = req.params;
             const [idcreneau, r] = idrep.split('-');
 
             const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
+            const postu = await Postulation.getByCitoyenAndCreneauR(db, user, idcreneau, r);
+            
+            
             await Postulation.deletePostulation(db, user, idcreneau, r);
+            const rep = await postu.getRepetition();
+            
+            
+            SendMail({
+                from: 'no-reply@csp.net',
+                to: user.login,
+                subject: 'CITIZEN-SERVICES-PLATFORM : Réponse à votre candidature ',
+                html: `Bonjour, nous vous remercions pour votre candidature pour "${mission.titre}" à "${mission.lieu}" (démarrant le : " ${rep.debut}" et terminant le : "${rep.fin} "). Malheureusement cette dernière n'a pas été retenue par notre association. En vous remerciant pour l'intérêt que vous nous portez : n'hésitez pas à postuler pour d'autres missions ! Bien Cordialement, CITIZEN SERVICES PLATFORM`,
+            }, (err, reply) => console.log(err && err.stack));
+
 
             res.redirect("/asso/mission/" + req.params.idmission);
         } catch (err) {
