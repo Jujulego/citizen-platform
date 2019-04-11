@@ -119,7 +119,8 @@ block content
                                             td(class="datetime-fmt mr-1")= date.repetition.debut
                                             td(class="datetime-fmt ml-1")= date.repetition.fin
 
-                                tfoot
-                                    tr
-                                        td(class="text-center py-2" colspan=3)
-                                            button(class="btn btn-primary btn-sm w-25" type="submit" disabled=(user == null)) Postuler
+                                unless date.length === 0
+                                    tfoot
+                                        tr
+                                            td(class="text-center py-2" colspan=3)
+                                                button(class="btn btn-primary btn-sm w-25" type="submit" disabled=(user == null)) Postuler

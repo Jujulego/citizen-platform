@@ -406,10 +406,10 @@ export default function(db) {
                 html: `Bonjour ! Félicitation, votre candidature pour "${mission.titre}" à "${mission.lieu}" (démarrant le : " ${rep.debut}" et terminant le : "${rep.fin} ") a été retenue ! A bientôt sur notre plateforme ! Bien Cordialement, CITIZEN SERVICES PLATFORM`,
             }, (err, reply) => console.log(err && err.stack));
 
-                res.redirect("/asso/mission/" + req.params.idmission);
-            } catch(err) {
-                console.log(err);
-                next(err);
+            res.redirect("/asso/mission/" + req.params.idmission);
+        } catch(err) {
+            console.log(err);
+            next(err);
         }
     }));
 
