@@ -360,8 +360,6 @@ export default function(db) {
     //refuser postulation
     router.get('/refusPostulation/:idCitoyen/:idrep/:idmission', utils.asso_guard(async function(req, res, next) {
         try {
-            const asso = await Association.getLoggedInUser(db, req);
-
             //supp cette postulation
             const { idrep } = req.params;
             const [idcreneau, r] = idrep.split('-');
@@ -372,6 +370,45 @@ export default function(db) {
             res.redirect("/asso/mission/" + req.params.idmission);
         } catch (err) {
             console.error(err);
+            next(err);
+        }
+    }));
+
+    // Calendrier
+    router.get('/calendrier', utils.asso_guard(async function(req, res, next) {
+        try {
+            // Params
+            const start = new Date(req.query.start);
+            const end   = new Date(req.query.end);
+
+            // Get missions
+            const asso = await Association.getLoggedInUser(db, req);
+            const missions = await asso.getMissions();
+            const data = [];
+
+            // Get créneaux
+            for (let i = 0; i < missions.length; ++i) {
+                const m = missions[i];
+                const creneaux = await m.getCreneaux();
+
+                creneaux.forEach(c => {
+                    c.generateRepetitions(start, end, (r, deb, fin) => {
+                        data.push({
+                            id: `${c.id}-${r}`,
+                            title: m.titre,
+                            allDay: false,
+                            start: deb,
+                            end: fin,
+                            editable: false,
+                            url: `/asso/mission/${m.id}/`,
+                        });
+                    });
+                });
+            }
+
+            res.send(data);
+        } catch(err) {
+            console.log(err);
             next(err);
         }
     }));
