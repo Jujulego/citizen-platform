@@ -129,3 +129,39 @@ select.placeholder {
     }
   }
 }
+
+th.col-checkbox {
+  width: 50px;
+}
+
+table.table.no-extborder {
+  border: none;
+
+  thead, tbody:first-child {
+    tr:first-child {
+      td, th {
+        border-top: none;
+      }
+    }
+  }
+
+  thead, tbody, tfoot {
+    tr {
+      td:first-child, th:first-child {
+        border-left: none;
+      }
+
+      td:last-child, th:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  tfoot, tbody:last-child {
+    tr:last-child {
+      td, th {
+        border-bottom: none;
+      }
+    }
+  }
+}

@@ -1,14 +1,23 @@
+// Card d'une Mission - vision Citoyen - Où il a déjà postulé : morceau candidature que l'on retrouve dans profil citoyen
 
-//Card d'une Mission - vision Citoyen - Où il a déjà postulé : morceau candidature que l'on retrouve dans profil citoyen
-
-div(class="card m-3")
+div(class="card mb-3")
     div(class="card-header")
         div(class="row")
-            div(class="col")
-                h5(class="mb-0")= `${mission.mission.titre}, ${mission.mission.lieu}`
-                small(class="font-italic")
-                    a(href="/profilAsso/" + mission.mission.association.pk)= mission.asso.nom
-            
+            div(class="col-auto mr-3")
+                h5(class="mb-0")= mission.mission.titre
+
+            div(class="col text-truncate")= mission.mission.lieu
+
+            div(class="col-auto")
+                if mission.status
+                    span(class = "text-success")
+                        i(class="fas fa-check mr-2")
+                        | Accepté
+                else
+                    span(class="text-secondary")
+                        i(class="fas fa-hourglass mr-2")
+                        | En attente
+
             div(class="card-toolbar col-auto")
                 button(type="button" class="btn btn-danger btn-sm"
                          data-toggle="modal" data-target="#suppPostu"
@@ -19,10 +28,13 @@ div(class="card m-3")
         p(class="card-text")= mission.mission.description
             
     block footer
-        div(class="card-footer")
-            div(class="m-0")
-                small(class="font-italic")=  mission.status?  "Accepté" : "En Attente de traitement"
-                div(class="float-right")
+        div(class="card-footer px-3 py-2")
+            div(class="row")
+                div(class="col")
+                    small(class="font-italic")
+                        a(href="/profilAsso/" + mission.mission.association.pk)= mission.asso.nom
+
+                div(class="col-auto")
                     small(class="font-italic datetime-fmt")= mission.repetition.debut
     
 //mission.status?  class="border border-info card m-3" : class="border border-success card-footer"

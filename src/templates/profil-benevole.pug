@@ -47,7 +47,7 @@ block content
     header(class="row")
         div(class="col")
             img(class="img-fluid" src="/static/images/profil.png")
-            h1(class="text-white")= `${user.nom} ${user.prenom}`
+            h1(class="text-dark")= `${user.nom} ${user.prenom}`
 
     section(class="row")
         //bootstrap
@@ -108,17 +108,19 @@ block content
                         li(class="nav-item")
                             a(id="tab-dispo" class="nav-link" data-toggle="tab" href="#dispo") Disponibilités
 
-                div(class="card-body")
+                div(class="card-body p-3")
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
-                            div(class="col")
-                                h4 Compétences
+                            div(class="row mb-2")
+                                div(class="col")
+                                    h4 Compétences
+
+                                div(class="col-auto")
                                     button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#ajoutComp")
                                         i(class="far fa-lightbulb")
 
-                                each sf in competances
-                                    p= sf.nom + " : " + sf.description
-
+                            each sf in competances
+                                p(class="ml-4")= sf.nom + " : " + sf.description
 
                         div(id="documents" class="tab-pane fade" role="tabpanel")
                             div(class="container-fluid px-0")

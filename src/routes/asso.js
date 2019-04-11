@@ -308,7 +308,7 @@ export default function(db) {
     router.post('/createMission', utils.asso_guard(async function(req, res, next) {
         try {
             // Récups nouv infos
-            const { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions, domaine } = req.body;
+            let { titre, lieu, description, nbPers, dateDebut, timeDebut, ecart, dateFin, timeFin, repetitions, domaine } = req.body;
             const asso = await Association.getLoggedInUser(db, req);
 
             // Validation
@@ -328,6 +328,11 @@ export default function(db) {
                 const fin = new Date(dateFin + " " + timeFin);
 
                 // Créneau
+                if (!ecart) {
+                    ecart = null;
+                    repetitions = 1;
+                }
+
                 await CreneauMission.create(db, { debut, fin, repetitions, ecart, mission });
 
                 //Domaine d'intervention
@@ -439,18 +444,15 @@ export default function(db) {
             const mission = await Mission.getById(db, req.params.idmission);
 
             //supp cette postulation
-            
             const { idrep } = req.params;
             const [idcreneau, r] = idrep.split('-');
 
             const user = await Citoyen.getByLogin(db, req.params.idCitoyen);
             const postu = await Postulation.getByCitoyenAndCreneauR(db, user, idcreneau, r);
-            
-            
+
             await Postulation.deletePostulation(db, user, idcreneau, r);
             const rep = await postu.getRepetition();
-            
-            
+
             SendMail({
                 from: 'no-reply@csp.net',
                 to: user.login,

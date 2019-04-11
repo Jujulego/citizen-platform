@@ -11,10 +11,10 @@ block content
             img(class="img-fluid" src="/static/images/profil.png")
             h1(class="text-white")= asso.nom
 
-    section(class="row")
+    section(class="row mb-3")
         //bootstrap
         aside(class="col-3")
-            div(class="card mb-3")
+            div(class="card")
                 div(class="card-header")
                     div(class="row")
                         div(class="col")
@@ -27,27 +27,23 @@ block content
 
                     li(class="list-group-item")
                         i(class="fas fa-address-card fa-fw mr-3")
-                        =asso.adresse
+                        = asso.adresse
 
                     li(class="list-group-item")
                         i(class="fas fa-phone fa-fw mr-3")
-                        =asso.tel
+                        = asso.tel
 
                     li(class="list-group-item")
                         i(class="fas fa-laptop fa-fw mr-3")
                         a(href="http://"+asso.siteWeb)= `${asso.siteWeb}`
-                        
-                ul(class="list-group list-group-flush")
+
                     li(class="list-group-item")
                         i(class="fas fa-scroll fa-fw mr-3")
                         = `SIRET : ${asso.siret}`
-                            
 
         article(class="col")
             div(class="card")
-                div(class="card-body")
-                    div(class="tab-content")                                
-                        div(class="row")
-                            h2 Présentation
+                div(class="card-header") Présentation
 
-                        p= asso.presentation
+                div(class="card-body")
+                    p(class="m-0")= asso.presentation

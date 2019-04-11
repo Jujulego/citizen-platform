@@ -1,10 +1,13 @@
 extends base
 
+append css
+    link(rel="stylesheet" href="/static/scss/inscription.css")
+
 block content
     //div= test
     header(class="row")
         //titre
-        h1(class="col text-center my-3")= "Inscription"
+        h1(class="page-top col text-center")= "Inscription"
 
     section(class="row")
         form(id="inscription-form" class="container-fluid" method="post" novalidate)

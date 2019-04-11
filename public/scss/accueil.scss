@@ -1,7 +1,7 @@
 //style de la page d'accueil de base
 header {
   display: flex;
-  min-height: 60%;
+  min-height: 60vh;
 
   flex-direction: column;
 
@@ -29,10 +29,18 @@ header {
   }
 }
 
-#osm-map { //carte style
-  height: 100%; //taille
-  width: 100%;
+#results {
+  height: calc(100vh - 54px - 57.6px);
 
-  border: solid 1px #ced4da; //bord
-  border-radius: .25rem;
+  overflow: hidden;
+
+  article {
+    height: 100%;
+    overflow-x: auto;
+  }
+}
+
+#osm-map { //carte style
+  height: 100%;
+  width: 100%;
 }

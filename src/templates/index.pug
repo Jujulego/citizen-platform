@@ -17,8 +17,7 @@ append jslib
 append js
     //lien avec le javascript
     script!= `const allMission = ${JSON.stringify(missions.map(m => ({ id: m.id, lieu: m.lieu, titre: m.titre })))};`
-    script!= `const allAsso = ${JSON.stringify(allAsso.map(a => ({ id: a.login, lieu: a.adresse, titre: a.nom })))};`
-    
+
     script(src="/static/js/accueil.js")
 
 block content
@@ -27,7 +26,8 @@ block content
         h1(id="page-top" class="text-center")= "L'engagement citoyen à portée de tous !"
 
         //Le filtre de recherche pour les missions
-        form(id="search-bar" method="get")
+        form(id="search-bar" class="p-2" method="get")
+            input(class="form-control" name="keyword" type="text" placeholder="Mot clé" value=query.keyword)
             input(class="form-control" name="lieu" type="text" placeholder="Adresse" value=query.lieu)
             input(class="form-control" name="assos" type="text" placeholder="Association" value=query.assos)
             input(class="form-control" name="dateDebut" type="date" placeholder="Date au plus tot" value=query.dateDebut)
@@ -36,16 +36,16 @@ block content
                 option(value selected) Domaine
                 each domaine in domaines
                     option(value=domaine.id)= domaine.nom
-            input(class="form-control" name="keyword" type="text" placeholder="Mot clé" value=query.keyword)
             button(class="btn btn-primary" type="submit") Rechercher
 
-    section(class="row")
-        article(class="col")
-            h2(class="ml-5")= nbRes 
+    section(id="results" class="row p-0")
+        article(class="col pt-3")
+            if nbRes
+                h2(class="ml-5")= nbRes
                
             each mission in missions
                 include parts/mission
 
         //la carte sur la droite
-        aside(class="col")
+        aside(class="col p-0")
             div(id="osm-map")

@@ -5,16 +5,15 @@ append css
 
 block content
     //div= test
-    header(class="row")
+    header(class="row mb-3")
         //titre
-        h1(class="col text-center my-3")= "Creation Mission"
+        h1(class="text-center text-white") Creation Mission
 
-    section(class="row")
-        form(id="createMission-form" class="container-fluid" method="post" action="/asso/createMission")
-                
-            div(class="col-xl")
-                fieldset(class="card ")
-                    label(class="card-header") Informations
+    form(id="createMission-form" method="post" action="/asso/createMission")
+        div(class="row mb-3")
+            div(class="col-lg-8")
+                div(class="card")
+                    div(class="card-header") Informations
 
                     div(class="card-body")
                         div(class="form-row mb-3")
@@ -29,85 +28,81 @@ block content
                                       name="lieu" type="text" placeholder="Lieu*" required)
 
                         div(class="form-row mb-3")
-                            div(class="col-6 mb-3")
-                                div(class="mb-3")
-                                    label(for="description-field") Description de la Mission*
-                                    textarea(id="description-field" class="form-control"
-                                            type="textarea" placeholder="Description de la Mission*" required name="description")
+                            div(class="col")
+                                label(for="nbPers-field") Nombre de bénévoles
+                                input(id="nbPers-field" class="form-control" type="number" name="nbPers" min=1
+                                      placeholder="Nombre de bénévoles")
 
-                                div(class="row")
-                                    
-                                    div(class="col mb-3")
-                                        label(for="nbPers-field") Nombre de Personne Requise pour la mission
-                                        input(id="nbPers-field" class="form-control"
-                                                type="text" name="nbPers" placeholder="Nombre de Personne Requise pour la mission")
+                            div(class="col")
+                                label(for="domInt-field") Domaine d'intervention
+                                div(class="editable-select")
+                                    input(id="domInt-field" class="form-control" name="domaine" type="text" placeholder="Choisir un Domaine d'intervention")
+                                    button(type="button")
+                                        i(class="fas fa-caret-down")
 
-                                    div(class="col mb-3")                                        
-                                        label(for="domInt-field") Domaine d'intervention
-                                        div(class="editable-select")
-                                            input(id="domInt-field" class="form-control" name="domaine" type="text" placeholder="Choisir un Domaine d'intervention")
-                                            button(type="button")
-                                                i(class="fas fa-caret-down")
-                                        
-                                            div
-                                                p(tabindex="0") Action sociale
-                                                p(tabindex="0") Agriculture
-                                                p(tabindex="0") Alimentation 
-                                                p(tabindex="0") Aide publique
-                                                p(tabindex="0") Commerce équitable
-                                                p(tabindex="0") Culture
-                                                p(tabindex="0") Communication
-                                                p(tabindex="0") Développement économique et local
-                                                p(tabindex="0") Droits
-                                                p(tabindex="0") Eau et l’assainissement
-                                                p(tabindex="0") Education et la formation
-                                                p(tabindex="0") Education au développement
-                                                p(tabindex="0") Environnement et le climat
-                                                p(tabindex="0") Le Genre (approche fondée sur l’étude des rapports sociaux entre les femmes et les hommes)
-                                                p(tabindex="0") Habitat 
-                                                p(tabindex="0") Loisir
-                                                p(tabindex="0") Microcrédit
-                                                p(tabindex="0") Santé
-                                                p(tabindex="0") Sport
-                                                p(tabindex="0") Volontariat
-                        
-                            div(class="col mb-3")
-                                div(class="mb-3")
-                                    label(for="dateDebut-field") Date début*
-                                    input(id="dateDebut-field" class="form-control"
-                                          name="dateDebut" type="date" required)
-                                          
-                                div(class="mb-3")
-                                    label(for="timeDebut-field") Heure début*
-                                    input(id="timeDebut-field" class="form-control" name="timeDebut" type="time"  required)
-                                          
-                                
-                                div(class="mb-3")
-                                    label(for="recurence-field") Récurrence
-                                    select(id="recurence-field" class="custom-select placeholder" name="ecart")
-                                        option(value selected) Pas de récurrence
-                                        option(value="1")  Tous les jours
-                                        option(value="7")  Toutes les semaines
-                                        option(value="14") Toutes les 2 semaines
+                                    div
+                                        p(tabindex="0") Action sociale
+                                        p(tabindex="0") Agriculture
+                                        p(tabindex="0") Alimentation
+                                        p(tabindex="0") Aide publique
+                                        p(tabindex="0") Commerce équitable
+                                        p(tabindex="0") Culture
+                                        p(tabindex="0") Communication
+                                        p(tabindex="0") Développement économique et local
+                                        p(tabindex="0") Droits
+                                        p(tabindex="0") Eau et l’assainissement
+                                        p(tabindex="0") Education et la formation
+                                        p(tabindex="0") Education au développement
+                                        p(tabindex="0") Environnement et le climat
+                                        p(tabindex="0") Le Genre (approche fondée sur l’étude des rapports sociaux entre les femmes et les hommes)
+                                        p(tabindex="0") Habitat
+                                        p(tabindex="0") Loisir
+                                        p(tabindex="0") Microcrédit
+                                        p(tabindex="0") Santé
+                                        p(tabindex="0") Sport
+                                        p(tabindex="0") Volontariat
 
-                            div(class="col mb-3")
-                                div(class="mb-3")
-                                    label(for="dateFin-field") Date fin*
-                                    input(id="dateFin-field" class="form-control"
-                                          name="dateFin" type="date" required)
-                                          
-                                div(class="mb-3")
-                                    label(for="timeFin-field") Heure fin*
+                        div(class="form-row mb-3")
+                            div(class="col")
+                                label(for="description-field") Description de la Mission*
+                                textarea(id="description-field" class="form-control"
+                                         placeholder="Description de la Mission*" name="description" required)
+
+            div(class="col-lg-4")
+                div(class="card")
+                    div(class="card-header") Date
+
+                    div(class="card-body")
+                        div(class="form-row mb-3")
+                            div(class="col")
+                                label(for="dateDebut-field") Début*
+
+                                div(class="input-group")
+                                    input(id="dateDebut-field" class="form-control" name="dateDebut" type="date" required)
+                                    input(id="timeDebut-field" class="form-control" name="timeDebut" type="time" required)
+
+                        div(class="form-row mb-3")
+                            div(class="col")
+                                label(for="dateFin-field") Fin*
+
+                                div(class="input-group")
+                                    input(id="dateFin-field" class="form-control" name="dateFin" type="date" required)
                                     input(id="timeFin-field" class="form-control" name="timeFin" type="time" required)
-                                    
-                                div(class="mb-3")
-                                    label(for="recurenceEnd-field") Fin de la récurrence
-                                    select(id="recurenceEnd-field" class="custom-select placeholder" name="repetitions")
-                                        option(value="0" selected ) Jamais
-                                        option(value="1") Au bout de 1 fois   
-                                        option(value="2") Au bout de 2 fois
-                                        option(value="3") Au bout de 3 fois 
-                                        option(value="4") Au bout de 4 fois
-                                        option(value="5") Au bout de 5 fois
-                                                        
-                        button(class="btn btn-primary px-5 m-3 right" type="submit") Créer 
+
+                        div(class="form-row mb-3")
+                            div(class="col")
+                                label(for="recurence-field") Ecart
+                                select(id="recurence-field" class="custom-select placeholder" name="ecart")
+                                    option(value selected) Pas de récurrence
+                                    option(value="1")  Tous les jours
+                                    option(value="7")  Toutes les semaines
+                                    option(value="14") Toutes les 2 semaines
+
+                        div(class="form-row")
+                            div(class="col")
+                                label(for="recurenceEnd-field") Nombre de récurences
+                                input(id="recurenceEnd-field" class="form-control" type="number" min=0 value=1 name="repetitions")
+
+        div(class="row mb-3")
+            div(class="col-4 mx-auto")
+                button(class="btn btn-primary btn-block" type="submit") Créer

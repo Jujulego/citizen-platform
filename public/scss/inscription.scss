@@ -1,0 +1,17 @@
+//style de la page d'accueil de base
+header {
+  display: flex;
+  min-height: 40vh;
+
+  flex-direction: column;
+
+  h1 { //titre avec image
+    flex: 1;
+    margin: 0;
+    padding-top: 10rem;
+    color : white;
+
+    background: url("/static/images/Deauville4A.jpg") no-repeat center;
+    background-size: cover;
+  }
+}

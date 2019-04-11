@@ -1,24 +1,23 @@
 //Description de la mission - vision Citoyen - Possibilité de postuler
-div(class="card m-3")
+div(class="card mb-3")
     div(class="card-header")
         div(class="row")
-            div(class="col")
-                h5(class="card-title mb-0")= `${mission.titre}, ${mission.lieu}`
+            div(class="col-auto mr-3")
+                h5(class="card-title mb-0")= mission.titre
+
+            div(class="col text-truncate")= mission.lieu
 
             block toolbar
                 div(class="col-auto card-toolbar")
-                    if session.assoLogin !== undefined
-                        a(href="/asso/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
-                    else 
-                        a(href="/mission/"+mission.id+"" class="btn btn-primary btn-sm") Voir plus
+                    a(href=`/mission/${mission.id}` class="btn btn-primary btn-sm") Voir plus
 
     div(class="card-body")
         p(class="card-text")= mission.shortDescriptionAccueil()
 
     block footer
-        div(class="card-footer")
+        div(class="card-footer px-3 py-2")
             div(class="m-0")
                 //ici
-                a(href="/profilAsso/" + mission.association.pk )= mission.asso.nom
+                a(href=`/profilAsso/${mission.association.pk}` )= mission.asso.nom
                 div(class="float-right")
-                    small(class="font-italic")= mission.fields.dateMission
+                    small(class="font-italic datetime-fmt")= mission.fields.dateMission

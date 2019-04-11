@@ -1,18 +1,3 @@
-function getUrlParameter(sParam) {
-    let sPageURL = window.location.search.substring(1),
-        sURLVariables = sPageURL.split('&'),
-        sParameterName,
-        i;
-
-    for (i = 0; i < sURLVariables.length; i++) {
-        sParameterName = sURLVariables[i].split('=');
-
-        if (sParameterName[0] === sParam) {
-            return sParameterName[1] === undefined ? undefined : decodeURIComponent(sParameterName[1]);
-        }
-    }
-}
-
 $(document).ready(function() {
     // Connection echouée
     const connectionPopup = $("#connectionPopup");
@@ -45,21 +30,15 @@ $(document).ready(function() {
                 q: addr
             },
             success(res) {
-                if(res.length != 0){
-                    var marker = L.marker([res[0].lat, res[0].lon]).addTo(map);
-                    marker.bindPopup("<a href='"+lienMission+"'>"+titre+" </a>").openPopup();
+                if (res.length !== 0) {
+                    const marker = L.marker([res[0].lat, res[0].lon]).addTo(map);
+                    marker.bindPopup(`<a href='${lienMission}'>${titre}</a>`).openPopup();
                 }
             }
         });
     }
 
-
-    for(let i = 0; i<allMission.length; i++) {
-        getlatlng(allMission[i].lieu, allMission[i].titre, "/mission/" + allMission[i].id, );
-    }
-
-    for(let i = 0; i<allAsso.length; i++) {
-        getlatlng(allAsso[i].lieu, allAsso[i].titre, "/profilAsso/" + allAsso[i].id, );
-    }
-
+    allMission.forEach(m => {
+        getlatlng(m.lieu, m.titre, `/mission/${m.id}`, );
+    });
 });
