@@ -61,7 +61,8 @@ block content
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
                             unless competances.length === 0
                                 div(class="row")
-                                    h4 Savoir-Faire   
+                                    h4 Compétences
+
                                 each sf in competances
                                     p= sf.nom + " : " + sf.description
 

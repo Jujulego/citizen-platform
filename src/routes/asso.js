@@ -8,6 +8,7 @@ import Association from "../db/Association";
 import Domaine from "../db/Domaine";
 import Citoyen from "../db/Citoyen";
 import Postulation from '../db/Postulation';
+import CreneauCitoyen from "../db/CreneauCitoyen";
 
 const SendMail = require("sendmail")();
 
@@ -265,6 +266,24 @@ export default function(db) {
             // Nouveau créneau !
             await CreneauMission.create(db, { ...req.body, debut: deb, fin: fin, mission: m });
             res.json({});
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
+    router.post('/mission/:id/creneaux/:idrep/remove', utils.asso_guard(async function(req, res, next) {
+        try {
+            const { id, idrep } = req.params;
+            const idcreneau = idrep.split('-')[0];
+
+            // suppression !
+            const asso = await Association.getLoggedInUser(db, req);
+            const m = await asso.getMission(req.params.id);
+            const cre = await CreneauMission.getByIdAndMission(db, idcreneau, m);
+            cre.delete();
+
+            res.redirect(`/asso/mission/${id}`);
         } catch(err) {
             console.log(err);
             next(err);

@@ -43,6 +43,13 @@ export default class CreneauCitoyen extends Creneau<CreneauCitoyen> {
         );
     }
 
+    static async getByIdAndCitoyen(db: Database, id: number, citoyen: Citoyen): Promise<?CreneauCitoyen> {
+        return await CreneauCitoyen.get(db,
+            "select * from creneau_citoyen where id = ? and citoyen = ?", [id, citoyen.login],
+            (data) => new CreneauCitoyen(db, data)
+        );
+    }
+
     static async allByCitoyen(db: Database, citoyen: Citoyen): Promise<Array<CreneauCitoyen>> {
         return await CreneauCitoyen.all(db,
             "select * from creneau_citoyen where citoyen = ? order by debut", [citoyen.login],

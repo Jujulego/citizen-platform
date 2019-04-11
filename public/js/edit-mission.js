@@ -2,9 +2,10 @@ $(document).ready(function() {
     // Elements
     const tab = $("#tab-calendrier");
 
-    const modal = $("#add-creneau");
+    const addmodal = $("#add-creneau");
+    const remmodal = $("#rem-creneau");
 
-    const form  = $("form", modal);
+    const form  = $("form", addmodal);
     const dateD = $("#date-deb", form);
     const timeD = $("#time-deb", form);
     const dateF = $("#date-fin", form);
@@ -24,6 +25,20 @@ $(document).ready(function() {
         return i.toString();
     }
 
+    function path(p) {
+        let b = window.location.pathname;
+
+        while (b.endsWith('/')) {
+            b = b.slice(0, -1);
+        }
+
+        while (p.startsWith('/')) {
+            p = p.slice(1);
+        }
+
+        return b + '/' + p;
+    }
+
     // Datatable
     $(".candidats").DataTable({
         "language": {
@@ -37,7 +52,7 @@ $(document).ready(function() {
         plugins: ['bootstrap', 'dayGrid', 'interaction'],
         eventSources: [
             {
-                url: `${window.location.pathname}/creneaux`
+                url: path("creneaux")
             },
         ],
 
@@ -56,7 +71,12 @@ $(document).ready(function() {
             dateD.val(info.dateStr); timeD.val(`${twodigits((h + 1) % 24)}:00`);
             dateF.val(info.dateStr); timeF.val(`${twodigits((h + 2) % 24)}:00`);
 
-            modal.modal('show');
+            addmodal.modal('show');
+        },
+
+        eventClick(info) {
+            $("form", remmodal).attr('action', path(`creneaux/${info.event.id}/remove`));
+            remmodal.modal('show');
         },
     });
 
@@ -65,7 +85,7 @@ $(document).ready(function() {
         calendar.render();
     });
 
-    modal.on('show.bs.tab', function() {
+    addmodal.on('show.bs.tab', function() {
         if (recursif.prop("checked")) {
             recurDeps.prop("disabled", false);
             recurDeps.prop("required", true);

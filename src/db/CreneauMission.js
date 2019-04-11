@@ -48,6 +48,13 @@ export default class CreneauMission extends Creneau<CreneauMission> {
         );
     }
 
+    static async getByIdAndMission(db: Database, id: number, mission: Mission): Promise<?CreneauMission> {
+        return await CreneauMission.get(db,
+            "select * from creneau_mission where id = ? and mission = ?", [id, mission.id],
+            (data) => new CreneauMission(db, data)
+        );
+    }
+
     static async allByMission(db: Database, mission: Mission): Promise<Array<CreneauMission>> {
         return await CreneauMission.all(db,
             "select * from creneau_mission where mission = ? order by debut", [mission.id],

@@ -112,12 +112,12 @@ block content
                     div(class="tab-content")
                         div(class="tab-pane fade show active" id="infoComplementaires" role="tabpanel")
                             div(class="col")
-                                h4 Competances
+                                h4 Compétences
                                     button(type="button" class="btn btn-primary btn-sm right" data-toggle="modal" data-target="#ajoutComp")
                                         i(class="far fa-lightbulb")
-                                unless competances.length === 0  
-                                    each sf in competances
-                                        p= sf.nom + " : " + sf.description
+
+                                each sf in competances
+                                    p= sf.nom + " : " + sf.description
 
 
                         div(id="documents" class="tab-pane fade" role="tabpanel")

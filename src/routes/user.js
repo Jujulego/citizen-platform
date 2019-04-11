@@ -469,7 +469,7 @@ export default function(db) {
             const idcreneau = idrep.split('-')[0];
 
             // suppression !
-            const cre = await CreneauCitoyen.getById(db, idcreneau);
+            const cre = await CreneauCitoyen.getByIdAndCitoyen(db, idcreneau, user);
             cre.delete();
 
             res.redirect('/user');
