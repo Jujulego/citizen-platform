@@ -12,7 +12,7 @@ div(class="card m-3")
             div(class="card-toolbar col-auto")
                 button(type="button" class="btn btn-danger btn-sm"
                          data-toggle="modal" data-target="#suppPostu"
-                         data-id="" + mission.creneau.id)
+                         data-id=`${mission.creneau.id}-${mission.repetition.r}`)
                     i(class="fas fa-times")
         
     div(class="card-body")
@@ -23,6 +23,6 @@ div(class="card m-3")
             div(class="m-0")
                 small(class="font-italic")=  mission.status?  "Accepté" : "En Attente de traitement"
                 div(class="float-right")
-                    small(class="font-italic")=  mission.creneau.debut_txt
+                    small(class="font-italic datetime-fmt")= mission.repetition.debut
     
 //mission.status?  class="border border-info card m-3" : class="border border-success card-footer"

@@ -142,7 +142,7 @@ export default function(db) {
         const { nom, description } = req.body;
 
         //add competance
-        const comp = await Competance.create(db, { nom, description, citoyen: user});
+        await Competance.create(db, { nom, description, citoyen: user});
 
         res.redirect("/user");
 
@@ -201,10 +201,13 @@ export default function(db) {
     }));
 
     // Supprimer une postulation
-    router.post('/suppPostu/:creneau', utils.user_guard(async function(req, res, next) {
+    router.post('/suppPostu/:idrep', utils.user_guard(async function(req, res, next) {
         try {
+            const { idrep } = req.params;
+            const [ idcreneau, r ] = idrep.split('-');
+
             const user = await Citoyen.getLoggedInUser(db, req);
-            await Postulation.deletePostulation(db, user, req.params.creneau);
+            await Postulation.deletePostulation(db, user, idcreneau, r);
 
             res.redirect("/user/candidatures");
         } catch(err) {
@@ -220,13 +223,14 @@ export default function(db) {
             const missions = [];
 
             for (let p of postulations) {
-                const c = await p.creneau.get();
-                const miss = await c.mission.get();
+                const rep = await p.getRepetition();
+                const miss = await rep.creneau.mission.get();
 
                 missions.push({
-                    creneau: c,
+                    creneau: rep.creneau,
                     mission: miss,
                     status : p.status,
+                    repetition: rep,
                     asso : await Association.getByLogin(db, miss.association.pk)
                 });
             }

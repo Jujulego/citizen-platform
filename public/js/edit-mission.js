@@ -115,8 +115,7 @@ $(document).ready(function() {
                 data: data,
 
                 success: function() {
-                    modal.modal('hide');
-                    calendar.refetchEvents();
+                    window.location.reload();
                 }
             });
 
