@@ -12,7 +12,7 @@ $(document).ready(function() {
     // Full Calendar
     const calendar = new FullCalendar.Calendar($('#calendar')[0], {
         locale: 'fr',
-        plugins: ['bootstrap', 'dayGrid', 'interaction'],
+        plugins: ['bootstrap', 'dayGrid'],
         eventSources: [
             {
                 url: '/asso/calendrier'
