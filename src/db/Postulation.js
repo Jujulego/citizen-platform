@@ -42,10 +42,10 @@ export default class Postulation extends Model<Postulation> {
         });
     }
 
-    static async getByCitoyenAndCreneau(db: Database, citoyen: Citoyen, id_creneau: number): Promise<?Postulation>{
+    static async getByCitoyenAndCreneauR(db: Database, citoyen: Citoyen, id_creneau: number, r: number): Promise<?Postulation>{
         return await Postulation.get(db,
-            "select * from postulation where creneau=? and citoyen=?",
-            [id_creneau, citoyen.login], (data) => new Postulation(db, data)
+            "select * from postulation where creneau=? and citoyen=? and r=?",
+            [id_creneau, citoyen.login, r], (data) => new Postulation(db, data)
         )
     }
 
@@ -70,27 +70,28 @@ export default class Postulation extends Model<Postulation> {
         );
     }
 
-    static async deletePostulation(db: Database, citoyen: Citoyen, id_creneau: number): Promise<void> {
+    static async deletePostulation(db: Database, citoyen: Citoyen, id_creneau: number, r: number): Promise<void> {
         await db.run(
-            "delete from postulation where creneau=? and citoyen=?", [id_creneau, citoyen.login]
+            "delete from postulation where creneau=? and citoyen=? and r=?", [id_creneau, citoyen.login, r]
         )
     }
 
     // Méthodes
     async delete(): Promise<void> {
         await this.db.run(
-            "delete from postulation where creneau=? and citoyen=?", [this.creneau.pk, this.citoyen.pk]
+            "delete from postulation where creneau=? and citoyen=? and r=?",
+            [this.creneau.pk, this.citoyen.pk, this.r]
         )
     }
 
     async save(): Promise<void> {
         await this.db.run(
-            "update postulation set status=? where creneau=? and citoyen=?",
-            [this.status, this.creneau.pk, this.citoyen.pk]
+            "update postulation set status=? where creneau=? and citoyen=? and r=?",
+            [this.status, this.creneau.pk, this.citoyen.pk, this.r]
         )
     }
 
-    async getRepetition(): Promise<?{ debut: Date, fin: Date, creneau: CreneauMission }> {
+    async getRepetition(): Promise<?{ r: number, debut: Date, fin: Date, creneau: CreneauMission }> {
         // Créneau
         const cre = await this.creneau.get();
         if (cre == null) return null;

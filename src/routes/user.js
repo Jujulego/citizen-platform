@@ -170,22 +170,25 @@ export default function(db) {
     router.post('/postuler', utils.user_guard(async function(req, res, next){
         try {
             const user = await Citoyen.getLoggedInUser(db, req);
+            const { repetition } = req.body;
 
-            if(typeof req.body.check === 'string') {
+            if (typeof repetition === 'string') {
+                const [ creneau, r ] = repetition.split('-');
+
                 await Postulation.create(db, {
-                    citoyen : user,
-                    creneau : await CreneauMission.getById(db, req.body.check),
-                    status : false
+                    citoyen: user,
+                    creneau: await CreneauMission.getById(db, creneau),
+                    status: false, r
                 });
-            }
-            else
-            {
-                for (let idcreneauSel of req.body.check)
-                {
+            } else {
+                for (let i = 0; i < repetition.length; ++i) {
+                    const rep = repetition[i];
+                    const [ creneau, r ] = rep.split('-');
+
                     await Postulation.create(db, {
-                        citoyen : user,
-                        creneau : await CreneauMission.getById(db, idcreneauSel),
-                        status : false
+                        citoyen: user,
+                        creneau: await CreneauMission.getById(db, creneau),
+                        status: false, r
                     });
                 }
             }
@@ -390,6 +393,44 @@ export default function(db) {
                         editable: false
                     });
                 });
+            }
+
+            res.json(data);
+        } catch(err) {
+            console.log(err);
+            next(err);
+        }
+    }));
+
+    router.get('/creneaux/missions', utils.user_guard(async function(req, res, next) {
+        try {
+            // Params
+            const start = new Date(req.query.start);
+            const end   = new Date(req.query.end);
+
+            // Get postulations
+            const user = await Citoyen.getLoggedInUser(db, req);
+            const postulations = await user.getPostulations();
+            const data = [];
+
+            for (let i = 0; i < postulations.length; ++i) {
+                const p = postulations[i];
+                const rep = await p.getRepetition();
+                const mission = await rep.creneau.mission.get();
+
+                if (end > rep.debut && start < rep.fin) {
+                    data.push({
+                        id: `${rep.creneau.id}-${rep.r}`,
+                        title: mission.titre,
+                        allDay: false,
+                        start: rep.debut,
+                        end: rep.fin,
+                        editable: false,
+                        url: `/mission/${mission.id}/`,
+                        borderColor: p.status ? 'red' : 'orange',
+                        backgroundColor: p.status ? 'red' : 'orange',
+                    });
+                }
             }
 
             res.json(data);
